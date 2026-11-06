@@ -76,28 +76,59 @@
         .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .flex-row > input { flex: 1; min-width: 80px; }
 
-        /* جدول الترتيب */
-        .table-container { overflow-x: auto; margin-top: 15px; background-color: #fff; padding-bottom: 5px;}
+        /* تصميم الجدول ليطابق الصورة المرفقة */
+        .table-container { 
+            overflow-x: auto; 
+            margin-top: 15px; 
+            background-color: var(--primary-bg); 
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            background: #fff;
-            color: #000;
+            background: var(--primary-bg);
+            color: #fff;
         }
-        th { background-color: #fff; color: #000; padding: 10px; border-bottom: 2px solid var(--gold); }
-        td { padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; }
+        th { 
+            background-color: var(--secondary-bg); 
+            color: var(--gold); 
+            padding: 12px; 
+            border-bottom: 2px solid var(--gold); 
+            font-size: 16px;
+        }
+        td { 
+            padding: 10px; 
+            border-bottom: 1px solid #233554; 
+            font-weight: bold; 
+            font-size: 15px;
+        }
         
-        .col-rank { background-color: #ffd700; color: #000; width: 60px; } 
-        .col-name { background-color: #e6f1ff; color: #000; text-align: right; padding-right: 15px; } 
-        .col-points { background-color: #ff007f; color: #fff; width: 80px; font-size: 18px; } 
+        /* أعمدة الجدول */
+        .col-name { text-align: right; padding-right: 15px; width: 60%; }
+        .col-points { text-align: center; width: 20%; font-size: 18px; color: #fff;}
+        .col-delete { text-align: center; width: 20%; }
         
-        .delete-btn { background: transparent; border: none; color: var(--red); cursor: pointer; font-size: 18px; font-weight: bold;}
+        /* زر الحذف الأحمر */
+        .delete-btn { 
+            background-color: #dc3545; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            width: 35px; 
+            height: 35px; 
+            font-size: 20px; 
+            cursor: pointer; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        .delete-btn:hover { background-color: #c82333; }
         
         #loading { display: none; text-align: center; color: var(--gold); font-weight: bold; margin-top: 10px; }
 
-        .delete-col { transition: 0.2s; }
-        
         .share-buttons {
             display: flex;
             justify-content: center;
@@ -105,6 +136,8 @@
             margin-top: 15px;
             flex-wrap: wrap;
         }
+        
+        .col-delete-hide { display: none !important; }
     </style>
 </head>
 <body>
@@ -113,7 +146,6 @@
     <h1>صدى العندليب</h1>
     <h3>دوري تحدي التوقعات ⭐</h3>
 
-    <!-- القسم الجديد: فرز التوقعات الصحيحة -->
     <div class="control-group" style="border-color: var(--green); background: rgba(40, 167, 69, 0.1);">
         <h3 style="color: var(--green);">✅ فرز التوقعات الصحيحة</h3>
         <p style="font-size: 12px; text-align: center;">الصق أسماء الفائزين هنا (كل اسم في سطر مستقل)</p>
@@ -124,7 +156,6 @@
         </div>
     </div>
 
-    <!-- إضافة اسم واحد (يدوي) -->
     <div class="control-group">
         <h3>إضافة اسم واحد (يدوي)</h3>
         <div class="flex-row">
@@ -134,18 +165,16 @@
         </div>
     </div>
 
-    <!-- استيراد صورة -->
     <div class="control-group">
         <h3>📅 استيراد كشف من صورة</h3>
         <p style="font-size: 12px; text-align: center; color: #ff9999;">
-            تنبيه: سيقوم النظام بقراءة (النقاط، الاسم، الترتيب). يرجى مراجعة وتعديل الأسماء بعد الاستيراد.
+            تنبيه: النظام يتجاهل رقم الترتيب تلقائياً ويأخذ النقاط فقط. راجع الأسماء بعد الاستيراد.
         </p>
         <input type="file" id="imageUpload" accept="image/*">
         <button class="btn btn-blue" style="width: 100%; margin-top: 10px;" onclick="processImage()">استيراد وقراءة الكشف</button>
         <div id="loading">جاري قراءة الصورة... يرجى الانتظار ⏳</div>
     </div>
 
-    <!-- أزرار المشاركة والمسح -->
     <div class="control-group" style="text-align: center; border-color: var(--purple);">
         <h3 style="color: var(--purple);">مشاركة النتائج</h3>
         <div class="share-buttons">
@@ -153,20 +182,18 @@
             <button class="btn btn-blue" onclick="shareImage()">🖼️ حفظ الجدول كصورة</button>
             <button class="btn btn-red" onclick="clearAll()">🗑️ مسح الكل</button>
         </div>
-        <p style="font-size: 11px; color: #aaa; margin-top: 10px;">يتم الحفظ تلقائياً في هاتفك بمجرد إضافة أي اسم أو نقاط.</p>
+        <p style="font-size: 11px; color: #aaa; margin-top: 10px;">يتم الحفظ تلقائياً في هاتفك.</p>
     </div>
 
-    <!-- الجدول -->
     <div id="captureArea">
-        <h2>🏆 الترتيب | 👥 الاسم | ⭐ النقاط</h2>
+        <h3 style="color: var(--gold);">راجع الأسماء والنقاط وصحح الأخطاء قبل الاعتماد.</h3>
         <div class="table-container">
             <table id="resultsTable">
                 <thead>
                     <tr>
-                        <th class="col-rank">الترتيب</th>
                         <th class="col-name">الاسم</th>
                         <th class="col-points">النقاط</th>
-                        <th class="delete-col" style="background:#333; color:white;">حذف</th>
+                        <th class="col-delete">حذف</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -179,15 +206,12 @@
 </div>
 
 <script>
-    // مصفوفة لحفظ البيانات
     let players = JSON.parse(localStorage.getItem('sharqPlayers')) || [];
 
-    // حفظ البيانات تلقائياً
     function autoSave() {
         localStorage.setItem('sharqPlayers', JSON.stringify(players));
     }
 
-    // تحديث الجدول وترتيبه
     function renderTable() {
         // ترتيب اللاعبين تنازلياً حسب النقاط
         players.sort((a, b) => b.points - a.points);
@@ -198,19 +222,17 @@
         players.forEach((player, index) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td class="col-rank">${index + 1}</td>
                 <td class="col-name">${player.name}</td>
                 <td class="col-points">${player.points}</td>
-                <td class="delete-col"><button class="delete-btn" onclick="deletePlayer('${player.name}')">✖</button></td>
+                <td class="col-delete"><button class="delete-btn" onclick="deletePlayer('${player.name}')">×</button></td>
             `;
             tbody.appendChild(tr);
         });
         
         document.getElementById('totalCount').innerText = `إجمالي المشاركين: ${players.length}`;
-        autoSave(); // الحفظ التلقائي عند أي تغيير
+        autoSave();
     }
 
-    // الدالة الجديدة: معالجة التوقعات الصحيحة
     function processCorrectGuesses() {
         const text = document.getElementById('correctGuessNames').value;
         const points = parseInt(document.getElementById('pointsToAdd').value) || 0;
@@ -229,26 +251,20 @@
             const existingPlayer = players.find(p => p.name === name);
             
             if (existingPlayer) {
-                // إذا كان الاسم موجوداً، نضيف النقاط فقط
                 existingPlayer.points += points;
                 updated++;
             } else {
-                // إذا كان الاسم جديداً، نضيفه للنهاية
                 players.push({ name: name, points: points });
                 newAdded++;
             }
         });
 
-        // تفريغ الحقل بعد الإضافة
         document.getElementById('correctGuessNames').value = '';
-        
-        // إعادة فرز وتحديث الجدول
         renderTable();
         
-        alert(`تمت العملية بنجاح!\n✅ أسماء جديدة تمت إضافتها: ${newAdded}\n🔄 أسماء موجودة تمت إضافة النقاط لها: ${updated}`);
+        alert(`تمت العملية بنجاح!\n✅ أسماء جديدة: ${newAdded}\n🔄 أسماء مكررة تم إضافة النقاط لها: ${updated}`);
     }
 
-    // إضافة اسم واحد يدوياً
     function addSingleName() {
         const nameInput = document.getElementById('singleName');
         const pointsInput = document.getElementById('singlePoints');
@@ -271,7 +287,6 @@
         }
     }
 
-    // حذف لاعب
     function deletePlayer(name) {
         if(confirm('هل أنت متأكد من حذف هذا الاسم؟')) {
             players = players.filter(p => p.name !== name);
@@ -279,7 +294,6 @@
         }
     }
 
-    // مسح الكل
     function clearAll() {
         if(confirm('هل أنت متأكد من مسح جميع الأسماء؟ لا يمكن التراجع!')) {
             players = [];
@@ -287,12 +301,8 @@
         }
     }
 
-    // مشاركة النص عبر الواتساب
     function shareText() {
-        if(players.length === 0) {
-            alert('لا توجد بيانات لمشاركتها.');
-            return;
-        }
+        if(players.length === 0) { alert('لا توجد بيانات.'); return; }
         
         let text = "🏆 *ترتيب دوري تحدي التوقعات* 🏆\n";
         text += "صدى العندليب - معاً نحو القمة ⭐\n\n";
@@ -303,49 +313,38 @@
             else if(index === 1) medal = "🥈 ";
             else if(index === 2) medal = "🥉 ";
             else medal = `${index + 1}- `;
-            
             text += `${medal}${player.name} : *${player.points}* نقطة\n`;
         });
-        
         text += `\n👥 إجمالي المشاركين: ${players.length}`;
 
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
         window.open(whatsappUrl, '_blank');
     }
 
-    // حفظ الجدول كصورة
     function shareImage() {
-        if(players.length === 0) {
-            alert('لا توجد بيانات لمشاركتها.');
-            return;
-        }
+        if(players.length === 0) { alert('لا توجد بيانات.'); return; }
 
         const captureArea = document.getElementById('captureArea');
-        const deleteCols = document.querySelectorAll('.delete-col');
-        
-        // إخفاء أزرار الحذف مؤقتاً
-        deleteCols.forEach(col => col.style.display = 'none');
+        const deleteCols = document.querySelectorAll('.col-delete');
+        deleteCols.forEach(col => col.classList.add('col-delete-hide'));
 
         html2canvas(captureArea, {
-            backgroundColor: "#112240",
+            backgroundColor: "#0a192f",
             scale: 2
         }).then(canvas => {
-            deleteCols.forEach(col => col.style.display = '');
-
+            deleteCols.forEach(col => col.classList.remove('col-delete-hide'));
             const image = canvas.toDataURL("image/png");
             const link = document.createElement('a');
             link.download = 'ترتيب_صدى_العندليب.png';
             link.href = image;
             link.click();
-            
         }).catch(err => {
             console.error(err);
-            alert('حدث خطأ أثناء إنشاء الصورة.');
-            deleteCols.forEach(col => col.style.display = '');
+            deleteCols.forEach(col => col.classList.remove('col-delete-hide'));
         });
     }
 
-    // معالجة الصورة (استيراد الكشوفات)
+    // الخوارزمية الذكية المحدثة لقراءة الجداول
     async function processImage() {
         const fileInput = document.getElementById('imageUpload');
         if (!fileInput.files.length) {
@@ -377,35 +376,42 @@
 
                     if (namePart.length > 2) { 
                         let points = 0;
-                        if (numbers.length >= 2) {
-                            points = Math.max(...numbers.map(Number));
+                        let numsArray = numbers.map(Number);
+                        
+                        // الخوارزمية الجديدة: 
+                        // إذا كان هناك رقمان في السطر (مثل 1 و 18)
+                        // نأخذ الرقم الأكبر كـ نقاط (لأن الترتيب دائماً رقم صغير 1, 2, 3)
+                        // وإذا كان هناك رقم واحد فقط (مثل 24)، نأخذه كـ نقاط مباشرة
+                        if (numsArray.length >= 2) {
+                            numsArray.sort((a, b) => a - b); // ترتيب تصاعدي
+                            points = numsArray[numsArray.length - 1]; // أخذ آخر رقم (الأكبر)
                         } else {
-                            points = parseInt(numbers[0]);
+                            points = numsArray[0];
                         }
 
+                        // إضافة اللاعب
                         const existing = players.find(p => p.name === namePart);
                         if (!existing) {
                             players.push({ name: namePart, points: points });
                         } else {
-                            existing.points += points; // في حال الاستيراد المتكرر
+                            existing.points += points; 
                         }
                     }
                 }
             });
 
             renderTable();
-            alert('تم استيراد البيانات. يرجى مراجعة الأسماء وتعديلها يدوياً إذا لزم الأمر.');
+            alert('تم استيراد البيانات بنجاح. يرجى مراجعة الأسماء والتعديل يدوياً إذا لزم.');
 
         } catch (error) {
             console.error(error);
-            alert('حدث خطأ أثناء قراءة الصورة. يرجى المحاولة مرة أخرى.');
+            alert('حدث خطأ أثناء قراءة الصورة.');
         } finally {
             loadingDiv.style.display = 'none';
             fileInput.value = ''; 
         }
     }
 
-    // تشغيل الجدول عند فتح الصفحة
     document.addEventListener('DOMContentLoaded', renderTable);
 
 </script>
