@@ -62,7 +62,7 @@
         .btn-red { background-color: #dc3545; }
         .btn-purple { background-color: #6f42c1; }
 
-        /* حقول الإدخال */
+        /* حقول الإدخال العلوية */
         input[type="text"], input[type="number"], textarea {
             width: 100%;
             padding: 10px;
@@ -89,7 +89,7 @@
         .color-box label { display: block; font-size: 12px; margin-bottom: 5px; }
         .color-box input[type="color"] { width: 100%; height: 40px; border: none; cursor: pointer; }
 
-        /* الجدول */
+        /* تصميم الجدول */
         .table-wrapper { overflow-x: auto; }
         table {
             width: 100%;
@@ -104,22 +104,52 @@
             border-bottom: 2px solid var(--border-main); 
         }
         td { 
-            padding: 8px; 
+            padding: 5px; /* تقليل الحشو ليتسع لحقل الإدخال */
             border-bottom: 1px solid var(--border-main); 
             font-weight: bold; 
             background-color: var(--bg-row);
             color: var(--text-main);
         }
-        .col-points { background-color: var(--bg-points); color: #000; font-size: 18px; }
         
-        /* أزرار التعديل والحذف */
-        .actions-cell { display: flex; gap: 5px; justify-content: center; }
+        /* حقول التعديل المباشرة داخل الجدول */
+        .edit-input {
+            width: 100%;
+            background: transparent;
+            border: 1px dashed transparent;
+            color: inherit;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 15px;
+            text-align: center;
+            padding: 8px 2px;
+            margin: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+        /* إظهار الإطار عند تمرير الماوس أو الضغط */
+        .edit-input:hover, .edit-input:focus {
+            border-color: var(--border-main);
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        .name-input {
+            text-align: right;
+            font-size: 16px;
+        }
+        .points-input {
+            background-color: var(--bg-points);
+            color: #000;
+            font-size: 18px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        /* أزرار الحذف */
         .action-btn { 
             border: none; border-radius: 5px; width: 35px; height: 35px; 
             font-size: 16px; cursor: pointer; color: white;
+            background-color: #dc3545;
         }
-        .btn-edit { background-color: #007bff; }
-        .btn-del { background-color: #dc3545; }
     </style>
 </head>
 <body>
@@ -186,14 +216,15 @@
     </div>
 
     <!-- 5. الجدول -->
+    <h3 style="font-size: 14px; color: #aaa; margin-bottom: 5px;">💡 اضغط مباشرة على الاسم أو النقاط لتعديلها</h3>
     <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>الاسم</th>
-                    <th>النقاط</th>
-                    <th>إجراءات</th>
+                    <th style="width: 10%;">#</th>
+                    <th style="width: 50%;">الاسم</th>
+                    <th style="width: 25%;">النقاط</th>
+                    <th style="width: 15%;">حذف</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -201,7 +232,7 @@
             </tbody>
         </table>
     </div>
-    <h3 id="total">إجمالي المشاركين: 0</h3>
+    <h3 id="total" style="margin-top: 15px;">إجمالي المشاركين: 0</h3>
 </div>
 
 <script>
@@ -220,7 +251,6 @@
     function applyColors() {
         for (let key in currentColors) {
             document.documentElement.style.setProperty(`--${key}`, currentColors[key]);
-            // تحديث حقول الألوان لتظهر اللون الحالي
             const input = document.getElementById('c-' + key.split('-')[1]); 
             if(input) input.value = currentColors[key];
         }
@@ -232,16 +262,16 @@
         applyColors();
     }
 
-    // --- 2. إدارة البيانات (اللاعبين) ---
+    // --- 2. إدارة البيانات ---
     let players = JSON.parse(localStorage.getItem('appPlayers')) || [];
 
     function saveData() {
         localStorage.setItem('appPlayers', JSON.stringify(players));
-        alert('✅ تم حفظ جميع البيانات بنجاح!');
     }
 
+    // دالة عرض الجدول
     function renderTable() {
-        // الترتيب التلقائي من الأعلى للأقل
+        // الترتيب التلقائي (من الأعلى للأقل)
         players.sort((a, b) => b.points - a.points);
         
         const tbody = document.getElementById('tableBody');
@@ -249,20 +279,48 @@
         
         players.forEach((player, index) => {
             const tr = document.createElement('tr');
+            
+            // استخدام onchange لتحديث البيانات فور الخروج من الحقل أو الضغط على Enter
             tr.innerHTML = `
                 <td>${index + 1}</td>
-                <td>${player.name}</td>
-                <td class="col-points">${player.points}</td>
                 <td>
-                    <div class="actions-cell">
-                        <button class="action-btn btn-edit" onclick="editPlayer(${index})">✏️</button>
-                        <button class="action-btn btn-del" onclick="deletePlayer(${index})">✖</button>
-                    </div>
+                    <input type="text" class="edit-input name-input" 
+                           value="${player.name}" 
+                           onchange="updatePlayer(${index}, 'name', this.value)">
+                </td>
+                <td>
+                    <input type="number" class="edit-input points-input" 
+                           value="${player.points}" 
+                           onchange="updatePlayer(${index}, 'points', this.value)">
+                </td>
+                <td>
+                    <button class="action-btn" onclick="deletePlayer(${index})">✖</button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
         document.getElementById('total').innerText = `إجمالي المشاركين: ${players.length}`;
+    }
+
+    // دالة التحديث المباشر من الجدول
+    function updatePlayer(index, field, newValue) {
+        if (field === 'name') {
+            if (newValue.trim() !== "") {
+                players[index].name = newValue.trim();
+            } else {
+                // إذا ترك الاسم فارغاً، نعيد الاسم القديم
+                renderTable();
+                return;
+            }
+        } else if (field === 'points') {
+            let points = parseInt(newValue);
+            if (isNaN(points)) points = 0; // إذا لم يكن رقماً، نجعله 0
+            players[index].points = points;
+        }
+        
+        // حفظ البيانات وإعادة ترتيب الجدول فوراً
+        saveData();
+        renderTable(); 
     }
 
     // --- 3. الوظائف الأساسية ---
@@ -278,38 +336,15 @@
 
         const existing = players.find(p => p.name === name);
         if (existing) {
-            existing.points += points; // إضافة نقاط لاسم موجود
+            existing.points += points;
         } else {
-            players.push({ name: name, points: points }); // إضافة اسم جديد
+            players.push({ name: name, points: points });
         }
         
         nameInput.value = '';
         pointsInput.value = '0';
         renderTable();
-        saveData(); // حفظ تلقائي بعد الإضافة
-    }
-
-    // تعديل اسم ونقاط
-    function editPlayer(index) {
-        const player = players[index];
-        
-        // نافذة تعديل الاسم
-        const newName = prompt('تعديل الاسم:', player.name);
-        if (newName === null || newName.trim() === "") return;
-
-        // نافذة تعديل النقاط
-        const newPointsStr = prompt('تعديل النقاط:', player.points);
-        if (newPointsStr === null) return;
-        
-        const newPoints = parseInt(newPointsStr);
-        if (isNaN(newPoints)) return alert('يرجى إدخال أرقام فقط للنقاط');
-
-        // تحديث البيانات
-        player.name = newName.trim();
-        player.points = newPoints;
-        
-        renderTable(); // إعادة الترتيب
-        saveData(); // حفظ تلقائي بعد التعديل
+        saveData();
     }
 
     // حذف لاعب
@@ -321,7 +356,7 @@
         }
     }
 
-    // إضافة جماعية (لصق)
+    // إضافة جماعية
     function addBulk() {
         const text = document.getElementById('bulkNames').value;
         const points = parseInt(document.getElementById('bulkPoints').value) || 0;
@@ -361,7 +396,7 @@
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
-    // تشغيل النظام عند فتح الصفحة
+    // تشغيل النظام
     document.addEventListener('DOMContentLoaded', () => {
         applyColors();
         renderTable();
