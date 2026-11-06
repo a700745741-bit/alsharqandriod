@@ -104,7 +104,7 @@
             border-bottom: 2px solid var(--border-main); 
         }
         td { 
-            padding: 5px; /* تقليل الحشو ليتسع لحقل الإدخال */
+            padding: 5px; 
             border-bottom: 1px solid var(--border-main); 
             font-weight: bold; 
             background-color: var(--bg-row);
@@ -115,7 +115,7 @@
         .edit-input {
             width: 100%;
             background: transparent;
-            border: 1px dashed transparent;
+            border: 1px solid transparent;
             color: inherit;
             font-family: inherit;
             font-weight: bold;
@@ -125,12 +125,12 @@
             margin: 0;
             box-sizing: border-box;
             outline: none;
+            border-radius: 5px;
         }
-        /* إظهار الإطار عند تمرير الماوس أو الضغط */
-        .edit-input:hover, .edit-input:focus {
+        /* إظهار الإطار عند الضغط لتوضيح إمكانية التعديل */
+        .edit-input:focus {
             border-color: var(--border-main);
             background: rgba(255,255,255,0.1);
-            border-radius: 5px;
         }
         .name-input {
             text-align: right;
@@ -140,8 +140,8 @@
             background-color: var(--bg-points);
             color: #000;
             font-size: 18px;
-            border-radius: 5px;
             text-align: center;
+            font-weight: 900;
         }
         
         /* أزرار الحذف */
@@ -216,7 +216,7 @@
     </div>
 
     <!-- 5. الجدول -->
-    <h3 style="font-size: 14px; color: #aaa; margin-bottom: 5px;">💡 اضغط مباشرة على الاسم أو النقاط لتعديلها</h3>
+    <h3 style="font-size: 13px; color: #aaa; margin-bottom: 5px;">💡 اضغط مباشرة على خانة الاسم أو خانة النقاط (المربع الأصفر) لتعديلها، ثم اضغط Enter.</h3>
     <div class="table-wrapper">
         <table>
             <thead>
@@ -265,11 +265,12 @@
     // --- 2. إدارة البيانات ---
     let players = JSON.parse(localStorage.getItem('appPlayers')) || [];
 
+    // دالة الحفظ في الخلفية
     function saveData() {
         localStorage.setItem('appPlayers', JSON.stringify(players));
     }
 
-    // دالة عرض الجدول
+    // دالة عرض الجدول (تستخدم حقول إدخال مباشرة)
     function renderTable() {
         // الترتيب التلقائي (من الأعلى للأقل)
         players.sort((a, b) => b.points - a.points);
@@ -280,7 +281,7 @@
         players.forEach((player, index) => {
             const tr = document.createElement('tr');
             
-            // استخدام onchange لتحديث البيانات فور الخروج من الحقل أو الضغط على Enter
+            // وضع البيانات داخل حقول input لتكون قابلة للتعديل المباشر
             tr.innerHTML = `
                 <td>${index + 1}</td>
                 <td>
@@ -302,28 +303,27 @@
         document.getElementById('total').innerText = `إجمالي المشاركين: ${players.length}`;
     }
 
-    // دالة التحديث المباشر من الجدول
+    // دالة التحديث المباشر عند الكتابة في الحقل
     function updatePlayer(index, field, newValue) {
         if (field === 'name') {
             if (newValue.trim() !== "") {
                 players[index].name = newValue.trim();
             } else {
-                // إذا ترك الاسم فارغاً، نعيد الاسم القديم
-                renderTable();
+                renderTable(); // إعادة الاسم القديم إذا تم مسحه
                 return;
             }
         } else if (field === 'points') {
             let points = parseInt(newValue);
-            if (isNaN(points)) points = 0; // إذا لم يكن رقماً، نجعله 0
+            if (isNaN(points)) points = 0; 
             players[index].points = points;
         }
         
-        // حفظ البيانات وإعادة ترتيب الجدول فوراً
+        // حفظ البيانات في الخلفية وإعادة ترتيب الجدول فوراً
         saveData();
         renderTable(); 
     }
 
-    // --- 3. الوظائف الأساسية ---
+    // --- 3. الوظائف الأخرى ---
 
     // إضافة اسم يدوي
     function addName() {
@@ -343,16 +343,16 @@
         
         nameInput.value = '';
         pointsInput.value = '0';
-        renderTable();
         saveData();
+        renderTable();
     }
 
     // حذف لاعب
     function deletePlayer(index) {
         if(confirm(`هل أنت متأكد من حذف (${players[index].name})؟`)) {
             players.splice(index, 1);
-            renderTable();
             saveData();
+            renderTable();
         }
     }
 
@@ -374,19 +374,21 @@
         });
 
         document.getElementById('bulkNames').value = '';
-        renderTable();
         saveData();
+        renderTable();
         alert('تمت الإضافة والترتيب بنجاح');
     }
 
+    // مسح الكل
     function clearAll() {
         if(confirm('هل تريد مسح جميع البيانات نهائياً؟')) {
             players = [];
-            renderTable();
             saveData();
+            renderTable();
         }
     }
 
+    // مشاركة واتساب
     function shareWhatsApp() {
         if(players.length === 0) return alert('لا توجد بيانات');
         let text = "🏆 *ترتيب التوقعات* 🏆\n\n";
@@ -396,7 +398,7 @@
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
-    // تشغيل النظام
+    // تشغيل النظام عند فتح الصفحة
     document.addEventListener('DOMContentLoaded', () => {
         applyColors();
         renderTable();
