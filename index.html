@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صدى العندليب - دوري تحدي التوقعات</title>
+    <!-- استدعاء مكتبة قراءة الصور -->
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <!-- استدعاء مكتبة تحويل الجدول إلى صورة -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-bg: #0a192f;
+            --secondary-bg: #112240;
+            --gold: #ffd700;
+            --text-light: #e6f1ff;
+            --green: #28a745;
+            --red: #dc3545;
+            --blue: #007bff;
+            --purple: #6f42c1;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            margin: 0;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--secondary-bg);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        h1, h2, h3 { text-align: center; color: var(--gold); }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 5px;
+            transition: 0.3s;
+        }
+        .btn-gold { background-color: var(--gold); color: #000; }
+        .btn-green { background-color: var(--green); color: #fff; }
+        .btn-red { background-color: var(--red); color: #fff; }
+        .btn-blue { background-color: var(--blue); color: #fff; }
+        .btn-purple { background-color: var(--purple); color: #fff; }
+        .btn:hover { opacity: 0.8; }
+        
+        .control-group {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,215,0,0.3);
+        }
+        input[type="text"], input[type="number"], textarea, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        textarea { height: 80px; resize: vertical; }
+        
+        .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .flex-row > input { flex: 1; min-width: 80px; }
+
+        /* جدول الترتيب */
+        .table-container { overflow-x: auto; margin-top: 15px; background-color: #fff; padding-bottom: 5px;}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            background: #fff;
+            color: #000;
+        }
+        th { background-color: #fff; color: #000; padding: 10px; border-bottom: 2px solid var(--gold); }
+        td { padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold; }
+        
+        .col-rank { background-color: #ffd700; color: #000; width: 60px; } 
+        .col-name { background-color: #e6f1ff; color: #000; text-align: right; padding-right: 15px; } 
+        .col-points { background-color: #ff007f; color: #fff; width: 80px; font-size: 18px; } 
+        
+        .delete-btn { background: transparent; border: none; color: var(--red); cursor: pointer; font-size: 18px; font-weight: bold;}
+        
+        #loading { display: none; text-align: center; color: var(--gold); font-weight: bold; margin-top: 10px; }
+
+        .delete-col { transition: 0.2s; }
+        
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>صدى العندليب</h1>
+    <h3>دوري تحدي التوقعات ⭐</h3>
+
+    <!-- القسم الجديد: فرز التوقعات الصحيحة -->
+    <div class="control-group" style="border-color: var(--green); background: rgba(40, 167, 69, 0.1);">
+        <h3 style="color: var(--green);">✅ فرز التوقعات الصحيحة</h3>
+        <p style="font-size: 12px; text-align: center;">الصق أسماء الفائزين هنا (كل اسم في سطر مستقل)</p>
+        <textarea id="correctGuessNames" placeholder="الاسم الأول&#10;الاسم الثاني&#10;الاسم الثالث..."></textarea>
+        <div class="flex-row" style="margin-top: 10px;">
+            <input type="number" id="pointsToAdd" placeholder="عدد النقاط" value="3" style="width: 100px;">
+            <button class="btn btn-green" style="flex: 1;" onclick="processCorrectGuesses()">إضافة النقاط وفرز الجدول 🔄</button>
+        </div>
+    </div>
+
+    <!-- إضافة اسم واحد (يدوي) -->
+    <div class="control-group">
+        <h3>إضافة اسم واحد (يدوي)</h3>
+        <div class="flex-row">
+            <input type="text" id="singleName" placeholder="اكتب اسم المشترك">
+            <input type="number" id="singlePoints" placeholder="النقاط" value="0">
+            <button class="btn btn-gold" onclick="addSingleName()">إضافة</button>
+        </div>
+    </div>
+
+    <!-- استيراد صورة -->
+    <div class="control-group">
+        <h3>📅 استيراد كشف من صورة</h3>
+        <p style="font-size: 12px; text-align: center; color: #ff9999;">
+            تنبيه: سيقوم النظام بقراءة (النقاط، الاسم، الترتيب). يرجى مراجعة وتعديل الأسماء بعد الاستيراد.
+        </p>
+        <input type="file" id="imageUpload" accept="image/*">
+        <button class="btn btn-blue" style="width: 100%; margin-top: 10px;" onclick="processImage()">استيراد وقراءة الكشف</button>
+        <div id="loading">جاري قراءة الصورة... يرجى الانتظار ⏳</div>
+    </div>
+
+    <!-- أزرار المشاركة والمسح -->
+    <div class="control-group" style="text-align: center; border-color: var(--purple);">
+        <h3 style="color: var(--purple);">مشاركة النتائج</h3>
+        <div class="share-buttons">
+            <button class="btn btn-purple" onclick="shareText()">📱 مشاركة النص (واتساب)</button>
+            <button class="btn btn-blue" onclick="shareImage()">🖼️ حفظ الجدول كصورة</button>
+            <button class="btn btn-red" onclick="clearAll()">🗑️ مسح الكل</button>
+        </div>
+        <p style="font-size: 11px; color: #aaa; margin-top: 10px;">يتم الحفظ تلقائياً في هاتفك بمجرد إضافة أي اسم أو نقاط.</p>
+    </div>
+
+    <!-- الجدول -->
+    <div id="captureArea">
+        <h2>🏆 الترتيب | 👥 الاسم | ⭐ النقاط</h2>
+        <div class="table-container">
+            <table id="resultsTable">
+                <thead>
+                    <tr>
+                        <th class="col-rank">الترتيب</th>
+                        <th class="col-name">الاسم</th>
+                        <th class="col-points">النقاط</th>
+                        <th class="delete-col" style="background:#333; color:white;">حذف</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- سيتم تعبئة البيانات هنا -->
+                </tbody>
+            </table>
+        </div>
+        <h3 id="totalCount" style="margin-top: 20px; background: var(--primary-bg); padding: 10px; border-radius: 8px;">إجمالي المشاركين: 0</h3>
+    </div>
+</div>
+
+<script>
+    // مصفوفة لحفظ البيانات
+    let players = JSON.parse(localStorage.getItem('sharqPlayers')) || [];
+
+    // حفظ البيانات تلقائياً
+    function autoSave() {
+        localStorage.setItem('sharqPlayers', JSON.stringify(players));
+    }
+
+    // تحديث الجدول وترتيبه
+    function renderTable() {
+        // ترتيب اللاعبين تنازلياً حسب النقاط
+        players.sort((a, b) => b.points - a.points);
+        
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
+        
+        players.forEach((player, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="col-rank">${index + 1}</td>
+                <td class="col-name">${player.name}</td>
+                <td class="col-points">${player.points}</td>
+                <td class="delete-col"><button class="delete-btn" onclick="deletePlayer('${player.name}')">✖</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+        
+        document.getElementById('totalCount').innerText = `إجمالي المشاركين: ${players.length}`;
+        autoSave(); // الحفظ التلقائي عند أي تغيير
+    }
+
+    // الدالة الجديدة: معالجة التوقعات الصحيحة
+    function processCorrectGuesses() {
+        const text = document.getElementById('correctGuessNames').value;
+        const points = parseInt(document.getElementById('pointsToAdd').value) || 0;
+        
+        if (!text.trim()) {
+            alert('يرجى لصق أسماء الفائزين أولاً.');
+            return;
+        }
+
+        const names = text.split('\n').map(n => n.trim()).filter(n => n !== '');
+        
+        let newAdded = 0;
+        let updated = 0;
+
+        names.forEach(name => {
+            const existingPlayer = players.find(p => p.name === name);
+            
+            if (existingPlayer) {
+                // إذا كان الاسم موجوداً، نضيف النقاط فقط
+                existingPlayer.points += points;
+                updated++;
+            } else {
+                // إذا كان الاسم جديداً، نضيفه للنهاية
+                players.push({ name: name, points: points });
+                newAdded++;
+            }
+        });
+
+        // تفريغ الحقل بعد الإضافة
+        document.getElementById('correctGuessNames').value = '';
+        
+        // إعادة فرز وتحديث الجدول
+        renderTable();
+        
+        alert(`تمت العملية بنجاح!\n✅ أسماء جديدة تمت إضافتها: ${newAdded}\n🔄 أسماء موجودة تمت إضافة النقاط لها: ${updated}`);
+    }
+
+    // إضافة اسم واحد يدوياً
+    function addSingleName() {
+        const nameInput = document.getElementById('singleName');
+        const pointsInput = document.getElementById('singlePoints');
+        
+        const name = nameInput.value.trim();
+        const points = parseInt(pointsInput.value) || 0;
+        
+        if (name) {
+            const existing = players.find(p => p.name === name);
+            if (existing) {
+                existing.points += points;
+            } else {
+                players.push({ name: name, points: points });
+            }
+            nameInput.value = '';
+            pointsInput.value = '0';
+            renderTable();
+        } else {
+            alert('يرجى كتابة الاسم أولاً');
+        }
+    }
+
+    // حذف لاعب
+    function deletePlayer(name) {
+        if(confirm('هل أنت متأكد من حذف هذا الاسم؟')) {
+            players = players.filter(p => p.name !== name);
+            renderTable();
+        }
+    }
+
+    // مسح الكل
+    function clearAll() {
+        if(confirm('هل أنت متأكد من مسح جميع الأسماء؟ لا يمكن التراجع!')) {
+            players = [];
+            renderTable();
+        }
+    }
+
+    // مشاركة النص عبر الواتساب
+    function shareText() {
+        if(players.length === 0) {
+            alert('لا توجد بيانات لمشاركتها.');
+            return;
+        }
+        
+        let text = "🏆 *ترتيب دوري تحدي التوقعات* 🏆\n";
+        text += "صدى العندليب - معاً نحو القمة ⭐\n\n";
+        
+        players.forEach((player, index) => {
+            let medal = "";
+            if(index === 0) medal = "🥇 ";
+            else if(index === 1) medal = "🥈 ";
+            else if(index === 2) medal = "🥉 ";
+            else medal = `${index + 1}- `;
+            
+            text += `${medal}${player.name} : *${player.points}* نقطة\n`;
+        });
+        
+        text += `\n👥 إجمالي المشاركين: ${players.length}`;
+
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(whatsappUrl, '_blank');
+    }
+
+    // حفظ الجدول كصورة
+    function shareImage() {
+        if(players.length === 0) {
+            alert('لا توجد بيانات لمشاركتها.');
+            return;
+        }
+
+        const captureArea = document.getElementById('captureArea');
+        const deleteCols = document.querySelectorAll('.delete-col');
+        
+        // إخفاء أزرار الحذف مؤقتاً
+        deleteCols.forEach(col => col.style.display = 'none');
+
+        html2canvas(captureArea, {
+            backgroundColor: "#112240",
+            scale: 2
+        }).then(canvas => {
+            deleteCols.forEach(col => col.style.display = '');
+
+            const image = canvas.toDataURL("image/png");
+            const link = document.createElement('a');
+            link.download = 'ترتيب_صدى_العندليب.png';
+            link.href = image;
+            link.click();
+            
+        }).catch(err => {
+            console.error(err);
+            alert('حدث خطأ أثناء إنشاء الصورة.');
+            deleteCols.forEach(col => col.style.display = '');
+        });
+    }
+
+    // معالجة الصورة (استيراد الكشوفات)
+    async function processImage() {
+        const fileInput = document.getElementById('imageUpload');
+        if (!fileInput.files.length) {
+            alert('يرجى اختيار صورة الكشف أولاً.');
+            return;
+        }
+
+        const loadingDiv = document.getElementById('loading');
+        loadingDiv.style.display = 'block';
+
+        try {
+            const imageFile = fileInput.files[0];
+            const worker = await Tesseract.createWorker('ara', 1);
+            const ret = await worker.recognize(imageFile);
+            await worker.terminate();
+            
+            const rawText = ret.data.text;
+            const lines = rawText.split('\n');
+            
+            lines.forEach(line => {
+                let cleanLine = line.replace(/[^\u0600-\u06FF0-9\s]/g, '').trim();
+                if (!cleanLine) return;
+
+                const numbers = cleanLine.match(/\d+/g);
+                
+                if (numbers && numbers.length > 0) {
+                    let namePart = cleanLine.replace(/\d+/g, '').trim();
+                    namePart = namePart.replace(/\s+/g, ' ');
+
+                    if (namePart.length > 2) { 
+                        let points = 0;
+                        if (numbers.length >= 2) {
+                            points = Math.max(...numbers.map(Number));
+                        } else {
+                            points = parseInt(numbers[0]);
+                        }
+
+                        const existing = players.find(p => p.name === namePart);
+                        if (!existing) {
+                            players.push({ name: namePart, points: points });
+                        } else {
+                            existing.points += points; // في حال الاستيراد المتكرر
+                        }
+                    }
+                }
+            });
+
+            renderTable();
+            alert('تم استيراد البيانات. يرجى مراجعة الأسماء وتعديلها يدوياً إذا لزم الأمر.');
+
+        } catch (error) {
+            console.error(error);
+            alert('حدث خطأ أثناء قراءة الصورة. يرجى المحاولة مرة أخرى.');
+        } finally {
+            loadingDiv.style.display = 'none';
+            fileInput.value = ''; 
+        }
+    }
+
+    // تشغيل الجدول عند فتح الصفحة
+    document.addEventListener('DOMContentLoaded', renderTable);
+
+</script>
+</body>
+</html>
