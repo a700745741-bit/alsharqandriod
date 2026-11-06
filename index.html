@@ -4,41 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صدى العندليب - دوري تحدي التوقعات</title>
-    <!-- استدعاء مكتبة قراءة الصور -->
+    <!-- مكتبة قراءة الصور -->
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
-    <!-- استدعاء مكتبة تحويل الجدول إلى صورة -->
+    <!-- مكتبة تحويل الجدول إلى صورة -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
+        /* الألوان الافتراضية (سيتم تغييرها بواسطة جافا سكريبت) */
         :root {
-            --primary-bg: #0a192f;
-            --secondary-bg: #112240;
-            --gold: #ffd700;
-            --text-light: #e6f1ff;
-            --green: #28a745;
-            --red: #dc3545;
-            --blue: #007bff;
-            --purple: #6f42c1;
-            --orange: #fd7e14;
+            --main-bg: #0a192f;
+            --table-bg: #112240;
+            --row-bg: #0a192f;
+            --points-bg: #ffd700;
+            --text-color: #ffffff;
+            --border-color: #ffd700;
+            --btn-gold: #ffd700;
+            --btn-green: #28a745;
+            --btn-red: #dc3545;
+            --btn-blue: #007bff;
         }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--primary-bg);
-            color: var(--text-light);
+            background-color: var(--main-bg);
+            color: var(--text-color);
             margin: 0;
             padding: 15px;
             box-sizing: border-box;
+            transition: background-color 0.3s;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: var(--secondary-bg);
+            background-color: var(--table-bg);
             padding: 20px;
             border-radius: 15px;
-            border: 2px solid var(--gold);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s, background-color 0.3s;
         }
-        h1, h2, h3 { text-align: center; color: var(--gold); }
+        h1, h2, h3 { text-align: center; color: var(--border-color); transition: color 0.3s; }
+        
         .btn {
             padding: 10px 15px;
             border: none;
@@ -48,23 +54,25 @@
             font-size: 14px;
             margin: 5px;
             transition: 0.3s;
+            color: #fff;
         }
-        .btn-gold { background-color: var(--gold); color: #000; }
-        .btn-green { background-color: var(--green); color: #fff; }
-        .btn-red { background-color: var(--red); color: #fff; }
-        .btn-blue { background-color: var(--blue); color: #fff; }
-        .btn-purple { background-color: var(--purple); color: #fff; }
-        .btn-orange { background-color: var(--orange); color: #fff; }
-        .btn:hover { opacity: 0.8; }
+        .btn-gold { background-color: var(--btn-gold); color: #000; }
+        .btn-green { background-color: var(--btn-green); }
+        .btn-red { background-color: var(--btn-red); }
+        .btn-blue { background-color: var(--btn-blue); }
+        .btn-purple { background-color: #6f42c1; }
+        .btn:hover { opacity: 0.8; transform: scale(1.02); }
         
         .control-group {
             background: rgba(255,255,255,0.05);
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
-            border: 1px solid rgba(255,215,0,0.3);
+            border: 1px solid var(--border-color);
+            transition: border-color 0.3s;
         }
-        input[type="text"], input[type="number"], textarea, input[type="file"] {
+        
+        input[type="text"], input[type="number"], textarea, input[type="file"], input[type="color"] {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -73,48 +81,69 @@
             box-sizing: border-box;
             font-family: inherit;
         }
-        textarea { height: 80px; resize: vertical; }
         
         .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .flex-row > input { flex: 1; min-width: 80px; }
+        textarea { height: 80px; resize: vertical; }
+
+        /* تصميم لوحة الألوان */
+        .color-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .color-item label { font-size: 12px; margin-bottom: 5px; text-align: center; }
+        .color-item input[type="color"] { padding: 0; height: 40px; cursor: pointer; border: none; background: none; width: 100%; }
 
         /* تصميم الجدول */
         .table-container { 
             overflow-x: auto; 
             margin-top: 15px; 
-            background-color: var(--primary-bg); 
-            border: 1px solid var(--gold);
+            background-color: var(--table-bg); 
+            border: 1px solid var(--border-color);
             border-radius: 8px;
+            transition: border-color 0.3s;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: center;
-            background: var(--primary-bg);
-            color: #fff;
+            background: var(--table-bg);
+            transition: background-color 0.3s;
         }
         th { 
-            background-color: var(--secondary-bg); 
-            color: var(--gold); 
+            background-color: var(--table-bg); 
+            color: var(--text-color); 
             padding: 12px; 
-            border-bottom: 2px solid var(--gold); 
+            border-bottom: 2px solid var(--border-color); 
             font-size: 16px;
+            transition: all 0.3s;
         }
         td { 
             padding: 10px; 
-            border-bottom: 1px solid #233554; 
+            border-bottom: 1px solid var(--border-color); 
             font-weight: bold; 
             font-size: 15px;
             vertical-align: middle;
+            background-color: var(--row-bg);
+            color: var(--text-color);
+            transition: all 0.3s;
         }
         
-        /* أعمدة الجدول */
-        .col-rank { text-align: center; width: 10%; color: var(--gold); font-size: 18px;}
-        .col-name { text-align: right; padding-right: 15px; width: 50%; }
-        .col-points { text-align: center; width: 15%; font-size: 18px; color: #fff;}
-        .col-actions { text-align: center; width: 25%; display: flex; justify-content: center; gap: 5px;}
+        .col-rank { text-align: center; width: 10%; font-size: 18px;}
+        .col-name { text-align: right; padding-right: 15px; width: 45%; }
+        .col-points { text-align: center; width: 15%; font-size: 18px; background-color: var(--points-bg); color: #000; font-weight: 900;}
+        .col-actions { text-align: center; width: 30%; display: flex; justify-content: center; gap: 5px; background-color: var(--row-bg);}
         
-        /* أزرار الإجراءات */
         .action-btn { 
             border: none; 
             border-radius: 8px; 
@@ -127,19 +156,12 @@
             justify-content: center;
             color: white;
         }
-        .edit-btn { background-color: var(--blue); }
-        .delete-btn { background-color: var(--red); }
+        .edit-btn { background-color: #007bff; }
+        .delete-btn { background-color: #dc3545; }
         
-        #loading { display: none; text-align: center; color: var(--gold); font-weight: bold; margin-top: 10px; }
+        #loading { display: none; text-align: center; color: var(--border-color); font-weight: bold; margin-top: 10px; }
 
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
+        .share-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
         .col-actions-hide { display: none !important; }
     </style>
 </head>
@@ -149,48 +171,79 @@
     <h1>صدى العندليب</h1>
     <h3>دوري تحدي التوقعات ⭐</h3>
 
-    <!-- القسم الجديد: فرز التوقعات الصحيحة -->
-    <div class="control-group" style="border-color: var(--green); background: rgba(40, 167, 69, 0.1);">
-        <h3 style="color: var(--green);">✅ فرز التوقعات الصحيحة</h3>
-        <p style="font-size: 12px; text-align: center;">الصق أسماء الفائزين هنا (كل اسم في سطر مستقل)</p>
-        <textarea id="correctGuessNames" placeholder="الاسم الأول&#10;الاسم الثاني&#10;الاسم الثالث..."></textarea>
+    <!-- لوحة التحكم بالألوان -->
+    <div class="control-group" style="border-color: #6f42c1; background: rgba(111, 66, 193, 0.1);">
+        <h3 style="color: #6f42c1;">🎨 لوحة التحكم بالألوان</h3>
+        <div class="color-picker-grid">
+            <div class="color-item">
+                <label>خلفية الصفحة</label>
+                <input type="color" id="colorMainBg" onchange="changeColor('mainBg', this.value)">
+            </div>
+            <div class="color-item">
+                <label>خلفية الجدول</label>
+                <input type="color" id="colorTableBg" onchange="changeColor('tableBg', this.value)">
+            </div>
+            <div class="color-item">
+                <label>خلفية الصفوف</label>
+                <input type="color" id="colorRowBg" onchange="changeColor('rowBg', this.value)">
+            </div>
+            <div class="color-item">
+                <label>خلفية النقاط</label>
+                <input type="color" id="colorPointsBg" onchange="changeColor('pointsBg', this.value)">
+            </div>
+            <div class="color-item">
+                <label>لون النص</label>
+                <input type="color" id="colorText" onchange="changeColor('textColor', this.value)">
+            </div>
+            <div class="color-item">
+                <label>لون الإطار</label>
+                <input type="color" id="colorBorder" onchange="changeColor('borderColor', this.value)">
+            </div>
+        </div>
+        <button class="btn btn-blue" style="width: 100%; margin-top: 10px;" onclick="resetColors()">🔄 استعادة الألوان الافتراضية</button>
+    </div>
+
+    <!-- القسم 1: فرز التوقعات الصحيحة (الجماعي) -->
+    <div class="control-group" style="border-color: var(--btn-green); background: rgba(40, 167, 69, 0.1);">
+        <h3 style="color: var(--btn-green);">✅ إضافة توقعات صحيحة (لصق أسماء)</h3>
+        <textarea id="correctGuessNames" placeholder="الصق الأسماء هنا (كل اسم في سطر)..."></textarea>
         <div class="flex-row" style="margin-top: 10px;">
-            <input type="number" id="pointsToAdd" placeholder="عدد النقاط" value="3" style="width: 100px;">
-            <button class="btn btn-green" style="flex: 1;" onclick="processCorrectGuesses()">إضافة النقاط وفرز الجدول 🔄</button>
+            <input type="number" id="pointsToAdd" placeholder="النقاط" value="3" style="width: 100px;">
+            <button class="btn btn-green" style="flex: 1;" onclick="processCorrectGuesses()">إضافة وترتيب 🔄</button>
         </div>
     </div>
 
-    <!-- إضافة اسم واحد (يدوي) -->
+    <!-- القسم 2: إضافة اسم واحد -->
     <div class="control-group">
-        <h3>إضافة اسم واحد (يدوي)</h3>
+        <h3>➕ إضافة اسم واحد</h3>
         <div class="flex-row">
-            <input type="text" id="singleName" placeholder="اكتب اسم المشترك">
+            <input type="text" id="singleName" placeholder="اسم المشترك">
             <input type="number" id="singlePoints" placeholder="النقاط" value="0">
             <button class="btn btn-gold" onclick="addSingleName()">إضافة</button>
         </div>
     </div>
 
-    <!-- استيراد صورة -->
+    <!-- القسم 3: استيراد صورة -->
     <div class="control-group">
         <h3>📅 استيراد كشف من صورة</h3>
         <input type="file" id="imageUpload" accept="image/*">
-        <button class="btn btn-blue" style="width: 100%; margin-top: 10px;" onclick="processImage()">استيراد وقراءة الكشف</button>
-        <div id="loading">جاري قراءة الصورة... يرجى الانتظار ⏳</div>
+        <button class="btn btn-blue" style="width: 100%; margin-top: 10px;" onclick="processImage()">استيراد وقراءة</button>
+        <div id="loading">جاري قراءة الصورة... ⏳</div>
     </div>
 
-    <!-- أزرار المشاركة والمسح -->
-    <div class="control-group" style="text-align: center; border-color: var(--purple);">
-        <h3 style="color: var(--purple);">مشاركة النتائج</h3>
+    <!-- أزرار الحفظ والمشاركة -->
+    <div class="control-group" style="text-align: center;">
         <div class="share-buttons">
-            <button class="btn btn-purple" onclick="shareText()">📱 مشاركة النص (واتساب)</button>
-            <button class="btn btn-blue" onclick="shareImage()">🖼️ حفظ الجدول كصورة</button>
+            <button class="btn btn-green" onclick="saveData()">💾 حفظ التعديلات</button>
+            <button class="btn btn-purple" onclick="shareText()">📱 مشاركة واتساب</button>
+            <button class="btn btn-blue" onclick="shareImage()">🖼️ حفظ كصورة</button>
             <button class="btn btn-red" onclick="clearAll()">🗑️ مسح الكل</button>
         </div>
     </div>
 
     <!-- الجدول -->
     <div id="captureArea">
-        <h3 style="color: var(--gold);">الترتيب التلقائي (من الأعلى للأقل نقاطاً)</h3>
+        <h3>الترتيب الحالي</h3>
         <div class="table-container">
             <table id="resultsTable">
                 <thead>
@@ -206,24 +259,70 @@
                 </tbody>
             </table>
         </div>
-        <h3 id="totalCount" style="margin-top: 20px; background: var(--primary-bg); padding: 10px; border-radius: 8px;">إجمالي المشاركين: 0</h3>
+        <h3 id="totalCount" style="margin-top: 20px; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">إجمالي المشاركين: 0</h3>
     </div>
 </div>
 
 <script>
-    // مصفوفة البيانات
-    let players = JSON.parse(localStorage.getItem('sharqPlayers')) || [];
+    // 1. إعدادات الألوان
+    const defaultColors = {
+        mainBg: '#0a192f',
+        tableBg: '#112240',
+        rowBg: '#0a192f',
+        pointsBg: '#ffd700',
+        textColor: '#ffffff',
+        borderColor: '#ffd700'
+    };
 
-    // دالة الحفظ التلقائي
-    function autoSave() {
-        localStorage.setItem('sharqPlayers', JSON.stringify(players));
+    // تحميل الألوان المحفوظة أو استخدام الافتراضية
+    let savedColors = JSON.parse(localStorage.getItem('sharqColors')) || defaultColors;
+
+    // دالة تطبيق الألوان على متغيرات CSS
+    function applyColors(colors) {
+        const root = document.documentElement;
+        root.style.setProperty('--main-bg', colors.mainBg);
+        root.style.setProperty('--table-bg', colors.tableBg);
+        root.style.setProperty('--row-bg', colors.rowBg);
+        root.style.setProperty('--points-bg', colors.pointsBg);
+        root.style.setProperty('--text-color', colors.textColor);
+        root.style.setProperty('--border-color', colors.borderColor);
+
+        // تحديث قيم حقول الإدخال
+        document.getElementById('colorMainBg').value = colors.mainBg;
+        document.getElementById('colorTableBg').value = colors.tableBg;
+        document.getElementById('colorRowBg').value = colors.rowBg;
+        document.getElementById('colorPointsBg').value = colors.pointsBg;
+        document.getElementById('colorText').value = colors.textColor;
+        document.getElementById('colorBorder').value = colors.borderColor;
+    }
+
+    // دالة تغيير لون محدد وحفظه
+    function changeColor(key, value) {
+        savedColors[key] = value;
+        localStorage.setItem('sharqColors', JSON.stringify(savedColors));
+        applyColors(savedColors);
+    }
+
+    // دالة استعادة الألوان الافتراضية
+    function resetColors() {
+        if(confirm('هل تريد استعادة الألوان الافتراضية؟')) {
+            savedColors = { ...defaultColors };
+            localStorage.setItem('sharqColors', JSON.stringify(savedColors));
+            applyColors(savedColors);
+        }
+    }
+
+    // 2. إدارة بيانات اللاعبين
+    let players = JSON.parse(localStorage.getItem('sharqPlayersData')) || [];
+
+    function saveData() {
+        localStorage.setItem('sharqPlayersData', JSON.stringify(players));
+        alert('✅ تم حفظ جميع التعديلات بنجاح!');
     }
 
     // دالة عرض الجدول مع الترتيب التلقائي
     function renderTable() {
-        // الترتيب التنازلي حسب النقاط
         players.sort((a, b) => b.points - a.points);
-        
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
         
@@ -234,203 +333,156 @@
                 <td class="col-name">${player.name}</td>
                 <td class="col-points">${player.points}</td>
                 <td class="col-actions">
-                    <button class="action-btn edit-btn" onclick="editPlayer('${player.name}')" title="تعديل">✏️</button>
-                    <button class="action-btn delete-btn" onclick="deletePlayer('${player.name}')" title="حذف">✖</button>
+                    <button class="action-btn edit-btn" onclick="editPlayer(${index})" title="تعديل">✏️</button>
+                    <button class="action-btn delete-btn" onclick="deletePlayer(${index})" title="حذف">✖</button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
-        
         document.getElementById('totalCount').innerText = `إجمالي المشاركين: ${players.length}`;
-        autoSave();
     }
 
-    // دالة تعديل الاسم والنقاط
-    function editPlayer(oldName) {
-        const player = players.find(p => p.name === oldName);
-        if (!player) return;
-
-        // نافذة إدخال للاسم الجديد
+    function editPlayer(index) {
+        const player = players[index];
         const newName = prompt('تعديل الاسم:', player.name);
-        if (newName === null) return; // إذا ضغط إلغاء
+        if (newName === null || newName.trim() === "") return;
 
-        // نافذة إدخال للنقاط الجديدة
         const newPointsStr = prompt('تعديل النقاط:', player.points);
-        if (newPointsStr === null) return; // إذا ضغط إلغاء
-
+        if (newPointsStr === null) return;
         const newPoints = parseInt(newPointsStr);
-        if (isNaN(newPoints)) {
-            alert('الرجاء إدخال رقم صحيح للنقاط.');
-            return;
-        }
+        if (isNaN(newPoints)) return alert('أدخل أرقاماً فقط');
 
-        // تحديث البيانات
-        if (newName.trim() !== "") {
-            player.name = newName.trim();
-        }
+        player.name = newName.trim();
         player.points = newPoints;
-
-        // إعادة ترتيب وعرض الجدول
         renderTable();
     }
 
-    // دالة معالجة التوقعات الصحيحة (الجماعية)
+    function addSingleName() {
+        const name = document.getElementById('singleName').value.trim();
+        const points = parseInt(document.getElementById('singlePoints').value) || 0;
+        if (!name) return alert('اكتب الاسم');
+
+        const existingIndex = players.findIndex(p => p.name === name);
+        if (existingIndex !== -1) {
+            players[existingIndex].points += points;
+        } else {
+            players.push({ name: name, points: points });
+        }
+        document.getElementById('singleName').value = '';
+        document.getElementById('singlePoints').value = '0';
+        renderTable();
+    }
+
     function processCorrectGuesses() {
         const text = document.getElementById('correctGuessNames').value;
         const points = parseInt(document.getElementById('pointsToAdd').value) || 0;
-        
-        if (!text.trim()) {
-            alert('يرجى لصق أسماء الفائزين أولاً.');
-            return;
-        }
+        if (!text.trim()) return alert('الصق الأسماء أولاً');
 
         const names = text.split('\n').map(n => n.trim()).filter(n => n !== '');
-        let newAdded = 0;
-        let updated = 0;
+        let added = 0, updated = 0;
 
         names.forEach(name => {
-            const existingPlayer = players.find(p => p.name === name);
-            if (existingPlayer) {
-                existingPlayer.points += points; // إضافة نقاط لاسم موجود
+            const existingIndex = players.findIndex(p => p.name === name);
+            if (existingIndex !== -1) {
+                players[existingIndex].points += points;
                 updated++;
             } else {
-                players.push({ name: name, points: points }); // إضافة اسم جديد
-                newAdded++;
+                players.push({ name: name, points: points });
+                added++;
             }
         });
-
         document.getElementById('correctGuessNames').value = '';
-        renderTable(); // الترتيب التلقائي يحدث هنا
-        
-        alert(`تمت الإضافة والترتيب!\n✅ أسماء جديدة: ${newAdded}\n🔄 تم تحديث نقاط: ${updated}`);
+        renderTable();
+        alert(`تمت الإضافة!\nجديد: ${added}\nمحدث: ${updated}`);
     }
 
-    // إضافة اسم واحد يدوياً
-    function addSingleName() {
-        const nameInput = document.getElementById('singleName');
-        const pointsInput = document.getElementById('singlePoints');
-        
-        const name = nameInput.value.trim();
-        const points = parseInt(pointsInput.value) || 0;
-        
-        if (name) {
-            const existing = players.find(p => p.name === name);
-            if (existing) {
-                existing.points += points;
-            } else {
-                players.push({ name: name, points: points });
-            }
-            nameInput.value = '';
-            pointsInput.value = '0';
-            renderTable(); // الترتيب التلقائي
-        } else {
-            alert('يرجى كتابة الاسم أولاً');
-        }
-    }
-
-    // حذف لاعب
-    function deletePlayer(name) {
-        if(confirm(`هل أنت متأكد من حذف (${name})؟`)) {
-            players = players.filter(p => p.name !== name);
-            renderTable(); // الترتيب التلقائي
-        }
-    }
-
-    // مسح الكل
-    function clearAll() {
-        if(confirm('هل أنت متأكد من مسح جميع الأسماء والبيانات؟')) {
-            players = [];
+    function deletePlayer(index) {
+        if(confirm(`هل تريد حذف (${players[index].name})؟`)) {
+            players.splice(index, 1);
             renderTable();
         }
     }
 
-    // مشاركة النص عبر الواتساب
-    function shareText() {
-        if(players.length === 0) { alert('لا توجد بيانات.'); return; }
-        
-        let text = "🏆 *ترتيب دوري تحدي التوقعات* 🏆\n";
-        text += "صدى العندليب - معاً نحو القمة ⭐\n\n";
-        
-        players.forEach((player, index) => {
-            let medal = index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : `${index + 1}- `;
-            text += `${medal}${player.name} : *${player.points}* نقطة\n`;
-        });
-        text += `\n👥 إجمالي المشاركين: ${players.length}`;
+    function clearAll() {
+        if(confirm('هل أنت متأكد من مسح جميع الأسماء؟')) {
+            players = [];
+            localStorage.removeItem('sharqPlayersData');
+            renderTable();
+        }
+    }
 
+    function shareText() {
+        if(players.length === 0) return alert('لا توجد بيانات.');
+        let text = "🏆 *ترتيب دوري تحدي التوقعات* 🏆\n\n";
+        players.forEach((p, i) => {
+            let medal = i === 0 ? "🥇 " : i === 1 ? "🥈 " : i === 2 ? "🥉 " : `${i + 1}- `;
+            text += `${medal}${p.name} : *${p.points}* نقطة\n`;
+        });
         window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
-    // حفظ الجدول كصورة
     function shareImage() {
-        if(players.length === 0) { alert('لا توجد بيانات.'); return; }
-
+        if(players.length === 0) return alert('لا توجد بيانات.');
         const captureArea = document.getElementById('captureArea');
-        // إخفاء أزرار التعديل والحذف قبل التصوير
         const actionCols = document.querySelectorAll('.col-actions');
-        actionCols.forEach(col => col.classList.add('col-actions-hide'));
+        actionCols.forEach(col => col.style.display = 'none');
 
-        html2canvas(captureArea, {
-            backgroundColor: "#0a192f",
-            scale: 2
+        html2canvas(captureArea, { 
+            backgroundColor: savedColors.mainBg, // استخدام لون الخلفية المحفوظ
+            scale: 2 
         }).then(canvas => {
-            actionCols.forEach(col => col.classList.remove('col-actions-hide'));
+            actionCols.forEach(col => col.style.display = 'flex');
             const link = document.createElement('a');
-            link.download = 'ترتيب_صدى_العندليب.png';
+            link.download = 'الترتيب.png';
             link.href = canvas.toDataURL("image/png");
             link.click();
-        }).catch(err => {
-            console.error(err);
-            actionCols.forEach(col => col.classList.remove('col-actions-hide'));
         });
     }
 
-    // استيراد من صورة
     async function processImage() {
         const fileInput = document.getElementById('imageUpload');
-        if (!fileInput.files.length) { alert('اختر صورة أولاً.'); return; }
+        if (!fileInput.files.length) return alert('اختر صورة أولاً');
 
         document.getElementById('loading').style.display = 'block';
-
         try {
             const worker = await Tesseract.createWorker('ara', 1);
             const ret = await worker.recognize(fileInput.files[0]);
             await worker.terminate();
             
             const lines = ret.data.text.split('\n');
-            
             lines.forEach(line => {
                 let cleanLine = line.replace(/[^\u0600-\u06FF0-9\s]/g, '').trim();
                 if (!cleanLine) return;
-
                 const numbers = cleanLine.match(/\d+/g);
                 if (numbers) {
-                    let namePart = cleanLine.replace(/\d+/g, '').trim().replace(/\s+/g, ' ');
-                    if (namePart.length > 2) { 
-                        let numsArray = numbers.map(Number).sort((a, b) => a - b);
-                        let points = numsArray.length >= 2 ? numsArray[numsArray.length - 1] : numsArray[0];
-
-                        const existing = players.find(p => p.name === namePart);
-                        if (!existing) {
-                            players.push({ name: namePart, points: points });
+                    let name = cleanLine.replace(/\d+/g, '').trim().replace(/\s+/g, ' ');
+                    if (name.length > 2) { 
+                        let nums = numbers.map(Number).sort((a, b) => a - b);
+                        let points = nums.length >= 2 ? nums[nums.length - 1] : nums[0];
+                        const existingIndex = players.findIndex(p => p.name === name);
+                        if (existingIndex !== -1) {
+                            players[existingIndex].points += points; 
                         } else {
-                            existing.points += points; 
+                            players.push({ name: name, points: points });
                         }
                     }
                 }
             });
-
-            renderTable(); // الترتيب التلقائي
-            alert('تم استيراد البيانات وترتيبها تلقائياً.');
-
-        } catch (error) {
-            alert('حدث خطأ أثناء قراءة الصورة.');
+            renderTable();
+            alert('تم الاستيراد. راجع الأسماء واضغط حفظ.');
+        } catch (e) {
+            alert('خطأ في القراءة');
         } finally {
             document.getElementById('loading').style.display = 'none';
             fileInput.value = ''; 
         }
     }
 
-    document.addEventListener('DOMContentLoaded', renderTable);
+    // تشغيل الإعدادات عند فتح الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+        applyColors(savedColors); // تطبيق الألوان
+        renderTable(); // رسم الجدول
+    });
 </script>
 </body>
 </html>
