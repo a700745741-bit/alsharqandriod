@@ -19,6 +19,7 @@
             --red: #dc3545;
             --blue: #007bff;
             --purple: #6f42c1;
+            --orange: #fd7e14;
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -53,6 +54,7 @@
         .btn-red { background-color: var(--red); color: #fff; }
         .btn-blue { background-color: var(--blue); color: #fff; }
         .btn-purple { background-color: var(--purple); color: #fff; }
+        .btn-orange { background-color: var(--orange); color: #fff; }
         .btn:hover { opacity: 0.8; }
         
         .control-group {
@@ -76,7 +78,7 @@
         .flex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .flex-row > input { flex: 1; min-width: 80px; }
 
-        /* تصميم الجدول ليطابق الصورة المرفقة */
+        /* تصميم الجدول */
         .table-container { 
             overflow-x: auto; 
             margin-top: 15px; 
@@ -103,29 +105,30 @@
             border-bottom: 1px solid #233554; 
             font-weight: bold; 
             font-size: 15px;
+            vertical-align: middle;
         }
         
         /* أعمدة الجدول */
-        .col-name { text-align: right; padding-right: 15px; width: 60%; }
-        .col-points { text-align: center; width: 20%; font-size: 18px; color: #fff;}
-        .col-delete { text-align: center; width: 20%; }
+        .col-rank { text-align: center; width: 10%; color: var(--gold); font-size: 18px;}
+        .col-name { text-align: right; padding-right: 15px; width: 50%; }
+        .col-points { text-align: center; width: 15%; font-size: 18px; color: #fff;}
+        .col-actions { text-align: center; width: 25%; display: flex; justify-content: center; gap: 5px;}
         
-        /* زر الحذف الأحمر */
-        .delete-btn { 
-            background-color: #dc3545; 
-            color: white; 
+        /* أزرار الإجراءات */
+        .action-btn { 
             border: none; 
             border-radius: 8px; 
             width: 35px; 
             height: 35px; 
-            font-size: 20px; 
+            font-size: 18px; 
             cursor: pointer; 
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
+            color: white;
         }
-        .delete-btn:hover { background-color: #c82333; }
+        .edit-btn { background-color: var(--blue); }
+        .delete-btn { background-color: var(--red); }
         
         #loading { display: none; text-align: center; color: var(--gold); font-weight: bold; margin-top: 10px; }
 
@@ -137,7 +140,7 @@
             flex-wrap: wrap;
         }
         
-        .col-delete-hide { display: none !important; }
+        .col-actions-hide { display: none !important; }
     </style>
 </head>
 <body>
@@ -146,6 +149,7 @@
     <h1>صدى العندليب</h1>
     <h3>دوري تحدي التوقعات ⭐</h3>
 
+    <!-- القسم الجديد: فرز التوقعات الصحيحة -->
     <div class="control-group" style="border-color: var(--green); background: rgba(40, 167, 69, 0.1);">
         <h3 style="color: var(--green);">✅ فرز التوقعات الصحيحة</h3>
         <p style="font-size: 12px; text-align: center;">الصق أسماء الفائزين هنا (كل اسم في سطر مستقل)</p>
@@ -156,6 +160,7 @@
         </div>
     </div>
 
+    <!-- إضافة اسم واحد (يدوي) -->
     <div class="control-group">
         <h3>إضافة اسم واحد (يدوي)</h3>
         <div class="flex-row">
@@ -165,16 +170,15 @@
         </div>
     </div>
 
+    <!-- استيراد صورة -->
     <div class="control-group">
         <h3>📅 استيراد كشف من صورة</h3>
-        <p style="font-size: 12px; text-align: center; color: #ff9999;">
-            تنبيه: النظام يتجاهل رقم الترتيب تلقائياً ويأخذ النقاط فقط. راجع الأسماء بعد الاستيراد.
-        </p>
         <input type="file" id="imageUpload" accept="image/*">
         <button class="btn btn-blue" style="width: 100%; margin-top: 10px;" onclick="processImage()">استيراد وقراءة الكشف</button>
         <div id="loading">جاري قراءة الصورة... يرجى الانتظار ⏳</div>
     </div>
 
+    <!-- أزرار المشاركة والمسح -->
     <div class="control-group" style="text-align: center; border-color: var(--purple);">
         <h3 style="color: var(--purple);">مشاركة النتائج</h3>
         <div class="share-buttons">
@@ -182,18 +186,19 @@
             <button class="btn btn-blue" onclick="shareImage()">🖼️ حفظ الجدول كصورة</button>
             <button class="btn btn-red" onclick="clearAll()">🗑️ مسح الكل</button>
         </div>
-        <p style="font-size: 11px; color: #aaa; margin-top: 10px;">يتم الحفظ تلقائياً في هاتفك.</p>
     </div>
 
+    <!-- الجدول -->
     <div id="captureArea">
-        <h3 style="color: var(--gold);">راجع الأسماء والنقاط وصحح الأخطاء قبل الاعتماد.</h3>
+        <h3 style="color: var(--gold);">الترتيب التلقائي (من الأعلى للأقل نقاطاً)</h3>
         <div class="table-container">
             <table id="resultsTable">
                 <thead>
                     <tr>
+                        <th class="col-rank">#</th>
                         <th class="col-name">الاسم</th>
                         <th class="col-points">النقاط</th>
-                        <th class="col-delete">حذف</th>
+                        <th class="col-actions">إجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -206,14 +211,17 @@
 </div>
 
 <script>
+    // مصفوفة البيانات
     let players = JSON.parse(localStorage.getItem('sharqPlayers')) || [];
 
+    // دالة الحفظ التلقائي
     function autoSave() {
         localStorage.setItem('sharqPlayers', JSON.stringify(players));
     }
 
+    // دالة عرض الجدول مع الترتيب التلقائي
     function renderTable() {
-        // ترتيب اللاعبين تنازلياً حسب النقاط
+        // الترتيب التنازلي حسب النقاط
         players.sort((a, b) => b.points - a.points);
         
         const tbody = document.getElementById('tableBody');
@@ -222,9 +230,13 @@
         players.forEach((player, index) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
+                <td class="col-rank">${index + 1}</td>
                 <td class="col-name">${player.name}</td>
                 <td class="col-points">${player.points}</td>
-                <td class="col-delete"><button class="delete-btn" onclick="deletePlayer('${player.name}')">×</button></td>
+                <td class="col-actions">
+                    <button class="action-btn edit-btn" onclick="editPlayer('${player.name}')" title="تعديل">✏️</button>
+                    <button class="action-btn delete-btn" onclick="deletePlayer('${player.name}')" title="حذف">✖</button>
+                </td>
             `;
             tbody.appendChild(tr);
         });
@@ -233,6 +245,36 @@
         autoSave();
     }
 
+    // دالة تعديل الاسم والنقاط
+    function editPlayer(oldName) {
+        const player = players.find(p => p.name === oldName);
+        if (!player) return;
+
+        // نافذة إدخال للاسم الجديد
+        const newName = prompt('تعديل الاسم:', player.name);
+        if (newName === null) return; // إذا ضغط إلغاء
+
+        // نافذة إدخال للنقاط الجديدة
+        const newPointsStr = prompt('تعديل النقاط:', player.points);
+        if (newPointsStr === null) return; // إذا ضغط إلغاء
+
+        const newPoints = parseInt(newPointsStr);
+        if (isNaN(newPoints)) {
+            alert('الرجاء إدخال رقم صحيح للنقاط.');
+            return;
+        }
+
+        // تحديث البيانات
+        if (newName.trim() !== "") {
+            player.name = newName.trim();
+        }
+        player.points = newPoints;
+
+        // إعادة ترتيب وعرض الجدول
+        renderTable();
+    }
+
+    // دالة معالجة التوقعات الصحيحة (الجماعية)
     function processCorrectGuesses() {
         const text = document.getElementById('correctGuessNames').value;
         const points = parseInt(document.getElementById('pointsToAdd').value) || 0;
@@ -243,28 +285,27 @@
         }
 
         const names = text.split('\n').map(n => n.trim()).filter(n => n !== '');
-        
         let newAdded = 0;
         let updated = 0;
 
         names.forEach(name => {
             const existingPlayer = players.find(p => p.name === name);
-            
             if (existingPlayer) {
-                existingPlayer.points += points;
+                existingPlayer.points += points; // إضافة نقاط لاسم موجود
                 updated++;
             } else {
-                players.push({ name: name, points: points });
+                players.push({ name: name, points: points }); // إضافة اسم جديد
                 newAdded++;
             }
         });
 
         document.getElementById('correctGuessNames').value = '';
-        renderTable();
+        renderTable(); // الترتيب التلقائي يحدث هنا
         
-        alert(`تمت العملية بنجاح!\n✅ أسماء جديدة: ${newAdded}\n🔄 أسماء مكررة تم إضافة النقاط لها: ${updated}`);
+        alert(`تمت الإضافة والترتيب!\n✅ أسماء جديدة: ${newAdded}\n🔄 تم تحديث نقاط: ${updated}`);
     }
 
+    // إضافة اسم واحد يدوياً
     function addSingleName() {
         const nameInput = document.getElementById('singleName');
         const pointsInput = document.getElementById('singlePoints');
@@ -281,26 +322,29 @@
             }
             nameInput.value = '';
             pointsInput.value = '0';
-            renderTable();
+            renderTable(); // الترتيب التلقائي
         } else {
             alert('يرجى كتابة الاسم أولاً');
         }
     }
 
+    // حذف لاعب
     function deletePlayer(name) {
-        if(confirm('هل أنت متأكد من حذف هذا الاسم؟')) {
+        if(confirm(`هل أنت متأكد من حذف (${name})؟`)) {
             players = players.filter(p => p.name !== name);
-            renderTable();
+            renderTable(); // الترتيب التلقائي
         }
     }
 
+    // مسح الكل
     function clearAll() {
-        if(confirm('هل أنت متأكد من مسح جميع الأسماء؟ لا يمكن التراجع!')) {
+        if(confirm('هل أنت متأكد من مسح جميع الأسماء والبيانات؟')) {
             players = [];
             renderTable();
         }
     }
 
+    // مشاركة النص عبر الواتساب
     function shareText() {
         if(players.length === 0) { alert('لا توجد بيانات.'); return; }
         
@@ -308,88 +352,63 @@
         text += "صدى العندليب - معاً نحو القمة ⭐\n\n";
         
         players.forEach((player, index) => {
-            let medal = "";
-            if(index === 0) medal = "🥇 ";
-            else if(index === 1) medal = "🥈 ";
-            else if(index === 2) medal = "🥉 ";
-            else medal = `${index + 1}- `;
+            let medal = index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : `${index + 1}- `;
             text += `${medal}${player.name} : *${player.points}* نقطة\n`;
         });
         text += `\n👥 إجمالي المشاركين: ${players.length}`;
 
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-        window.open(whatsappUrl, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
     }
 
+    // حفظ الجدول كصورة
     function shareImage() {
         if(players.length === 0) { alert('لا توجد بيانات.'); return; }
 
         const captureArea = document.getElementById('captureArea');
-        const deleteCols = document.querySelectorAll('.col-delete');
-        deleteCols.forEach(col => col.classList.add('col-delete-hide'));
+        // إخفاء أزرار التعديل والحذف قبل التصوير
+        const actionCols = document.querySelectorAll('.col-actions');
+        actionCols.forEach(col => col.classList.add('col-actions-hide'));
 
         html2canvas(captureArea, {
             backgroundColor: "#0a192f",
             scale: 2
         }).then(canvas => {
-            deleteCols.forEach(col => col.classList.remove('col-delete-hide'));
-            const image = canvas.toDataURL("image/png");
+            actionCols.forEach(col => col.classList.remove('col-actions-hide'));
             const link = document.createElement('a');
             link.download = 'ترتيب_صدى_العندليب.png';
-            link.href = image;
+            link.href = canvas.toDataURL("image/png");
             link.click();
         }).catch(err => {
             console.error(err);
-            deleteCols.forEach(col => col.classList.remove('col-delete-hide'));
+            actionCols.forEach(col => col.classList.remove('col-actions-hide'));
         });
     }
 
-    // الخوارزمية الذكية المحدثة لقراءة الجداول
+    // استيراد من صورة
     async function processImage() {
         const fileInput = document.getElementById('imageUpload');
-        if (!fileInput.files.length) {
-            alert('يرجى اختيار صورة الكشف أولاً.');
-            return;
-        }
+        if (!fileInput.files.length) { alert('اختر صورة أولاً.'); return; }
 
-        const loadingDiv = document.getElementById('loading');
-        loadingDiv.style.display = 'block';
+        document.getElementById('loading').style.display = 'block';
 
         try {
-            const imageFile = fileInput.files[0];
             const worker = await Tesseract.createWorker('ara', 1);
-            const ret = await worker.recognize(imageFile);
+            const ret = await worker.recognize(fileInput.files[0]);
             await worker.terminate();
             
-            const rawText = ret.data.text;
-            const lines = rawText.split('\n');
+            const lines = ret.data.text.split('\n');
             
             lines.forEach(line => {
                 let cleanLine = line.replace(/[^\u0600-\u06FF0-9\s]/g, '').trim();
                 if (!cleanLine) return;
 
                 const numbers = cleanLine.match(/\d+/g);
-                
-                if (numbers && numbers.length > 0) {
-                    let namePart = cleanLine.replace(/\d+/g, '').trim();
-                    namePart = namePart.replace(/\s+/g, ' ');
-
+                if (numbers) {
+                    let namePart = cleanLine.replace(/\d+/g, '').trim().replace(/\s+/g, ' ');
                     if (namePart.length > 2) { 
-                        let points = 0;
-                        let numsArray = numbers.map(Number);
-                        
-                        // الخوارزمية الجديدة: 
-                        // إذا كان هناك رقمان في السطر (مثل 1 و 18)
-                        // نأخذ الرقم الأكبر كـ نقاط (لأن الترتيب دائماً رقم صغير 1, 2, 3)
-                        // وإذا كان هناك رقم واحد فقط (مثل 24)، نأخذه كـ نقاط مباشرة
-                        if (numsArray.length >= 2) {
-                            numsArray.sort((a, b) => a - b); // ترتيب تصاعدي
-                            points = numsArray[numsArray.length - 1]; // أخذ آخر رقم (الأكبر)
-                        } else {
-                            points = numsArray[0];
-                        }
+                        let numsArray = numbers.map(Number).sort((a, b) => a - b);
+                        let points = numsArray.length >= 2 ? numsArray[numsArray.length - 1] : numsArray[0];
 
-                        // إضافة اللاعب
                         const existing = players.find(p => p.name === namePart);
                         if (!existing) {
                             players.push({ name: namePart, points: points });
@@ -400,20 +419,18 @@
                 }
             });
 
-            renderTable();
-            alert('تم استيراد البيانات بنجاح. يرجى مراجعة الأسماء والتعديل يدوياً إذا لزم.');
+            renderTable(); // الترتيب التلقائي
+            alert('تم استيراد البيانات وترتيبها تلقائياً.');
 
         } catch (error) {
-            console.error(error);
             alert('حدث خطأ أثناء قراءة الصورة.');
         } finally {
-            loadingDiv.style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
             fileInput.value = ''; 
         }
     }
 
     document.addEventListener('DOMContentLoaded', renderTable);
-
 </script>
 </body>
 </html>
