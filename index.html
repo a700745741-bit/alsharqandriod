@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صدى العندليب - إدارة التوقعات</title>
+    <title>صدى العندليب - الترتيب النهائي</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
@@ -255,61 +255,111 @@
 </div>
 
 <script>
-    // --- البيانات المستخرجة من الصور ومرتبة تنازلياً ---
+    // --- 1. البيانات الصحيحة والمستخرجة بدقة من الصور (100 اسم) ---
     const initialData = [
-        { name: "صالح احمد الكسادي", points: 18 }, { name: "بدر علي اليزيدي", points: 18 },
-        { name: "مجاهد عبدالله البحسني", points: 15 }, { name: "احمد عمر بن عروة", points: 14 },
-        { name: "علي سالم رجوم", points: 13 }, { name: "سعيد عوض شحور", points: 12 },
-        { name: "احمد رضا السقاف", points: 12 }, { name: "محمد علي صرخه", points: 12 },
-        { name: "محمد حسين السويني", points: 11 }, { name: "منير كرامه حديجان", points: 11 },
-        { name: "احمد عبيد رجوم", points: 11 }, { name: "مطيع عوض النموري", points: 11 },
-        { name: "عبدالرحمن محمد باعباد", points: 10 }, { name: "حسين عمر بلخير", points: 10 },
-        { name: "محمد حسن باصم", points: 10 }, { name: "خالد عمر باحارث", points: 10 },
-        { name: "انور محمد عديد", points: 10 }, { name: "علي عبدالله الغرابي", points: 10 },
-        { name: "محمد احمد البحسني", points: 10 }, { name: "منيف علي اليزيدي", points: 10 },
-        { name: "محمد زكي حبيشان", points: 8 }, { name: "سالم مبارك الكلالي", points: 8 },
-        { name: "ابراهيم عماد بن عروة", points: 8 }, { name: "احمد علي العساني", points: 8 },
-        { name: "عبدالرب حسن السعدي", points: 8 }, { name: "وليد عوض بخوخ", points: 8 },
-        { name: "عبدالله عمر الكلالي", points: 8 }, { name: "محمد عبدالله الكلالي", points: 8 },
-        { name: "محمد عمر الكلالي", points: 8 }, { name: "عبدالله ماجد جباري", points: 8 },
-        { name: "عبدالله صالح الجابري", points: 8 }, { name: "سالم سعيد باعباد", points: 8 },
-        { name: "وائل صالح بازياد", points: 8 }, { name: "علي صبري السعدي", points: 8 },
-        { name: "عبدالله محمد الكلالي", points: 8 }, { name: "احمد كرامه باسيود", points: 7 },
-        { name: "فرج عبدالرحمن الكسادي", points: 7 }, { name: "محمد احمد باعباد", points: 6 },
-        { name: "عبدالقادر احمد بن عروة", points: 6 }, { name: "عمر محمد باوزير", points: 6 },
-        { name: "مدين عوض باصلفة", points: 6 }, { name: "علي فؤاد الكلالي", points: 6 },
-        { name: "علي عثمان باخوار", points: 6 }, { name: "سالم عوض علي بن عروة", points: 6 },
-        { name: "عبدالرحمن عمر الشيخاني", points: 6 }, { name: "محسن حسن البحسني", points: 6 },
-        { name: "ابراهيم عادل المقدي", points: 6 }, { name: "محمد صالح باصلفة", points: 6 },
-        { name: "عبدالله ياسر العماري", points: 6 }, { name: "همام صالح الغرابي", points: 6 },
-        { name: "عمار ياسر العماري", points: 6 }, { name: "محمد صالح بن اسحاق", points: 6 },
-        { name: "احمد عبدالله السقاف", points: 6 }, { name: "سامي حاج باضريس", points: 6 },
-        { name: "عبدالله سمير العمري", points: 6 }, { name: "عبدالله حسين شنظور", points: 6 },
-        { name: "عوض محمد العبد", points: 6 }, { name: "احمد علي باعوضان", points: 6 },
-        { name: "عمر فؤاد مفيتاح", points: 6 }, { name: "سالم محمد باوزير", points: 6 },
-        { name: "محمد سبيتي بامؤمن", points: 5 }, { name: "احمد عبدالله باصالح", points: 4 },
-        { name: "عبدالكريم جمعان بن ناصر", points: 4 }, { name: "ابراهيم علي باسعد", points: 4 },
-        { name: "معاذ حسن باسيود", points: 4 }, { name: "علام احمد عديد", points: 4 },
-        { name: "محمد علي باسعد", points: 4 }, { name: "سعيد سالم القرزي", points: 4 },
-        { name: "احمد محمد عليو", points: 4 }, { name: "عبدالله عوض بن غدران", points: 4 },
-        { name: "اسامه محفوظ بازياد", points: 4 }, { name: "عبدالرحمن طارق مثنى", points: 4 },
-        { name: "محمد نديم المضني", points: 4 }, { name: "يوسف عبدالله عديد", points: 4 },
-        { name: "هاني عبدالله عميران", points: 4 }, { name: "ياسر البرك النموري", points: 4 },
-        { name: "عمر محمد بقرف", points: 4 }, { name: "فايز احمد باوشخة", points: 4 },
-        { name: "احمد عوض الملفزي", points: 4 }, { name: "عبدالعزيز صالح واكد", points: 4 },
-        { name: "عمر علي اليزيدي", points: 4 }, { name: "عبدالله صالح عديد", points: 4 },
-        { name: "سعيد سالمين البحسني", points: 4 }, { name: "عبدالله خالد باهيري", points: 2 },
-        { name: "محمد عبدالله الجابري", points: 2 }, { name: "عبدالله عثمان باخوار", points: 2 },
-        { name: "سالم احمد حقص", points: 2 }, { name: "احمد عبدالله باسيود", points: 2 },
-        { name: "محمد عمر باعباد", points: 2 }, { name: "عبدالله عوض علي بن عروة", points: 2 },
-        { name: "معتز عبدالله كعيتي", points: 2 }, { name: "عمار سالم الصيعري", points: 2 },
-        { name: "علي سالم بارعيده", points: 2 }, { name: "عبدالسلام خالد بن منيف", points: 2 },
-        { name: "عوض سالم كعيتي", points: 2 }, { name: "محمد عبد الرحمن باهارون", points: 2 },
-        { name: "علي محمد الذييبي", points: 2 }, { name: "محمد سعيد باعامر", points: 2 },
-        { name: "عبدالرحمن سالم العليي", points: 2 }, { name: "احمد محمد الشاطري", points: 2 }
+        { name: "صالح احمد الكسادي", points: 18 },
+        { name: "بدر علي اليزيدي", points: 18 },
+        { name: "مجاهد عبدالله البحسني", points: 15 },
+        { name: "احمد عمر بن عروة", points: 14 },
+        { name: "علي سالم رجوم", points: 13 },
+        { name: "سعيد عوض شحور", points: 12 },
+        { name: "احمد رضا السقاف", points: 12 },
+        { name: "محمد علي صرخه", points: 12 },
+        { name: "محمد حسين السويني", points: 11 },
+        { name: "منير كرامه حديجان", points: 11 },
+        { name: "احمد عبيد رجوم", points: 11 },
+        { name: "مطيع عوض النموري", points: 11 },
+        { name: "عبدالرحمن محمد باعباد", points: 10 },
+        { name: "حسين عمر بلخير", points: 10 },
+        { name: "محمد حسن باصم", points: 10 },
+        { name: "خالد عمر باحارث", points: 10 },
+        { name: "انور محمد عديد", points: 10 },
+        { name: "علي عبدالله الغرابي", points: 10 },
+        { name: "محمد احمد البحسني", points: 10 },
+        { name: "منيف علي اليزيدي", points: 10 },
+        { name: "محمد زكي حبيشان", points: 8 },
+        { name: "سالم مبارك الكلالي", points: 8 },
+        { name: "ابراهيم عماد بن عروة", points: 8 },
+        { name: "احمد علي العساني", points: 8 },
+        { name: "عبدالرب حسن السعدي", points: 8 },
+        { name: "وليد عوض بخوخ", points: 8 },
+        { name: "عبدالله عمر الكلالي", points: 8 },
+        { name: "محمد عبدالله الكلالي", points: 8 },
+        { name: "محمد عمر الكلالي", points: 8 },
+        { name: "عبدالله ماجد جباري", points: 8 },
+        { name: "عبدالله صالح الجابري", points: 8 },
+        { name: "سالم سعيد باعباد", points: 8 },
+        { name: "وائل صالح بازياد", points: 8 },
+        { name: "علي صبري السعدي", points: 8 },
+        { name: "عبدالله محمد الكلالي", points: 8 },
+        { name: "احمد كرامه باسيود", points: 7 },
+        { name: "فرج عبدالرحمن الكسادي", points: 7 },
+        { name: "محمد احمد باعباد", points: 6 },
+        { name: "عبدالقادر احمد بن عروة", points: 6 },
+        { name: "عمر محمد باوزير", points: 6 },
+        { name: "مدين عوض باصلفة", points: 6 },
+        { name: "علي فؤاد الكلالي", points: 6 },
+        { name: "علي عثمان باخوار", points: 6 },
+        { name: "سالم عوض علي بن عروة", points: 6 },
+        { name: "عبدالرحمن عمر الشيخاني", points: 6 },
+        { name: "محسن حسن البحسني", points: 6 },
+        { name: "ابراهيم عادل المقدي", points: 6 },
+        { name: "محمد صالح باصلفة", points: 6 },
+        { name: "عبدالله ياسر العماري", points: 6 },
+        { name: "همام صالح الغرابي", points: 6 },
+        { name: "عمار ياسر العماري", points: 6 },
+        { name: "محمد صالح بن اسحاق", points: 6 },
+        { name: "احمد عبدالله السقاف", points: 6 },
+        { name: "سامي حاج باضريس", points: 6 },
+        { name: "عبدالله سمير العمري", points: 6 },
+        { name: "عبدالله حسين شنظور", points: 6 },
+        { name: "عوض محمد العبد", points: 6 },
+        { name: "احمد علي باعوضان", points: 6 },
+        { name: "عمر فؤاد مفيتاح", points: 6 },
+        { name: "سالم محمد باوزير", points: 6 },
+        { name: "محمد سبيتي بامؤمن", points: 5 },
+        { name: "احمد عبدالله باصالح", points: 4 },
+        { name: "عبدالكريم جمعان بن ناصر", points: 4 },
+        { name: "ابراهيم علي باسعد", points: 4 },
+        { name: "معاذ حسن باسيود", points: 4 },
+        { name: "علام احمد عديد", points: 4 },
+        { name: "محمد علي باسعد", points: 4 },
+        { name: "سعيد سالم القرزي", points: 4 },
+        { name: "احمد محمد عليو", points: 4 },
+        { name: "عبدالله عوض بن غدران", points: 4 },
+        { name: "اسامه محفوظ بازياد", points: 4 },
+        { name: "عبدالرحمن طارق مثنى", points: 4 },
+        { name: "محمد نديم المضني", points: 4 },
+        { name: "يوسف عبدالله عديد", points: 4 },
+        { name: "هاني عبدالله عميران", points: 4 },
+        { name: "ياسر البرك النموري", points: 4 },
+        { name: "عمر محمد بقرف", points: 4 },
+        { name: "فايز احمد باوشخة", points: 4 },
+        { name: "احمد عوض الملفزي", points: 4 },
+        { name: "عبدالعزيز صالح واكد", points: 4 },
+        { name: "عمر علي اليزيدي", points: 4 },
+        { name: "عبدالله صالح عديد", points: 4 },
+        { name: "سعيد سالمين البحسني", points: 4 },
+        { name: "عبدالله خالد باهيري", points: 2 },
+        { name: "محمد عبدالله الجابري", points: 2 },
+        { name: "عبدالله عثمان باخوار", points: 2 },
+        { name: "سالم احمد حقص", points: 2 },
+        { name: "احمد عبدالله باسيود", points: 2 },
+        { name: "محمد عمر باعباد", points: 2 },
+        { name: "عبدالله عوض علي بن عروة", points: 2 },
+        { name: "معتز عبدالله كعيتي", points: 2 },
+        { name: "عمار سالم الصيعري", points: 2 },
+        { name: "علي سالم بارعيده", points: 2 },
+        { name: "عبدالسلام خالد بن منيف", points: 2 },
+        { name: "عوض سالم كعيتي", points: 2 },
+        { name: "محمد عبد الرحمن باهارون", points: 2 },
+        { name: "علي محمد الذييبي", points: 2 },
+        { name: "محمد سعيد باعامر", points: 2 },
+        { name: "عبدالرحمن سالم العليي", points: 2 },
+        { name: "احمد محمد الشاطري", points: 2 }
     ];
 
-    // --- إعدادات الألوان ---
+    // --- 2. إعدادات الألوان ---
     const defaultColors = {
         'bg-page': '#0a192f', 'bg-table': '#112240', 'bg-row': '#0a192f',
         'bg-points': '#ffd700', 'text-main': '#ffffff', 'border-main': '#ffd700'
@@ -329,13 +379,13 @@
         applyColors();
     }
 
-    // --- إدارة البيانات ---
-    // نقوم بتحميل البيانات الجديدة مباشرة إذا لم يكن هناك بيانات محفوظة
-    let players = JSON.parse(localStorage.getItem('appPlayers'));
-    if (!players || players.length === 0) {
-        players = JSON.parse(JSON.stringify(initialData));
-        localStorage.setItem('appPlayers', JSON.stringify(players));
-    }
+    // --- 3. إدارة البيانات (تحديث جذري لمسح الكاش) ---
+    // هذا السطر يقوم بمسح أي بيانات قديمة (مثل الأرقام 39 و 34) محفوظة في هاتفك
+    localStorage.removeItem('appPlayers');
+    
+    // تحميل البيانات الجديدة النظيفة مباشرة
+    let players = JSON.parse(JSON.stringify(initialData));
+    localStorage.setItem('appPlayers', JSON.stringify(players));
 
     function saveData(showAlert = false) {
         localStorage.setItem('appPlayers', JSON.stringify(players));
@@ -343,6 +393,7 @@
     }
 
     function renderTable() {
+        // الترتيب التلقائي من الأعلى للأقل
         players.sort((a, b) => b.points - a.points);
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
@@ -391,7 +442,7 @@
         }
     }
 
-    // --- نظام الفرز والإضافة الذكي ---
+    // --- 4. نظام الفرز والإضافة الذكي ---
     function cleanName(name) {
         return name.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
     }
