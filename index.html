@@ -1,561 +1,632 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صدى العندليب - الترتيب النهائي</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    <style>
-        /* المتغيرات الافتراضية */
-        :root {
-            --bg-page: #0a192f;
-            --bg-table: #112240;
-            --bg-row: #0a192f;
-            --bg-points: #ffd700;
-            --text-main: #ffffff;
-            --border-main: #ffd700;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            margin: 0;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: var(--bg-table);
-            padding: 15px;
-            border-radius: 15px;
-            border: 2px solid var(--border-main);
-        }
-        h1, h2, h3 { text-align: center; color: var(--border-main); margin-top: 5px; }
-        
-        .box {
-            background: rgba(255,255,255,0.05);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-main);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صدى العندليب - للدوريات العالمية</title>
 
-        /* تنسيق الأزرار */
-        .btn {
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            color: #fff;
-            width: 100%;
-            margin-top: 5px;
-        }
-        .btn-green { background-color: #28a745; }
-        .btn-gold { background-color: #ffd700; color: #000; }
-        .btn-blue { background-color: #007bff; }
-        .btn-red { background-color: #dc3545; }
-        .btn-orange { background-color: #fd7e14; }
-        .btn-purple { background-color: #6f42c1; }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-        /* حقول الإدخال */
-        input[type="text"], input[type="number"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        .flex-row { display: flex; gap: 5px; }
-        .flex-row input { flex: 1; }
+<style>
+:root{
+    --main:#0755bd;
+    --dark:#062d65;
+    --points:#087b29;
+    --names:#071f58;
+    --rank:#e67e00;
+}
 
-        /* لوحة الألوان */
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-        .color-box {
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .color-box label { display: block; font-size: 12px; margin-bottom: 5px; }
-        .color-box input[type="color"] { width: 100%; height: 40px; border: none; cursor: pointer; }
+*{box-sizing:border-box}
 
-        /* تصميم الجدول */
-        .table-wrapper { overflow-x: auto; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            background: var(--bg-table);
-            border: 1px solid var(--border-main);
-        }
-        th { 
-            background-color: var(--bg-table); 
-            color: var(--border-main); 
-            padding: 10px; 
-            border-bottom: 2px solid var(--border-main); 
-            font-size: 16px;
-        }
-        td { 
-            padding: 5px; 
-            border-bottom: 1px solid var(--border-main); 
-            font-weight: bold; 
-            background-color: var(--bg-row);
-            color: var(--text-main);
-        }
-        
-        /* حقول التعديل المباشرة */
-        .edit-input {
-            width: 100%;
-            background: transparent;
-            border: 1px solid transparent;
-            color: inherit;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 15px;
-            text-align: center;
-            padding: 8px 2px;
-            margin: 0;
-            box-sizing: border-box;
-            outline: none;
-            border-radius: 5px;
-        }
-        .edit-input:focus {
-            border-color: var(--border-main);
-            background: rgba(255,255,255,0.1);
-        }
-        .name-input { text-align: right; font-size: 16px; }
-        .points-input {
-            background-color: var(--bg-points);
-            color: #000;
-            font-size: 18px;
-            text-align: center;
-            font-weight: 900;
-            border-radius: 8px;
-        }
+body{
+    margin:0;
+    padding:12px;
+    font-family:Tahoma,Arial,sans-serif;
+    background:#e9f0ff;
+    color:#09275a;
+}
 
-        /* تصميم قائمة الفرز */
-        .parsed-list {
-            max-height: 250px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid #444;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            display: none;
-        }
-        .parsed-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            border-bottom: 1px solid #333;
-        }
-        .parsed-item:last-child { border-bottom: none; }
-        .parsed-item input {
-            width: 80px;
-            padding: 5px;
-            text-align: center;
-            font-weight: bold;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        
-        /* زر الحذف */
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
+.container{
+    max-width:1100px;
+    margin:auto;
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 5px 25px #0002;
+}
+
+/* الرأس */
+
+.header{
+    background:linear-gradient(120deg,#001b4b,#0066dc,#001b4b);
+    color:white;
+    text-align:center;
+    padding:25px 10px;
+    border-bottom:5px solid #f5c400;
+}
+
+.header h1{
+    margin:0;
+    font-size:35px;
+    text-shadow:2px 3px 5px #000;
+}
+
+.header h2{
+    margin:12px 0 0;
+    color:#ffdf27;
+    font-size:23px;
+}
+
+.header .subtitle{
+    font-size:17px;
+    margin-top:10px;
+}
+
+/* العناوين */
+
+.section-title{
+    background:linear-gradient(90deg,#003c91,#0879e8);
+    color:white;
+    padding:13px;
+    text-align:center;
+    border-radius:10px;
+    font-size:21px;
+    margin:15px 0;
+}
+
+/* الصناديق */
+
+.panel{
+    background:#f1f6ff;
+    border:1px solid #b8cff5;
+    border-radius:12px;
+    padding:15px;
+    margin:12px;
+}
+
+input,textarea,button{
+    font-family:inherit;
+    font-size:16px;
+}
+
+input[type=text],
+input[type=number],
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #b5c8e8;
+    border-radius:8px;
+    margin:5px 0;
+    outline:none;
+}
+
+input:focus,textarea:focus{
+    border-color:#0879e8;
+}
+
+/* الأزرار */
+
+button{
+    border:0;
+    padding:11px 17px;
+    border-radius:8px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    margin:3px;
+}
+
+button:active{transform:scale(.97)}
+
+.green{background:#0baf43}
+.blue{background:#0872dc}
+.red{background:#e53935}
+.orange{background:#ed8500}
+.dark{background:#073879}
+.purple{background:#7139bd}
+
+/* نموذج الإضافة */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr auto;
+    gap:8px;
+    align-items:center;
+}
+
+/* اللصق الجماعي */
+
+.bulk-box{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:12px;
+    align-items:center;
+}
+
+.bulk-box textarea{
+    min-height:150px;
+    resize:vertical;
+    font-size:17px;
+    line-height:2;
+}
+
+.bulk-points{
+    text-align:center;
+}
+
+.bulk-points input{
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
+}
+
+.bulk-action{
+    width:100%;
+    font-size:20px;
+    margin-top:10px;
+}
+
+/* الألوان */
+
+.colors{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    justify-content:center;
+}
+
+.color-item{
+    background:white;
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:8px;
+    display:flex;
+    gap:8px;
+    align-items:center;
+}
+
+input[type=color]{
+    width:45px;
+    height:35px;
+    border:0;
+    cursor:pointer;
+}
+
+/* الجدول */
+
+.table-wrapper{
+    overflow-x:auto;
+    border-radius:10px;
+    border:1px solid #b6c9e8;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    min-width:600px;
+}
+
+th{
+    background:#07366e;
+    color:white;
+    padding:13px 7px;
+    font-size:17px;
+}
+
+td{
+    padding:10px 6px;
+    text-align:center;
+    border-bottom:1px solid #dce5f3;
+    font-size:17px;
+}
+
+tbody tr:nth-child(even){
+    background:#eef3fb;
+}
+
+.points-col{
+    color:var(--points);
+    font-weight:bold;
+    font-size:21px;
+}
+
+.name-col{
+    color:var(--names);
+    font-weight:bold;
+}
+
+.rank-col{
+    color:var(--rank);
+    font-weight:bold;
+    font-size:21px;
+}
+
+.first{
+    background:#fff1b9 !important;
+}
+
+.second{
+    background:#e6eaf1 !important;
+}
+
+.third{
+    background:#ffe0c0 !important;
+}
+
+.action-btn{
+    padding:6px 9px;
+    font-size:13px;
+}
+
+/* الإحصائيات */
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.stat-card{
+    background:#eaf3ff;
+    border:1px solid #c2d6f3;
+    border-radius:10px;
+    padding:15px;
+    text-align:center;
+}
+
+.stat-card strong{
+    display:block;
+    font-size:27px;
+    color:#08752b;
+    margin-top:7px;
+}
+
+.stats-table th{
+    background:#0871c9;
+}
+
+.stats-table td{
+    font-weight:bold;
+}
+
+/* المشاركة */
+
+.share-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+}
+
+.footer{
+    background:#052c67;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:18px;
+    margin-top:15px;
+}
+
+@media(max-width:650px){
+
+    body{padding:5px}
+
+    .header h1{font-size:27px}
+    .header h2{font-size:19px}
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .bulk-box{
+        grid-template-columns:1fr;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    td{font-size:15px}
+}
+
+/* إعداد الصورة */
+
+#captureArea{
+    background:white;
+    padding:10px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <h1>صدى العندليب</h1>
 
-    <!-- لوحة التحكم بالألوان -->
-    <div class="box" style="border-color: var(--btn-purple);">
-        <h3 style="color: var(--btn-purple);">🎨 تغيير الألوان</h3>
-        <div class="color-grid">
-            <div class="color-box"><label>خلفية الصفحة</label><input type="color" id="c-page" onchange="changeColor('bg-page', this.value)"></div>
-            <div class="color-box"><label>خلفية الجدول</label><input type="color" id="c-table" onchange="changeColor('bg-table', this.value)"></div>
-            <div class="color-box"><label>خلفية الصفوف</label><input type="color" id="c-row" onchange="changeColor('bg-row', this.value)"></div>
-            <div class="color-box"><label>مربع النقاط</label><input type="color" id="c-points" onchange="changeColor('bg-points', this.value)"></div>
-        </div>
-    </div>
+<div id="captureArea">
 
-    <!-- نظام الفرز والإضافة الذكي -->
-    <div class="box" style="border-color: var(--btn-orange);">
-        <h3 style="color: var(--btn-orange);">📋 إضافة توقعات صحيحة (لصق)</h3>
-        <textarea id="bulkNames" placeholder="الصق الأسماء هنا (مفصولة بفاصلة أو سطر)..."></textarea>
-        <button class="btn btn-orange" onclick="parseNames()">🔍 فرز الأسماء</button>
+<header class="header">
+    <h1>🏆 صدى العندليب</h1>
+    <h2>تحديات التوقعات والإحصائيات التلقائية</h2>
+    <div class="subtitle">⚽ للدوريات العالمية ⚽</div>
+</header>
 
-        <div id="parsedContainer" class="parsed-list">
-            <h4 style="margin-top: 0; text-align: center; color: var(--border-main);">الأسماء المكتشفة:</h4>
-            <div id="parsedItems"></div>
-            <div class="flex-row" style="margin-top: 10px;">
-                <input type="number" id="defaultPoints" placeholder="النقاط الافتراضية" value="3" style="flex: 1;">
-                <button class="btn btn-green" onclick="applyParsedNames()">✅ إضافة للجدول</button>
-            </div>
-        </div>
-    </div>
+<!-- إضافة لاعب -->
 
-    <!-- إضافة اسم واحد -->
-    <div class="box">
-        <h3>➕ إضافة اسم ونقاط (يدوي)</h3>
-        <div class="flex-row">
-            <input type="text" id="inputName" placeholder="اسم المشترك">
-            <input type="number" id="inputPoints" placeholder="النقاط" value="0">
-        </div>
-        <button class="btn btn-gold" onclick="addName()">إضافة مباشرة</button>
-    </div>
+<div class="panel">
 
-    <!-- أزرار التحكم الرئيسية -->
-    <div class="box" style="text-align: center;">
-        <button class="btn btn-green" style="margin-bottom: 5px;" onclick="saveData(true)">💾 حفظ التعديلات</button>
-        <button class="btn btn-blue" style="margin-bottom: 5px;" onclick="shareWhatsApp()">📱 مشاركة عبر واتساب</button>
-        <button class="btn btn-red" style="margin-bottom: 5px;" onclick="resetPoints()">🔄 تصفير جميع النقاط</button>
-        <button class="btn btn-red" onclick="clearAll()">🗑️ مسح جميع الأسماء</button>
-    </div>
+<div class="section-title">➕ إضافة مشارك جديد</div>
 
-    <!-- الجدول الرئيسي -->
-    <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 10%;">#</th>
-                    <th style="width: 40%;">الاسم</th>
-                    <th style="width: 25%;">النقاط</th>
-                    <th style="width: 25%;">حذف</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- سيتم تعبئة الجدول هنا -->
-            </tbody>
-        </table>
-    </div>
-    <h3 id="total" style="margin-top: 15px;">إجمالي المشاركين: 0</h3>
+<div class="form-grid">
+
+<input id="newName" type="text"
+placeholder="اسم المشارك">
+
+<input id="newPoints" type="number"
+placeholder="النقاط" min="0">
+
+<button class="green" onclick="addPlayer()">
+إضافة لاعب
+</button>
+
+</div>
+</div>
+
+<!-- اللصق الجماعي -->
+
+<div class="panel">
+
+<div class="section-title">
+🏆 إضافة الفائزين بالجملة
+</div>
+
+<div class="bulk-box">
+
+<div>
+<label><b>📋 الصق أسماء الفائزين هنا</b></label>
+
+<textarea id="bulkNames"
+placeholder="صالح أحمد الكسادي
+بدر علي اليزيدي
+مجاهد عبدالله البحسني
+
+يمكنك لصق الأسماء في أسطر أو فصلها بفواصل"></textarea>
+</div>
+
+<div class="bulk-points">
+
+<label><b>⭐ عدد النقاط لكل اسم</b></label>
+
+<input type="number" id="bulkPoints"
+value="3" min="0">
+
+<p>النقاط التي ستضاف لكل مشارك</p>
+
+<button class="green bulk-action"
+onclick="bulkAdd()">
+✨ فرز وإضافة
+</button>
+
+<button class="blue"
+onclick="document.getElementById('bulkNames').value=''">
+مسح الأسماء
+</button>
+
+</div>
+
+</div>
+
+<p style="color:#174b86;text-align:center">
+ملاحظة: الاسم المكرر يحصل على النقاط الإضافية فقط،
+ولا يتم إنشاء عضو جديد.
+</p>
+
+</div>
+
+<!-- الألوان -->
+
+<div class="panel">
+
+<div class="section-title">🎨 تخصيص ألوان الجدول</div>
+
+<div class="colors">
+
+<div class="color-item">
+لون النقاط
+<input type="color" id="pointsColor" value="#087b29">
+</div>
+
+<div class="color-item">
+لون الأسماء
+<input type="color" id="namesColor" value="#071f58">
+</div>
+
+<div class="color-item">
+لون الترتيب
+<input type="color" id="rankColor" value="#e67e00">
+</div>
+
+</div>
+
+</div>
+
+<!-- الجدول الرئيسي -->
+
+<div class="panel">
+
+<div class="section-title">
+🏆 الترتيب العام للمشاركين
+</div>
+
+<div style="text-align:center;margin-bottom:10px">
+عدد المشاركين:
+<b id="totalPlayers">0</b>
+</div>
+
+<div class="table-wrapper">
+
+<table id="leaderboard">
+
+<thead>
+<tr>
+<th>الترتيب</th>
+<th>الاسم</th>
+<th>النقاط</th>
+<th>تعديل</th>
+<th>حذف</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- الإحصائيات -->
+
+<div class="panel">
+
+<div class="section-title">
+📊 إحصائيات عدد الأعضاء حسب النقاط
+</div>
+
+<div class="stats-grid">
+
+<div class="stat-card">
+إجمالي المشاركين
+<strong id="totalStat">0</strong>
+</div>
+
+<div class="stat-card">
+أعلى رصيد نقاط
+<strong id="highestStat">0</strong>
+</div>
+
+</div>
+
+<br>
+
+<div class="table-wrapper">
+
+<table class="stats-table" id="statsTable">
+
+<thead>
+<tr>
+<th>عدد النقاط</th>
+<th>عدد الأعضاء</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- المشاركة -->
+
+<div class="panel">
+
+<div class="section-title">
+📤 تصدير ومشاركة الجدول
+</div>
+
+<div class="share-buttons">
+
+<button class="green" onclick="shareWhatsApp()">
+🟢 مشاركة عبر الواتساب
+</button>
+
+<button class="blue" onclick="downloadImage()">
+🖼️ تحميل صورة الجدول
+</button>
+
+<button class="dark" onclick="copyTable()">
+📋 نسخ الجدول
+</button>
+
+<button class="orange" onclick="resetColors()">
+🎨 إعادة الألوان الأصلية
+</button>
+
+</div>
+
+</div>
+
+<footer class="footer">
+🏆 صدى العندليب .. حيث يلتقي الشغف بالإبداع 🏆
+<br>
+للدوريات العالمية
+</footer>
+
 </div>
 
 <script>
-    // --- 1. البيانات الصحيحة والمستخرجة بدقة من الصور (100 اسم) ---
-    const initialData = [
-        { name: "صالح احمد الكسادي", points: 18 },
-        { name: "بدر علي اليزيدي", points: 18 },
-        { name: "مجاهد عبدالله البحسني", points: 15 },
-        { name: "احمد عمر بن عروة", points: 14 },
-        { name: "علي سالم رجوم", points: 13 },
-        { name: "سعيد عوض شحور", points: 12 },
-        { name: "احمد رضا السقاف", points: 12 },
-        { name: "محمد علي صرخه", points: 12 },
-        { name: "محمد حسين السويني", points: 11 },
-        { name: "منير كرامه حديجان", points: 11 },
-        { name: "احمد عبيد رجوم", points: 11 },
-        { name: "مطيع عوض النموري", points: 11 },
-        { name: "عبدالرحمن محمد باعباد", points: 10 },
-        { name: "حسين عمر بلخير", points: 10 },
-        { name: "محمد حسن باصم", points: 10 },
-        { name: "خالد عمر باحارث", points: 10 },
-        { name: "انور محمد عديد", points: 10 },
-        { name: "علي عبدالله الغرابي", points: 10 },
-        { name: "محمد احمد البحسني", points: 10 },
-        { name: "منيف علي اليزيدي", points: 10 },
-        { name: "محمد زكي حبيشان", points: 8 },
-        { name: "سالم مبارك الكلالي", points: 8 },
-        { name: "ابراهيم عماد بن عروة", points: 8 },
-        { name: "احمد علي العساني", points: 8 },
-        { name: "عبدالرب حسن السعدي", points: 8 },
-        { name: "وليد عوض بخوخ", points: 8 },
-        { name: "عبدالله عمر الكلالي", points: 8 },
-        { name: "محمد عبدالله الكلالي", points: 8 },
-        { name: "محمد عمر الكلالي", points: 8 },
-        { name: "عبدالله ماجد جباري", points: 8 },
-        { name: "عبدالله صالح الجابري", points: 8 },
-        { name: "سالم سعيد باعباد", points: 8 },
-        { name: "وائل صالح بازياد", points: 8 },
-        { name: "علي صبري السعدي", points: 8 },
-        { name: "عبدالله محمد الكلالي", points: 8 },
-        { name: "احمد كرامه باسيود", points: 7 },
-        { name: "فرج عبدالرحمن الكسادي", points: 7 },
-        { name: "محمد احمد باعباد", points: 6 },
-        { name: "عبدالقادر احمد بن عروة", points: 6 },
-        { name: "عمر محمد باوزير", points: 6 },
-        { name: "مدين عوض باصلفة", points: 6 },
-        { name: "علي فؤاد الكلالي", points: 6 },
-        { name: "علي عثمان باخوار", points: 6 },
-        { name: "سالم عوض علي بن عروة", points: 6 },
-        { name: "عبدالرحمن عمر الشيخاني", points: 6 },
-        { name: "محسن حسن البحسني", points: 6 },
-        { name: "ابراهيم عادل المقدي", points: 6 },
-        { name: "محمد صالح باصلفة", points: 6 },
-        { name: "عبدالله ياسر العماري", points: 6 },
-        { name: "همام صالح الغرابي", points: 6 },
-        { name: "عمار ياسر العماري", points: 6 },
-        { name: "محمد صالح بن اسحاق", points: 6 },
-        { name: "احمد عبدالله السقاف", points: 6 },
-        { name: "سامي حاج باضريس", points: 6 },
-        { name: "عبدالله سمير العمري", points: 6 },
-        { name: "عبدالله حسين شنظور", points: 6 },
-        { name: "عوض محمد العبد", points: 6 },
-        { name: "احمد علي باعوضان", points: 6 },
-        { name: "عمر فؤاد مفيتاح", points: 6 },
-        { name: "سالم محمد باوزير", points: 6 },
-        { name: "محمد سبيتي بامؤمن", points: 5 },
-        { name: "احمد عبدالله باصالح", points: 4 },
-        { name: "عبدالكريم جمعان بن ناصر", points: 4 },
-        { name: "ابراهيم علي باسعد", points: 4 },
-        { name: "معاذ حسن باسيود", points: 4 },
-        { name: "علام احمد عديد", points: 4 },
-        { name: "محمد علي باسعد", points: 4 },
-        { name: "سعيد سالم القرزي", points: 4 },
-        { name: "احمد محمد عليو", points: 4 },
-        { name: "عبدالله عوض بن غدران", points: 4 },
-        { name: "اسامه محفوظ بازياد", points: 4 },
-        { name: "عبدالرحمن طارق مثنى", points: 4 },
-        { name: "محمد نديم المضني", points: 4 },
-        { name: "يوسف عبدالله عديد", points: 4 },
-        { name: "هاني عبدالله عميران", points: 4 },
-        { name: "ياسر البرك النموري", points: 4 },
-        { name: "عمر محمد بقرف", points: 4 },
-        { name: "فايز احمد باوشخة", points: 4 },
-        { name: "احمد عوض الملفزي", points: 4 },
-        { name: "عبدالعزيز صالح واكد", points: 4 },
-        { name: "عمر علي اليزيدي", points: 4 },
-        { name: "عبدالله صالح عديد", points: 4 },
-        { name: "سعيد سالمين البحسني", points: 4 },
-        { name: "عبدالله خالد باهيري", points: 2 },
-        { name: "محمد عبدالله الجابري", points: 2 },
-        { name: "عبدالله عثمان باخوار", points: 2 },
-        { name: "سالم احمد حقص", points: 2 },
-        { name: "احمد عبدالله باسيود", points: 2 },
-        { name: "محمد عمر باعباد", points: 2 },
-        { name: "عبدالله عوض علي بن عروة", points: 2 },
-        { name: "معتز عبدالله كعيتي", points: 2 },
-        { name: "عمار سالم الصيعري", points: 2 },
-        { name: "علي سالم بارعيده", points: 2 },
-        { name: "عبدالسلام خالد بن منيف", points: 2 },
-        { name: "عوض سالم كعيتي", points: 2 },
-        { name: "محمد عبد الرحمن باهارون", points: 2 },
-        { name: "علي محمد الذييبي", points: 2 },
-        { name: "محمد سعيد باعامر", points: 2 },
-        { name: "عبدالرحمن سالم العليي", points: 2 },
-        { name: "احمد محمد الشاطري", points: 2 }
-    ];
 
-    // --- 2. إعدادات الألوان ---
-    const defaultColors = {
-        'bg-page': '#0a192f', 'bg-table': '#112240', 'bg-row': '#0a192f',
-        'bg-points': '#ffd700', 'text-main': '#ffffff', 'border-main': '#ffd700'
-    };
-    let currentColors = JSON.parse(localStorage.getItem('appColors')) || defaultColors;
+/* ===========================
+   البيانات الأصلية
+=========================== */
 
-    function applyColors() {
-        for (let key in currentColors) {
-            document.documentElement.style.setProperty(`--${key}`, currentColors[key]);
-            const input = document.getElementById('c-' + key.split('-')[1]); 
-            if(input) input.value = currentColors[key];
-        }
-    }
-    function changeColor(variableName, color) {
-        currentColors[variableName] = color;
-        localStorage.setItem('appColors', JSON.stringify(currentColors));
-        applyColors();
-    }
-
-    // --- 3. إدارة البيانات (تحديث جذري لمسح الكاش) ---
-    // هذا السطر يقوم بمسح أي بيانات قديمة (مثل الأرقام 39 و 34) محفوظة في هاتفك
-    localStorage.removeItem('appPlayers');
-    
-    // تحميل البيانات الجديدة النظيفة مباشرة
-    let players = JSON.parse(JSON.stringify(initialData));
-    localStorage.setItem('appPlayers', JSON.stringify(players));
-
-    function saveData(showAlert = false) {
-        localStorage.setItem('appPlayers', JSON.stringify(players));
-        if(showAlert) alert('✅ تم حفظ جميع التعديلات بنجاح!');
-    }
-
-    function renderTable() {
-        // الترتيب التلقائي من الأعلى للأقل
-        players.sort((a, b) => b.points - a.points);
-        const tbody = document.getElementById('tableBody');
-        tbody.innerHTML = '';
-        
-        players.forEach((player, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td style="font-size: 18px; color: var(--border-main);">${index + 1}</td>
-                <td>
-                    <input type="text" class="edit-input name-input" 
-                           value="${player.name}" 
-                           onchange="updatePlayer(${index}, 'name', this.value)">
-                </td>
-                <td>
-                    <input type="number" class="edit-input points-input" 
-                           value="${player.points}" 
-                           onchange="updatePlayer(${index}, 'points', this.value)">
-                </td>
-                <td>
-                    <button class="delete-btn" onclick="deletePlayer(${index})">✖</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-        document.getElementById('total').innerText = `إجمالي المشاركين: ${players.length}`;
-    }
-
-    function updatePlayer(index, field, newValue) {
-        if (field === 'name') {
-            if (newValue.trim() !== "") { players[index].name = newValue.trim(); } 
-            else { renderTable(); return; }
-        } else if (field === 'points') {
-            let points = parseInt(newValue);
-            if (isNaN(points)) points = 0; 
-            players[index].points = points;
-        }
-        saveData();
-        renderTable(); 
-    }
-
-    function deletePlayer(index) {
-        if(confirm(`هل أنت متأكد من حذف (${players[index].name})؟`)) {
-            players.splice(index, 1);
-            saveData();
-            renderTable();
-        }
-    }
-
-    // --- 4. نظام الفرز والإضافة الذكي ---
-    function cleanName(name) {
-        return name.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
-    }
-
-    function parseNames() {
-        const text = document.getElementById('bulkNames').value;
-        if (!text.trim()) return alert('يرجى لصق الأسماء أولاً');
-
-        const rawNames = text.split(/[،,\n]+/);
-        const parsedItemsContainer = document.getElementById('parsedItems');
-        parsedItemsContainer.innerHTML = '';
-        let validNamesCount = 0;
-
-        rawNames.forEach(rawName => {
-            let clean = cleanName(rawName);
-            if (clean.length > 2) { 
-                validNamesCount++;
-                const div = document.createElement('div');
-                div.className = 'parsed-item';
-                div.innerHTML = `
-                    <span>${clean}</span>
-                    <input type="number" class="item-points" data-name="${clean}" placeholder="النقاط">
-                `;
-                parsedItemsContainer.appendChild(div);
-            }
-        });
-
-        if (validNamesCount > 0) {
-            document.getElementById('parsedContainer').style.display = 'block';
-        } else {
-            alert('لم يتم التعرف على أي أسماء صالحة.');
-        }
-    }
-
-    function applyParsedNames() {
-        const defaultPointsInput = document.getElementById('defaultPoints').value;
-        const defaultPoints = parseInt(defaultPointsInput) || 0;
-        
-        const inputs = document.querySelectorAll('.item-points');
-        let added = 0, updated = 0;
-
-        inputs.forEach(input => {
-            const name = input.getAttribute('data-name');
-            let points = input.value.trim() !== "" ? parseInt(input.value) : defaultPoints;
-            if (isNaN(points)) points = 0;
-
-            const existing = players.find(p => p.name === name);
-            if (existing) {
-                existing.points += points; 
-                updated++;
-            } else {
-                players.push({ name: name, points: points }); 
-                added++;
-            }
-        });
-
-        document.getElementById('parsedContainer').style.display = 'none';
-        document.getElementById('bulkNames').value = '';
-        
-        saveData();
-        renderTable();
-        
-        alert(`✅ تم الاعتماد بنجاح!\nأسماء جديدة: ${added}\nأسماء مكررة تم تحديثها: ${updated}`);
-    }
-
-    function addName() {
-        const nameInput = document.getElementById('inputName');
-        const pointsInput = document.getElementById('inputPoints');
-        let name = nameInput.value.trim();
-        const points = parseInt(pointsInput.value) || 0;
-
-        if (!name) return alert('يرجى كتابة الاسم');
-        name = cleanName(name);
-
-        const existing = players.find(p => p.name === name);
-        if (existing) { existing.points += points; } 
-        else { players.push({ name: name, points: points }); }
-        
-        nameInput.value = '';
-        pointsInput.value = '0';
-        saveData();
-        renderTable();
-    }
-
-    function resetPoints() {
-        if(confirm('هل أنت متأكد من تصفير جميع النقاط؟ (ستبقى الأسماء في القائمة)')) {
-            players.forEach(p => p.points = 0);
-            saveData();
-            renderTable();
-        }
-    }
-
-    function clearAll() {
-        if(confirm('هل تريد مسح جميع الأسماء والبيانات نهائياً؟')) {
-            players = [];
-            saveData();
-            renderTable();
-        }
-    }
-
-    function shareWhatsApp() {
-        if(players.length === 0) return alert('لا توجد بيانات');
-        let text = "🏆 *ترتيب التوقعات* 🏆\n\n";
-        players.forEach((p, i) => {
-            text += `${i + 1}- ${p.name} : *${p.points}* نقطة\n`;
-        });
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        applyColors();
-        renderTable();
-    });
-</script>
-</body>
-</html>
+const initialData = [
+["صالح احمد الكسادي",18],
+["بدر علي اليزيدي",18],
+["مجاهد عبدالله البحسني",17],
+["احمد عمر بن عروة",16],
+["سعيد عوض شحور",14],
+["احمد رضا السقاف",14],
+["خالد عمر باحارت",14],
+["علي سالم رجوم",13],
+["محمد حسين السويني",13],
+["مطيع عوض النموري",13],
+["احمد عبيد رجوم",13],
+["محمد علي صرخه",12],
+["محمد حسن باصم",12],
+["عبدالرحمن محمد باعباد",12],
+["علي عبدالله القرابي",12],
+["حسين عمر بلخير",12],
+["محمد احمد البحسني",12],
+["محمد زكي حبيشان",12],
+["منير كرامه حديجان",11],
+["انور محمد عيديد",10],
+["منيف علي اليزيدي",10],
+["سامي حاج باضريس",10],
+["ياسر البرك النموري",10],
+["سالم سعيد باعباد",10],
+["سالم مبارك الكلالي",10],
+["وليد عوض بخوخ",10],
+["محمد عمر الكلالي",10],
+["عبدالله ماجد جباري",10],
+["محمد عبدالله الكلالي",10],
+["ابراهيم عماد بن عروة",10],
+["محمد صالح بن اسحاق",10],
+["عوض محمد العبد",10],
+["سالم محمد باوزير",10],
+["احمد علي العساني",8],
+["عبدالرب حسن السعدي",8],
+["عبدالله عمر الكلالي",8],
+["عبدالله صالح الجابري",8],
+["وائل صالح بازيد",8],
+["علي صبري السعدي",8],
+["عبدالله محمد الكلالي",8],
+["همام صالح القرابي",8],
+["عمار ياسر العماري",8],
+["ابراهيم عادل المقدي",8],
+["عمر فؤاد مفتياح",8],
+["علي عثمان باخوار",7],
+["احمد كرامه باسيود",7],
+["فرج عبدالرحمن الكسادي",7],
+["محمد احمد باعباد",6],
+["عبدالقادر احمد بن عروة",6],
+["عمر محمد باوزير",6],
+["مدين عوض باصلعة",6],
+["علي فؤاد الكلالي",6],
+["سالم عوض علي بن عروة",6],
+["عبدالرحمن عمر الشيخاني",6],
+["محسن حسن البح
