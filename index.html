@@ -36,7 +36,6 @@ body{
 }
 
 /* الرأس */
-
 .header{
     background:linear-gradient(120deg,#001b4b,#0066dc,#001b4b);
     color:white;
@@ -63,7 +62,6 @@ body{
 }
 
 /* العناوين */
-
 .section-title{
     background:linear-gradient(90deg,#003c91,#0879e8);
     color:white;
@@ -75,7 +73,6 @@ body{
 }
 
 /* الصناديق */
-
 .panel{
     background:#f1f6ff;
     border:1px solid #b8cff5;
@@ -105,7 +102,6 @@ input:focus,textarea:focus{
 }
 
 /* الأزرار */
-
 button{
     border:0;
     padding:11px 17px;
@@ -126,7 +122,6 @@ button:active{transform:scale(.97)}
 .purple{background:#7139bd}
 
 /* نموذج الإضافة */
-
 .form-grid{
     display:grid;
     grid-template-columns:2fr 1fr auto;
@@ -135,7 +130,6 @@ button:active{transform:scale(.97)}
 }
 
 /* اللصق الجماعي */
-
 .bulk-box{
     display:grid;
     grid-template-columns:2fr 1fr;
@@ -167,7 +161,6 @@ button:active{transform:scale(.97)}
 }
 
 /* الألوان */
-
 .colors{
     display:flex;
     flex-wrap:wrap;
@@ -193,7 +186,6 @@ input[type=color]{
 }
 
 /* الجدول */
-
 .table-wrapper{
     overflow-x:auto;
     border-radius:10px;
@@ -260,7 +252,6 @@ tbody tr:nth-child(even){
 }
 
 /* الإحصائيات */
-
 .stats-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -291,7 +282,6 @@ tbody tr:nth-child(even){
 }
 
 /* المشاركة */
-
 .share-buttons{
     display:flex;
     flex-wrap:wrap;
@@ -309,28 +299,14 @@ tbody tr:nth-child(even){
 }
 
 @media(max-width:650px){
-
     body{padding:5px}
-
     .header h1{font-size:27px}
     .header h2{font-size:19px}
-
-    .form-grid{
-        grid-template-columns:1fr;
-    }
-
-    .bulk-box{
-        grid-template-columns:1fr;
-    }
-
-    .stats-grid{
-        grid-template-columns:1fr;
-    }
-
+    .form-grid{grid-template-columns:1fr}
+    .bulk-box{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:1fr}
     td{font-size:15px}
 }
-
-/* إعداد الصورة */
 
 #captureArea{
     background:white;
@@ -342,7 +318,6 @@ tbody tr:nth-child(even){
 <body>
 
 <div class="container">
-
 <div id="captureArea">
 
 <header class="header">
@@ -352,121 +327,50 @@ tbody tr:nth-child(even){
 </header>
 
 <!-- إضافة لاعب -->
-
 <div class="panel">
-
 <div class="section-title">➕ إضافة مشارك جديد</div>
-
 <div class="form-grid">
-
-<input id="newName" type="text"
-placeholder="اسم المشارك">
-
-<input id="newPoints" type="number"
-placeholder="النقاط" min="0">
-
-<button class="green" onclick="addPlayer()">
-إضافة لاعب
-</button>
-
+<input id="newName" type="text" placeholder="اسم المشارك">
+<input id="newPoints" type="number" placeholder="النقاط" min="0">
+<button class="green" onclick="addPlayer()">إضافة لاعب</button>
 </div>
 </div>
 
 <!-- اللصق الجماعي -->
-
 <div class="panel">
-
-<div class="section-title">
-🏆 إضافة الفائزين بالجملة
-</div>
-
+<div class="section-title">🏆 إضافة الفائزين بالجملة</div>
 <div class="bulk-box">
-
 <div>
 <label><b>📋 الصق أسماء الفائزين هنا</b></label>
-
-<textarea id="bulkNames"
-placeholder="صالح أحمد الكسادي
-بدر علي اليزيدي
-مجاهد عبدالله البحسني
-
-يمكنك لصق الأسماء في أسطر أو فصلها بفواصل"></textarea>
+<textarea id="bulkNames" placeholder="صالح أحمد الكسادي&#10;بدر علي اليزيدي&#10;مجاهد عبدالله البحسني&#10;&#10;يمكنك لصق الأسماء في أسطر أو فصلها بفواصل"></textarea>
 </div>
-
 <div class="bulk-points">
-
 <label><b>⭐ عدد النقاط لكل اسم</b></label>
-
-<input type="number" id="bulkPoints"
-value="3" min="0">
-
+<input type="number" id="bulkPoints" value="3" min="0">
 <p>النقاط التي ستضاف لكل مشارك</p>
-
-<button class="green bulk-action"
-onclick="bulkAdd()">
-✨ فرز وإضافة
-</button>
-
-<button class="blue"
-onclick="document.getElementById('bulkNames').value=''">
-مسح الأسماء
-</button>
-
+<button class="green bulk-action" onclick="bulkAdd()">✨ فرز وإضافة</button>
+<button class="blue" onclick="document.getElementById('bulkNames').value=''">مسح الأسماء</button>
 </div>
-
 </div>
-
-<p style="color:#174b86;text-align:center">
-ملاحظة: الاسم المكرر يحصل على النقاط الإضافية فقط،
-ولا يتم إنشاء عضو جديد.
-</p>
-
+<p style="color:#174b86;text-align:center">ملاحظة: الاسم المكرر يحصل على النقاط الإضافية فقط، ولا يتم إنشاء عضو جديد.</p>
 </div>
 
 <!-- الألوان -->
-
 <div class="panel">
-
 <div class="section-title">🎨 تخصيص ألوان الجدول</div>
-
 <div class="colors">
-
-<div class="color-item">
-لون النقاط
-<input type="color" id="pointsColor" value="#087b29">
+<div class="color-item">لون النقاط <input type="color" id="pointsColor" value="#087b29"></div>
+<div class="color-item">لون الأسماء <input type="color" id="namesColor" value="#071f58"></div>
+<div class="color-item">لون الترتيب <input type="color" id="rankColor" value="#e67e00"></div>
 </div>
-
-<div class="color-item">
-لون الأسماء
-<input type="color" id="namesColor" value="#071f58">
-</div>
-
-<div class="color-item">
-لون الترتيب
-<input type="color" id="rankColor" value="#e67e00">
-</div>
-
-</div>
-
 </div>
 
 <!-- الجدول الرئيسي -->
-
 <div class="panel">
-
-<div class="section-title">
-🏆 الترتيب العام للمشاركين
-</div>
-
-<div style="text-align:center;margin-bottom:10px">
-عدد المشاركين:
-<b id="totalPlayers">0</b>
-</div>
-
+<div class="section-title">🏆 الترتيب العام للمشاركين</div>
+<div style="text-align:center;margin-bottom:10px">عدد المشاركين: <b id="totalPlayers">0</b></div>
 <div class="table-wrapper">
-
 <table id="leaderboard">
-
 <thead>
 <tr>
 <th>الترتيب</th>
@@ -476,104 +380,55 @@ onclick="document.getElementById('bulkNames').value=''">
 <th>حذف</th>
 </tr>
 </thead>
-
 <tbody></tbody>
-
 </table>
-
 </div>
-
 </div>
 
 <!-- الإحصائيات -->
-
 <div class="panel">
-
-<div class="section-title">
-📊 إحصائيات عدد الأعضاء حسب النقاط
-</div>
-
+<div class="section-title">📊 إحصائيات عدد الأعضاء حسب النقاط</div>
 <div class="stats-grid">
-
-<div class="stat-card">
-إجمالي المشاركين
-<strong id="totalStat">0</strong>
+<div class="stat-card">إجمالي المشاركين <strong id="totalStat">0</strong></div>
+<div class="stat-card">أعلى رصيد نقاط <strong id="highestStat">0</strong></div>
 </div>
-
-<div class="stat-card">
-أعلى رصيد نقاط
-<strong id="highestStat">0</strong>
-</div>
-
-</div>
-
 <br>
-
 <div class="table-wrapper">
-
 <table class="stats-table" id="statsTable">
-
 <thead>
 <tr>
 <th>عدد النقاط</th>
 <th>عدد الأعضاء</th>
 </tr>
 </thead>
-
 <tbody></tbody>
-
 </table>
-
 </div>
-
 </div>
 
 </div>
 
 <!-- المشاركة -->
-
 <div class="panel">
-
-<div class="section-title">
-📤 تصدير ومشاركة الجدول
-</div>
-
+<div class="section-title">📤 تصدير ومشاركة الجدول</div>
 <div class="share-buttons">
-
-<button class="green" onclick="shareWhatsApp()">
-🟢 مشاركة عبر الواتساب
-</button>
-
-<button class="blue" onclick="downloadImage()">
-🖼️ تحميل صورة الجدول
-</button>
-
-<button class="dark" onclick="copyTable()">
-📋 نسخ الجدول
-</button>
-
-<button class="orange" onclick="resetColors()">
-🎨 إعادة الألوان الأصلية
-</button>
-
+<button class="green" onclick="shareWhatsApp()">🟢 مشاركة عبر الواتساب</button>
+<button class="blue" onclick="downloadImage()">🖼️ تحميل صورة الجدول</button>
+<button class="dark" onclick="copyTable()">📋 نسخ الجدول</button>
+<button class="orange" onclick="resetColors()">🎨 إعادة الألوان الأصلية</button>
 </div>
-
 </div>
 
 <footer class="footer">
-🏆 صدى العندليب .. حيث يلتقي الشغف بالإبداع 🏆
-<br>
-للدوريات العالمية
+🏆 صدى العندليب .. حيث يلتقي الشغف بالإبداع 🏆<br>للدوريات العالمية
 </footer>
 
 </div>
 
 <script>
-
 /* ===========================
-   البيانات الأصلية
+   البيانات الأصلية (مصححة بالكامل 100 اسم من الصور)
 =========================== */
-
 const initialData = [
 ["صالح احمد الكسادي",18],
 ["بدر علي اليزيدي",18],
@@ -629,4 +484,404 @@ const initialData = [
 ["علي فؤاد الكلالي",6],
 ["سالم عوض علي بن عروة",6],
 ["عبدالرحمن عمر الشيخاني",6],
-["محسن حسن البح
+["محسن حسن البحسني",6],
+["محمد صالح باصلعة",6],
+["عبدالله ياسر العماري",6],
+["احمد عبدالله السقاف",6],
+["عبدالله سمير العمري",6],
+["عبدالله حسين شنظور",6],
+["احمد علي باعوضان",6],
+["عبدالكريم جمعان بن ناصر",6],
+["عبدالله عثمان باخوار",6],
+["هاني عبدالله عميران",6],
+["عبدالرحمن طارق مثنى",6],
+["يوسف عبدالله عيديد",5],
+["محمد سبيتي بأمؤمن",5],
+["احمد عبدالله باصالح",4],
+["ابراهيم علي باسعد",4],
+["معاذ حسن باسيود",4],
+["علاء احمد عيديد",4],
+["محمد علي باسعد",4],
+["سعيد سالم القرزي",4],
+["احمد محمد عليو",4],
+["عبدالله عوض بن غدران",4],
+["اسامه محفوظ بازياد",4],
+["محمد نديم المضي",4],
+["عمر محمد بقرف",4],
+["فايز احمد باوشخة",4],
+["احمد عوض الملغزي",4],
+["عبدالعزيز صالح واكد",4],
+["عمر علي اليزيدي",4],
+["عبدالله صالح عيديد",4],
+["سعيد سالمين البحسني",4],
+["محمد عبد الرحمن باهارون",4],
+["عبدالرحمن سالم العليي",4],
+["احمد محمد الشاطري",4],
+["عبدالله خالد باهيري",2],
+["محمد عبدالله الجابري",2],
+["سالم احمد حقص",2],
+["احمد عبدالله باسيود",2],
+["محمد عمر باعباد",2],
+["عبدالله عوض علي بن عروة",2],
+["معتز عبدالله كعيتي",2],
+["عمار سالم الصيعري",2],
+["علي سالم بارعيده",2],
+["عبدالسلام خالد بن منيف",2],
+["عوض سالم كعيتي",2],
+["علي محمد الذييبي",2],
+["محمد سعيد باعامر",2]
+];
+
+/* ===========================
+   تحميل البيانات وحفظها
+=========================== */
+let playersData = [];
+
+try {
+    const saved = localStorage.getItem("sadaPlayersV2");
+    playersData = saved ? JSON.parse(saved) : initialData.map(p=>({name:p[0],points:p[1]}));
+} catch(e) {
+    playersData = initialData.map(p=>({name:p[0],points:p[1]}));
+}
+
+function saveData(){
+    localStorage.setItem("sadaPlayersV2", JSON.stringify(playersData));
+}
+
+/* ===========================
+   توحيد الأسماء
+=========================== */
+function normalizeName(name){
+    return name.trim()
+        .replace(/[\u064B-\u065F\u0670]/g,"")
+        .replace(/[أإآ]/g,"ا")
+        .replace(/ى/g,"ي")
+        .replace(/ـ/g,"")
+        .replace(/\s+/g," ")
+        .toLowerCase();
+}
+
+/* ===========================
+   ترتيب البيانات
+=========================== */
+function getSorted(){
+    return [...playersData].sort((a,b)=>{
+        if(b.points !== a.points){
+            return b.points-a.points;
+        }
+        return a.name.localeCompare(b.name,"ar");
+    });
+}
+
+/* ===========================
+   تحديث الجداول
+=========================== */
+function renderTables(){
+    const body = document.querySelector("#leaderboard tbody");
+    body.innerHTML = "";
+    const sorted = getSorted();
+
+    sorted.forEach((player,index)=>{
+        const originalIndex = playersData.indexOf(player);
+        const row = document.createElement("tr");
+
+        if(index===0) row.classList.add("first");
+        if(index===1) row.classList.add("second");
+        if(index===2) row.classList.add("third");
+
+        const rank = document.createElement("td");
+        rank.className = "rank-col";
+        rank.textContent = index+1;
+
+        const name = document.createElement("td");
+        name.className = "name-col";
+        name.textContent = player.name;
+
+        const points = document.createElement("td");
+        points.className = "points-col";
+        points.textContent = player.points;
+
+        const edit = document.createElement("td");
+        const editBtn = document.createElement("button");
+        editBtn.className = "blue action-btn";
+        editBtn.textContent = "✏️ تعديل";
+        editBtn.onclick = ()=>editPlayer(originalIndex);
+        edit.appendChild(editBtn);
+
+        const del = document.createElement("td");
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "red action-btn";
+        deleteBtn.textContent = "🗑 حذف";
+        deleteBtn.onclick = ()=>deletePlayer(originalIndex);
+        del.appendChild(deleteBtn);
+
+        row.append(rank,name,points,edit,del);
+        body.appendChild(row);
+    });
+
+    document.getElementById("totalPlayers").textContent = playersData.length;
+    document.getElementById("totalStat").textContent = playersData.length;
+
+    const highest = playersData.length ? Math.max(...playersData.map(p=>p.points)) : 0;
+    document.getElementById("highestStat").textContent = highest;
+
+    renderStats();
+    saveData();
+}
+
+/* ===========================
+   الإحصائيات
+=========================== */
+function renderStats(){
+    const body = document.querySelector("#statsTable tbody");
+    body.innerHTML = "";
+    const counts = {};
+
+    playersData.forEach(player=>{
+        counts[player.points] = (counts[player.points]||0)+1;
+    });
+
+    Object.keys(counts).sort((a,b)=>Number(b)-Number(a)).forEach(points=>{
+        const row = document.createElement("tr");
+        const td1 = document.createElement("td");
+        td1.textContent = points;
+        const td2 = document.createElement("td");
+        td2.textContent = counts[points];
+        row.append(td1,td2);
+        body.appendChild(row);
+    });
+}
+
+/* ===========================
+   إضافة لاعب
+=========================== */
+function addPlayer(){
+    const nameInput = document.getElementById("newName");
+    const pointsInput = document.getElementById("newPoints");
+    const name = nameInput.value.trim();
+    const points = Number(pointsInput.value);
+
+    if(!name || pointsInput.value==="" || !Number.isInteger(points) || points<0){
+        alert("أدخل الاسم والنقاط بشكل صحيح");
+        return;
+    }
+
+    const existing = playersData.find(p=>normalizeName(p.name)===normalizeName(name));
+
+    if(existing){
+        existing.points += points;
+        alert("الاسم موجود مسبقاً، تمت إضافة النقاط إلى رصيده");
+    }else{
+        playersData.push({name,points});
+    }
+
+    nameInput.value="";
+    pointsInput.value="";
+    renderTables();
+}
+
+/* ===========================
+   إضافة مجموعة أسماء
+=========================== */
+function bulkAdd(){
+    const text = document.getElementById("bulkNames").value;
+    const pointsInput = document.getElementById("bulkPoints");
+    const points = Number(pointsInput.value);
+
+    if(!text.trim()){
+        alert("الرجاء لصق أسماء الفائزين أولاً");
+        return;
+    }
+
+    if(pointsInput.value==="" || !Number.isInteger(points) || points<0){
+        alert("أدخل عدد النقاط بشكل صحيح");
+        return;
+    }
+
+    const names = text.split(/[\n\r،,;؛]+/).map(n=>n.trim()).filter(n=>n.length>0);
+
+    if(names.length===0){
+        alert("لم يتم العثور على أسماء");
+        return;
+    }
+
+    let added=0;
+    let updated=0;
+
+    names.forEach(name=>{
+        const existing = playersData.find(p=>normalizeName(p.name)===normalizeName(name));
+        if(existing){
+            existing.points += points;
+            updated++;
+        }else{
+            playersData.push({name:name, points:points});
+            added++;
+        }
+    });
+
+    renderTables();
+    document.getElementById("bulkNames").value="";
+
+    alert("تم الفرز والإضافة بنجاح!\n\n"+
+        "أسماء جديدة: "+added+"\n"+
+        "أسماء موجودة أضيفت نقاطها: "+updated+"\n"+
+        "النقاط المضافة لكل ظهور: "+points
+    );
+}
+
+/* ===========================
+   تعديل لاعب
+=========================== */
+function editPlayer(index){
+    const player = playersData[index];
+    const newName = prompt("تعديل اسم المشارك:", player.name);
+
+    if(newName===null) return;
+    if(!newName.trim()){
+        alert("الاسم لا يمكن أن يكون فارغاً");
+        return;
+    }
+
+    const newPoints = prompt("تعديل مجموع النقاط:", player.points);
+    if(newPoints===null) return;
+
+    const points = Number(newPoints);
+    if(newPoints.trim()==="" || !Number.isInteger(points) || points<0){
+        alert("النقاط غير صحيحة");
+        return;
+    }
+
+    const duplicate = playersData.find((p,i)=> i!==index && normalizeName(p.name)===normalizeName(newName));
+
+    if(duplicate){
+        if(!confirm("الاسم موجود مسبقاً. هل تريد دمج النقاط معه؟")){
+            return;
+        }
+        duplicate.points += points;
+        playersData.splice(index,1);
+    }else{
+        player.name = newName.trim();
+        player.points = points;
+    }
+
+    renderTables();
+}
+
+/* ===========================
+   حذف لاعب
+=========================== */
+function deletePlayer(index){
+    if(confirm("هل أنت متأكد من حذف هذا المشارك؟")){
+        playersData.splice(index,1);
+        renderTables();
+    }
+}
+
+/* ===========================
+   تغيير الألوان
+=========================== */
+function applyColors(){
+    document.documentElement.style.setProperty("--points", document.getElementById("pointsColor").value);
+    document.documentElement.style.setProperty("--names", document.getElementById("namesColor").value);
+    document.documentElement.style.setProperty("--rank", document.getElementById("rankColor").value);
+}
+
+["pointsColor","namesColor","rankColor"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", applyColors);
+});
+
+function resetColors(){
+    document.getElementById("pointsColor").value="#087b29";
+    document.getElementById("namesColor").value="#071f58";
+    document.getElementById("rankColor").value="#e67e00";
+    applyColors();
+}
+
+/* ===========================
+   تجهيز نص الجدول
+=========================== */
+function tableText(){
+    let text = "🏆 صدى العندليب - للدوريات العالمية\nالترتيب العام\n\n";
+    getSorted().forEach((p,i)=>{
+        text += (i+1)+"- "+p.name+" | "+p.points+" نقطة\n";
+    });
+    return text;
+}
+
+/* ===========================
+   نسخ الجدول
+=========================== */
+async function copyTable(){
+    try{
+        await navigator.clipboard.writeText(tableText());
+        alert("تم نسخ الجدول بنجاح");
+    }catch(e){
+        const area=document.createElement("textarea");
+        area.value=tableText();
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+        alert("تم نسخ الجدول");
+    }
+}
+
+/* ===========================
+   تحميل صورة الجدول
+=========================== */
+async function downloadImage(){
+    const area=document.getElementById("captureArea");
+    try{
+        const canvas=await html2canvas(area,{
+            scale:2,
+            backgroundColor:"#ffffff",
+            useCORS:true
+        });
+        const link=document.createElement("a");
+        link.download="صدى-العندليب.png";
+        link.href=canvas.toDataURL("image/png");
+        link.click();
+    }catch(e){
+        alert("تعذر إنشاء الصورة. حاول مرة أخرى.");
+    }
+}
+
+/* ===========================
+   مشاركة الواتساب
+=========================== */
+async function shareWhatsApp(){
+    const area=document.getElementById("captureArea");
+    try{
+        const canvas=await html2canvas(area,{
+            scale:2,
+            backgroundColor:"#ffffff"
+        });
+        const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+        const file=new File([blob], "صدى-العندليب.png", {type:"image/png"});
+
+        if(navigator.canShare && navigator.canShare({files:[file]})){
+            await navigator.share({
+                title:"صدى العندليب",
+                text:"🏆 الترتيب العام لتحديات التوقعات",
+                files:[file]
+            });
+        }else{
+            const link=document.createElement("a");
+            link.href=canvas.toDataURL("image/png");
+            link.download="صدى-العندليب.png";
+            link.click();
+            alert("تم تحميل الصورة. يمكنك إرسالها الآن عبر الواتساب.");
+        }
+    }catch(e){
+        if(e.name!=="AbortError"){
+            alert("تعذرت المشاركة. جرب تحميل الصورة أولاً.");
+        }
+    }
+}
+
+/* تشغيل البرنامج */
+renderTables();
+</script>
+
+</body>
+</html>
