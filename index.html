@@ -2,926 +2,1189 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>صدى العندليب - للدوريات العالمية</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><style>
+<title>صدى العندليب - للدوريات العالمية</title><script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script><style>
 :root{
- --blue:#0755bd;
- --dark:#00245c;
- --light:#eaf3ff;
- --points:#087b29;
- --names:#071f58;
- --rank:#e67e00;
- --gold:#ffc928;
+    --main:#0755bd;
+    --dark:#062d65;
+    --points:#087b29;
+    --names:#071f58;
+    --rank:#e67e00;
+    --row1:#ffffff;
+    --row2:#eaf1fc;
+    --head:#07366e;
 }
+
 *{box-sizing:border-box}
+
 body{
- margin:0;
- padding:8px;
- font-family:Tahoma,Arial,sans-serif;
- background:linear-gradient(135deg,#dceaff,#f4f8ff);
- color:#09275a;
+    margin:0;
+    padding:10px;
+    font-family:Tahoma,Arial,sans-serif;
+    background:#e9f0ff;
+    color:#09275a;
 }
+
 .container{
- max-width:1250px;
- margin:auto;
- background:#fff;
- border:3px solid #9bc6ff;
- border-radius:18px;
- overflow:hidden;
- box-shadow:0 5px 25px #002b7025;
+    max-width:1050px;
+    margin:auto;
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 5px 25px #0002;
 }
+
 .header{
- position:relative;
- padding:20px 15px;
- color:white;
- text-align:center;
- background:
- radial-gradient(circle at 15% 20%,#55baff 0,transparent 25%),
- radial-gradient(circle at 85% 10%,#3ba5ff 0,transparent 25%),
- linear-gradient(120deg,#001747,#0064d7,#001747);
- border-bottom:6px solid var(--gold);
+    background:linear-gradient(120deg,#001b4b,#0066dc,#001b4b);
+    color:white;
+    text-align:center;
+    padding:25px 10px;
+    border-bottom:5px solid #f5c400;
 }
-.header:before{
- content:"";
- position:absolute;
- inset:0;
- opacity:.12;
- background:repeating-linear-gradient(120deg,transparent 0 25px,#fff 26px 28px);
- pointer-events:none;
-}
-.header-content{position:relative;z-index:1}
-.logo{
- width:145px;
- height:145px;
- margin:0 auto 8px;
- border:5px solid #fff;
- outline:3px solid #f5c400;
- border-radius:45% 45% 48% 48%;
- background:linear-gradient(145deg,#fff,#d9eaff);
- color:#062d65;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- box-shadow:0 4px 15px #0007;
-}
-.logo .ball{font-size:55px;line-height:1.1}
-.logo strong{font-size:17px}
-.logo small{
- background:#064a9f;
- color:white;
- padding:5px 9px;
- border-radius:20px;
- margin-top:5px;
- font-weight:bold;
- font-size:12px;
-}
+
 .header h1{
- margin:5px 0;
- font-size:clamp(30px,5vw,54px);
- text-shadow:2px 4px 5px #00143f;
+    margin:0;
+    font-size:35px;
+    text-shadow:2px 3px 5px #000;
 }
+
 .header h2{
- display:inline-block;
- background:#052b73;
- border:2px solid white;
- color:#ffe12b;
- padding:9px 22px;
- border-radius:30px;
- font-size:clamp(17px,3vw,27px);
- margin:8px 0;
+    margin:12px 0 0;
+    color:#ffdf27;
+    font-size:22px;
 }
-.header .motto{font-size:18px;margin-top:5px}
 
-/* العناوين */
+.subtitle{
+    font-size:17px;
+    margin-top:10px;
+}
+
 .section-title{
- background:linear-gradient(90deg,#002e7a,#0878ed,#002e7a);
- color:white;
- text-align:center;
- padding:11px;
- border-radius:12px;
- font-size:21px;
- font-weight:bold;
- margin-bottom:12px;
- box-shadow:0 3px 7px #001d6030;
+    background:linear-gradient(90deg,#003c91,#0879e8);
+    color:white;
+    padding:13px;
+    text-align:center;
+    border-radius:10px;
+    font-size:20px;
+    margin:12px 0;
 }
-.panel{
- background:#f8fbff;
- border:2px solid #b6d3fa;
- border-radius:14px;
- padding:12px;
- margin:10px;
- box-shadow:0 2px 7px #003d8710;
-}
-input,textarea,button{font-family:inherit}
-input[type=text],input[type=number],textarea{
- width:100%;
- padding:12px;
- border:2px solid #b9d1f1;
- border-radius:10px;
- font-size:16px;
- outline:none;
-}
-input:focus,textarea:focus{border-color:#0879e8}
-button{
- border:0;
- padding:10px 15px;
- border-radius:9px;
- color:white;
- font-size:15px;
- font-weight:bold;
- cursor:pointer;
- margin:3px;
- box-shadow:0 2px 4px #0002;
-}
-button:active{transform:scale(.97)}
-button:disabled{opacity:.6;cursor:wait}
-.green{background:linear-gradient(#20c94c,#008b2c)}
-.blue{background:linear-gradient(#168dff,#0056c9)}
-.red{background:linear-gradient(#ff5b54,#c90000)}
-.orange{background:linear-gradient(#ffad21,#e66b00)}
-.dark{background:linear-gradient(#164d9d,#00265e)}
-.purple{background:linear-gradient(#a34bdf,#6522a4)}
 
-/* لوحة الإضافة */
-.top-tools{
- display:grid;
- grid-template-columns:2fr 1fr;
- gap:10px;
+.panel{
+    background:#f1f6ff;
+    border:1px solid #b8cff5;
+    border-radius:12px;
+    padding:14px;
+    margin:12px;
 }
+
+input,textarea,button{
+    font-family:inherit;
+    font-size:16px;
+}
+
+input[type=text],
+input[type=number],
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #b5c8e8;
+    border-radius:8px;
+    margin:5px 0;
+    outline:none;
+}
+
+input:focus,textarea:focus{
+    border-color:#0879e8;
+}
+
+button{
+    border:0;
+    padding:11px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+    margin:3px;
+}
+
+button:active{transform:scale(.97)}
+
+.green{background:#0baf43}
+.blue{background:#0872dc}
+.red{background:#e53935}
+.orange{background:#ed8500}
+.dark{background:#073879}
+.purple{background:#7139bd}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr auto;
+    gap:8px;
+    align-items:center;
+}
+
 .bulk-box{
- display:grid;
- grid-template-columns:1.5fr 1fr;
- gap:12px;
- align-items:center;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:12px;
+    align-items:center;
 }
+
 .bulk-box textarea{
- min-height:125px;
- resize:vertical;
- line-height:1.8;
- font-size:17px;
+    min-height:130px;
+    resize:vertical;
+    font-size:17px;
+    line-height:2;
 }
+
 .bulk-points{text-align:center}
 .bulk-points input{
- text-align:center;
- font-size:28px;
- font-weight:bold;
- max-width:170px;
+    text-align:center;
+    font-size:25px;
+    font-weight:bold;
 }
+
 .bulk-action{
- width:100%;
- font-size:20px;
- padding:15px;
+    width:100%;
+    font-size:19px;
+    margin-top:10px;
 }
-.color-panel{
- background:linear-gradient(135deg,#f2f8ff,#fff);
-}
+
 .colors{
- display:flex;
- flex-direction:column;
- gap:8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
 }
+
 .color-item{
- display:flex;
- justify-content:space-between;
- align-items:center;
- background:white;
- border:1px solid #c5d8f3;
- border-radius:8px;
- padding:6px 10px;
- font-weight:bold;
+    background:white;
+    border:1px solid #ddd;
+    padding:8px;
+    border-radius:8px;
+    display:flex;
+    gap:8px;
+    align-items:center;
 }
+
 input[type=color]{
- width:48px;
- height:32px;
- border:0;
- cursor:pointer;
- background:transparent;
-}
-.form-grid{
- display:grid;
- grid-template-columns:2fr 1fr auto;
- gap:8px;
+    width:42px;
+    height:35px;
+    border:0;
+    cursor:pointer;
+    padding:0;
 }
 
-/* المحتوى */
-.main-grid{
- display:grid;
- grid-template-columns:minmax(0,3.2fr) minmax(220px,1fr);
- gap:10px;
- padding:0 5px;
- align-items:start;
+/* البحث */
+.search-box{
+    display:flex;
+    gap:8px;
+    align-items:center;
 }
+
+.search-box input{margin:0}
+.search-box button{white-space:nowrap}
+
+.search-result{
+    text-align:center;
+    color:#0755bd;
+    font-weight:bold;
+    padding:8px;
+}
+
+/* الجدول */
 .table-wrapper{
- overflow-x:hidden;
- border:2px solid #8bb7f0;
- border-radius:12px;
- background:white;
+    overflow-x:hidden;
+    border-radius:10px;
+    border:1px solid #b6c9e8;
 }
+
 table{
- width:100%;
- border-collapse:collapse;
- table-layout:fixed;
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    table-layout:fixed;
 }
+
 th{
- background:linear-gradient(#0756b8,#00275f);
- color:white;
- padding:11px 4px;
- font-size:17px;
- border:1px solid #b6d1f5;
+    background:var(--head);
+    color:white;
+    padding:12px 4px;
+    font-size:16px;
 }
+
 td{
- text-align:center;
- padding:9px 4px;
- font-size:16px;
- border:1px solid #d2def0;
- overflow-wrap:anywhere;
+    padding:10px 4px;
+    text-align:center;
+    border-bottom:1px solid #dce5f3;
+    font-size:16px;
+    word-wrap:break-word;
 }
-#leaderboard th:nth-child(1),#leaderboard td:nth-child(1){width:9%}
-#leaderboard th:nth-child(2),#leaderboard td:nth-child(2){width:36%}
-#leaderboard th:nth-child(3),#leaderboard td:nth-child(3){width:15%}
-#leaderboard th:nth-child(4),#leaderboard td:nth-child(4){width:13%}
-#leaderboard th:nth-child(5),#leaderboard td:nth-child(5){width:27%}
-tbody tr:nth-child(even){background:#edf4ff}
-.points-col{color:var(--points);font-weight:bold;font-size:21px}
-.name-col{color:var(--names);font-weight:bold}
-.rank-col{color:var(--rank);font-weight:bold;font-size:21px}
-.number-col{font-weight:bold;color:#001f69;font-size:20px}
-.first{background:#fff0a9!important}
-.second{background:#e6ebf2!important}
-.third{background:#ffdfbd!important}
-.action-btn{font-size:12px;padding:6px 8px;margin:2px}
 
-/* الإحصائيات السريعة */
-.quick-title{
- background:linear-gradient(90deg,#00347f,#0876e8);
- color:white;
- text-align:center;
- padding:11px 5px;
- border-radius:10px;
- font-weight:bold;
- font-size:19px;
-}
-.quick-card{
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:10px;
- border:1px solid #c1d7f5;
- background:linear-gradient(90deg,#fff,#e9f4ff);
- font-weight:bold;
- font-size:15px;
-}
-.quick-card strong{
- color:#08752b;
- font-size:23px;
-}
-.quick-card:first-of-type{border-radius:10px 10px 0 0}
-.quick-card:last-of-type{border-radius:0 0 10px 10px}
-.side-buttons button{width:100%;margin:4px 0;font-size:15px}
-.features{
- background:linear-gradient(135deg,#eaffed,#f4fff5);
- border:2px solid #a8d9b3;
- border-radius:14px;
- padding:12px;
-}
-.features h3{text-align:center;color:#064b9a;margin:0 0 10px}
-.features div{padding:5px;font-weight:bold;font-size:14px}
-.features span{color:#0b9a36;margin-left:5px}
+th:nth-child(1),td:nth-child(1){width:13%}
+th:nth-child(2),td:nth-child(2){width:42%}
+th:nth-child(3),td:nth-child(3){width:15%}
+th:nth-child(4),td:nth-child(4){width:30%}
 
-/* الإحصائيات السفلية */
-.bottom-grid{
- display:grid;
- grid-template-columns:2fr 1fr;
- gap:10px;
- padding:0 5px;
+tbody tr:nth-child(odd){background:var(--row1)}
+tbody tr:nth-child(even){background:var(--row2)}
+
+.points-col{
+    color:var(--points);
+    font-weight:bold;
+    font-size:20px;
 }
-.stats-table th{background:#073e91}
-.stats-table td{font-weight:bold}
-.stats-table .points-col{font-size:18px}
+
+.name-col{
+    color:var(--names);
+    font-weight:bold;
+}
+
+.rank-col{
+    color:var(--rank);
+    font-weight:bold;
+    font-size:20px;
+}
+
+.first{background:#fff1b9 !important}
+.second{background:#e6eaf1 !important}
+.third{background:#ffe0c0 !important}
+
+.action-btn{
+    padding:6px 8px;
+    font-size:12px;
+    margin:2px;
+}
+
+/* الصفحات */
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:13px;
+}
+
+.pagination button{
+    min-width:42px;
+    padding:9px 12px;
+}
+
+.pagination button:disabled{
+    opacity:.4;
+    cursor:not-allowed;
+}
+
+.page-info{
+    background:#073879;
+    color:white;
+    padding:9px 14px;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+/* الإحصائيات */
 .stats-grid{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:8px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
-.stat-card{
- background:#eaf3ff;
- border:1px solid #c2d6f3;
- border-radius:10px;
- padding:12px;
- text-align:center;
- font-weight:bold;
-}
-.stat-card strong{
- display:block;
- font-size:25px;
- color:#08752b;
- margin-top:5px;
-}
-.footer{
- background:linear-gradient(90deg,#001b4b,#0756bd,#001b4b);
- color:white;
- text-align:center;
- padding:20px 8px;
- font-size:20px;
- font-weight:bold;
- border-top:5px solid #f4c62b;
- margin-top:12px;
-}
-.share-buttons{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- gap:6px;
-}
-.share-buttons button{flex:1;min-width:140px}
 
-@media(max-width:750px){
- body{padding:3px}
- .header{padding:15px 7px}
- .logo{width:105px;height:105px}
- .logo .ball{font-size:40px}
- .logo strong{font-size:14px}
- .logo small{font-size:10px}
- .top-tools{grid-template-columns:1fr}
- .bulk-box{grid-template-columns:1fr}
- .main-grid{grid-template-columns:1fr}
- .bottom-grid{grid-template-columns:1fr}
- .form-grid{grid-template-columns:1fr}
- .side-buttons{display:grid;grid-template-columns:1fr 1fr;gap:5px}
- .side-buttons button{font-size:12px}
- th{font-size:12px;padding:8px 2px}
- td{font-size:12px;padding:7px 2px}
- .action-btn{font-size:10px;padding:5px 4px}
- .points-col,.rank-col{font-size:16px}
- .number-col{font-size:15px}
- .footer{font-size:16px}
+.stat-card{
+    background:#eaf3ff;
+    border:1px solid #c2d6f3;
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
 }
-</style></head><body>
-<div class="container"><!-- الرأس والشعار --><header class="header">
- <div class="header-content">
-  <div class="logo">
-   <div class="ball">⚽</div>
-   <strong>صدى العندليب</strong>
-   <small>للدوريات العالمية</small>
-  </div>
-  <h1>🏆 صدى العندليب</h1>
-  <h2>تحديات التوقعات والإحصائيات التلقائية</h2>
-  <div class="motto">معاً .. نحو المزيد من الإثارة</div>
- </div>
-</header><!-- الإضافة الجماعية والألوان --><div class="panel">
- <div class="section-title">⭐ إضافة الفائزين بالجملة ⭐</div>
- <div class="top-tools">  <div class="bulk-box">
-   <div>
-    <label><b>📋 الصق الأسماء هنا (كل اسم في سطر)</b></label>
-    <textarea id="bulkNames" placeholder="صالح أحمد الكسادي&#10;بدر علي اليزيدي&#10;مجاهد عبدالله البحسني"></textarea>
-   </div>
-   <div class="bulk-points">
-    <label><b>عدد النقاط لكل اسم</b></label>
-    <input type="number" id="bulkPoints" value="3" min="0">
-    <button class="green bulk-action" onclick="bulkAdd()">✨ فرز وإضافة</button>
-   </div>
-  </div>  <div class="color-panel panel" style="margin:0">
-   <div class="quick-title">🎨 خيارات الألوان</div>
-   <div class="colors">
-    <div class="color-item">لون النقاط <input type="color" id="pointsColor" value="#087b29"></div>
-    <div class="color-item">لون الأسماء <input type="color" id="namesColor" value="#071f58"></div>
-    <div class="color-item">لون الترتيب <input type="color" id="rankColor" value="#e67e00"></div>
-   </div>
-   <button class="dark" style="width:100%" onclick="resetColors()">🔄 إعادة الضبط</button>
-  </div> </div>
+
+.stat-card strong{
+    display:block;
+    font-size:27px;
+    color:#08752b;
+    margin-top:7px;
+}
+
+.stats-table th{background:#0871c9}
+.stats-table td{font-weight:bold}
+
+/* أزرار المشاركة */
+.share-buttons{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:7px;
+}
+
+.status{
+    text-align:center;
+    color:#08752b;
+    font-weight:bold;
+    padding:8px;
+    min-height:28px;
+}
+
+.footer{
+    background:#052c67;
+    color:white;
+    text-align:center;
+    padding:20px;
+    font-size:18px;
+    margin-top:15px;
+}
+
+@media(max-width:650px){
+    body{padding:4px}
+    .header h1{font-size:27px}
+    .header h2{font-size:18px}
+    .form-grid{grid-template-columns:1fr}
+    .bulk-box{grid-template-columns:1fr}
+    .stats-grid{grid-template-columns:1fr}
+    td,th{font-size:12px;padding:8px 2px}
+    .action-btn{font-size:10px;padding:5px 4px}
+    .pagination button{padding:8px}
+}
+
+#captureArea{
+    position:fixed;
+    right:-12000px;
+    top:0;
+    width:1000px;
+    background:white;
+    padding:20px;
+    z-index:-1;
+}
+
+.capture-header{
+    text-align:center;
+    color:white;
+    background:linear-gradient(120deg,#001b4b,#0066dc,#001b4b);
+    padding:22px;
+    border-bottom:5px solid #f5c400;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.capture-header h1{font-size:36px;margin:0}
+.capture-header h2{font-size:23px;color:#ffdf27;margin:10px}
+.capture-header p{font-size:18px;margin:5px}
+
+.capture-table th{
+    background:#07366e;
+    color:white;
+    font-size:20px;
+    padding:13px;
+}
+
+.capture-table td{
+    font-size:19px;
+    padding:12px;
+}
+
+.capture-footer{
+    text-align:center;
+    background:#052c67;
+    color:white;
+    padding:15px;
+    margin-top:15px;
+    font-size:19px;
+    border-radius:10px;
+}
+</style></head><body><div class="container"><div class="header">
+    <h1>🏆 صدى العندليب</h1>
+    <h2>تحديات التوقعات والإحصائيات التلقائية</h2>
+    <div class="subtitle">⚽ للدوريات العالمية ⚽</div>
 </div><!-- إضافة مشارك --><div class="panel">
- <div class="section-title">➕ إضافة مشارك جديد</div>
- <div class="form-grid">
-  <input id="newName" type="text" placeholder="اسم المشارك">
-  <input id="newPoints" type="number" min="0" placeholder="النقاط">
-  <button class="green" onclick="addPlayer()">إضافة لاعب</button>
- </div>
-</div><!-- الجدول والإحصائيات الجانبية --><div class="main-grid"> <div class="panel">
-  <div class="section-title">🏆 الترتيب العام 🏆</div>
-  <div style="text-align:center;margin-bottom:8px">
-   عدد المشاركين: <b id="totalPlayers">0</b>
-  </div>
-  <div class="table-wrapper">
-   <table id="leaderboard">
-    <thead>
-     <tr>
-      <th>#</th>
-      <th>الاسم</th>
-      <th>النقاط</th>
-      <th>الترتيب</th>
-      <th>إجراءات</th>
-     </tr>
-    </thead>
-    <tbody></tbody>
-   </table>
-  </div>
- </div> <aside>
-  <div class="panel">
-   <div class="quick-title">📊 إحصائيات سريعة</div>
-   <div class="quick-card">🏆 أعلى نقاط <strong id="highestStat">0</strong></div>
-   <div class="quick-card">🥉 أقل نقاط <strong id="lowestStat">0</strong></div>
-   <div class="quick-card">👥 عدد الأعضاء <strong id="totalStat">0</strong></div>
-   <div class="quick-card">🧮 متوسط النقاط <strong id="averageStat">0</strong></div>
-  </div>  <div class="panel">
-   <div class="quick-title">📤 مشاركة الجدول</div>
-   <div class="side-buttons">
-    <button class="green" onclick="shareWhatsApp()">🟢 واتساب</button>
-    <button class="blue" onclick="downloadImage()">🖼️ صور PNG الثلاث</button>
-    <button class="purple" onclick="downloadPDF()">📄 ملف PDF</button>
-    <button class="orange" onclick="copyTable()">🔗 نسخ الجدول</button>
-   </div>
-  </div>  <div class="panel features">
-   <h3>⚽ مميزات البرنامج</h3>
-   <div><span>✔</span> إضافة وتعديل وحذف المشاركين</div>
-   <div><span>✔</span> لصق أسماء متعددة بالجملة</div>
-   <div><span>✔</span> جمع النقاط عند تكرار الأسماء</div>
-   <div><span>✔</span> فرز تلقائي حسب النقاط</div>
-   <div><span>✔</span> إحصائيات دقيقة ومتجددة</div>
-   <div><span>✔</span> مشاركة الجدول على شكل 3 صور</div>
-  </div>
- </aside></div><!-- الإحصائيات حسب النقاط --><div class="bottom-grid">
- <div class="panel">
-  <div class="section-title">📊 إحصائيات عدد الأعضاء حسب النقاط</div>
-  <div class="table-wrapper">
-   <table class="stats-table" id="statsTable">
-    <thead>
-     <tr><th>عدد النقاط</th><th>عدد الأعضاء</th></tr>
-    </thead>
-    <tbody></tbody>
-   </table>
-  </div>
- </div> <div class="panel">
-  <div class="section-title">📈 ملخص المشاركين</div>
-  <div class="stats-grid">
-   <div class="stat-card">إجمالي المشاركين<strong id="summaryTotal">0</strong></div>
-   <div class="stat-card">مجموع النقاط<strong id="sumPoints">0</strong></div>
-  </div>
- </div>
-</div><footer class="footer">
- ⚽ صدى العندليب .. حيث يلتقي الشغف بالإبداع ⚽
- <br>للدوريات العالمية
-</footer></div><script>
+<div class="section-title">➕ إضافة مشارك جديد</div>
+<div class="form-grid">
+<input id="newName" type="text" placeholder="اسم المشارك">
+<input id="newPoints" type="number" placeholder="النقاط" min="0">
+<button class="green" onclick="addPlayer()">إضافة لاعب</button>
+</div>
+</div><!-- الإضافة الجماعية --><div class="panel">
+<div class="section-title">🏆 إضافة الفائزين بالجملة</div>
+<div class="bulk-box">
+<div>
+<label><b>📋 الصق أسماء الفائزين هنا</b></label>
+<textarea id="bulkNames" placeholder="كل اسم في سطر أو افصل الأسماء بفواصل"></textarea>
+</div>
+<div class="bulk-points">
+<label><b>⭐ عدد النقاط لكل اسم</b></label>
+<input type="number" id="bulkPoints" value="3" min="0">
+<p>النقاط التي ستضاف لكل مشارك</p>
+<button class="green bulk-action" onclick="bulkAdd()">✨ فرز وإضافة</button>
+</div>
+</div>
+</div><!-- الألوان --><div class="panel">
+<div class="section-title">🎨 تخصيص ألوان الجدول</div>
+<div class="colors">
+<div class="color-item">لون النقاط <input type="color" id="pointsColor" value="#087b29"></div>
+<div class="color-item">لون الأسماء <input type="color" id="namesColor" value="#071f58"></div>
+<div class="color-item">لون الترتيب <input type="color" id="rankColor" value="#e67e00"></div>
+<div class="color-item">لون الصف الأول <input type="color" id="row1Color" value="#ffffff"></div>
+<div class="color-item">لون الصف الثاني <input type="color" id="row2Color" value="#eaf1fc"></div>
+<div class="color-item">لون الرأس <input type="color" id="headColor" value="#07366e"></div>
+</div>
+</div><!-- البحث --><div class="panel">
+<div class="section-title">🔎 البحث عن مشارك</div>
+<div class="search-box">
+<input type="text" id="searchName" placeholder="اكتب اسم المشارك للبحث..." oninput="searchPlayers()">
+<button class="red" onclick="clearSearch()">مسح البحث</button>
+</div>
+<div class="search-result" id="searchResult"></div>
+</div><!-- الجدول --><div class="panel">
+<div class="section-title">🏆 الترتيب العام للمشاركين</div><div style="text-align:center;margin-bottom:10px">
+عدد المشاركين: <b id="totalPlayers">0</b>
+</div><div class="table-wrapper">
+<table id="leaderboard">
+<thead>
+<tr>
+<th>الترتيب</th>
+<th>الاسم</th>
+<th>النقاط</th>
+<th>خيارات</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div><div class="pagination" id="pagination"></div>
+<div class="status" id="saveStatus"></div>
+</div><!-- الإحصائيات --><div class="panel">
+<div class="section-title">📊 إحصائيات عدد الأعضاء حسب النقاط</div><div class="stats-grid">
+<div class="stat-card">إجمالي المشاركين<strong id="totalStat">0</strong></div>
+<div class="stat-card">أعلى رصيد نقاط<strong id="highestStat">0</strong></div>
+<div class="stat-card">أقل رصيد نقاط<strong id="lowestStat">0</strong></div>
+<div class="stat-card">متوسط النقاط<strong id="averageStat">0</strong></div>
+</div><br><div class="table-wrapper">
+<table class="stats-table" id="statsTable">
+<thead>
+<tr>
+<th>عدد النقاط</th>
+<th>عدد الأعضاء</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div><!-- الحفظ والنسخ الاحتياطي --><div class="panel">
+<div class="section-title">💾 حفظ البيانات والنسخ الاحتياطي</div>
+<div class="share-buttons">
+<button class="green" onclick="manualSave()">💾 حفظ البيانات الآن</button>
+<button class="blue" onclick="backupData()">📥 تحميل نسخة احتياطية</button>
+<button class="orange" onclick="document.getElementById('restoreFile').click()">📂 استعادة نسخة احتياطية</button>
+<input type="file" id="restoreFile" accept=".json,application/json" style="display:none" onchange="restoreData(event)">
+</div>
+<div class="status" id="backupStatus"></div>
+</div><!-- المشاركة --><div class="panel">
+<div class="section-title">📤 تصدير ومشاركة الجدول</div>
+<div class="share-buttons">
+<button class="green" onclick="shareWhatsApp()">🟢 إرسال صفحات الجدول للواتساب</button>
+<button class="blue" onclick="downloadImages()">🖼️ تحميل صور الصفحات</button>
+<button class="dark" onclick="copyTable()">📋 نسخ الجدول كنص</button>
+</div>
+<p style="text-align:center">يتم تقسيم الصور تلقائياً حسب صفحات الجدول.</p>
+</div><div class="footer">
+🏆 صدى العندليب .. حيث يلتقي الشغف بالإبداع 🏆<br>
+للدوريات العالمية
+</div></div><!-- منطقة إعداد صورة الصفحة --><div id="captureArea"></div><script>
+
 /* البيانات الأصلية */
+
 const initialData = [
 ["صالح احمد الكسادي",18],["بدر علي اليزيدي",18],["مجاهد عبدالله البحسني",17],["احمد عمر بن عروة",16],["سعيد عوض شحور",14],["احمد رضا السقاف",14],["خالد عمر باحارت",14],["علي سالم رجوم",13],["محمد حسين السويني",13],["مطيع عوض النموري",13],["احمد عبيد رجوم",13],["محمد علي صرخه",12],["محمد حسن باصم",12],["عبدالرحمن محمد باعباد",12],["علي عبدالله القرابي",12],["حسين عمر بلخير",12],["محمد احمد البحسني",12],["محمد زكي حبيشان",12],["منير كرامه حديجان",11],["انور محمد عيديد",10],["منيف علي اليزيدي",10],["سامي حاج باضريس",10],["ياسر البرك النموري",10],["سالم سعيد باعباد",10],["سالم مبارك الكلالي",10],["وليد عوض بخوخ",10],["محمد عمر الكلالي",10],["عبدالله ماجد جباري",10],["محمد عبدالله الكلالي",10],["ابراهيم عماد بن عروة",10],["محمد صالح بن اسحاق",10],["عوض محمد العبد",10],["سالم محمد باوزير",10],["احمد علي العساني",8],["عبدالرب حسن السعدي",8],["عبدالله عمر الكلالي",8],["عبدالله صالح الجابري",8],["وائل صالح بازيد",8],["علي صبري السعدي",8],["عبدالله محمد الكلالي",8],["همام صالح القرابي",8],["عمار ياسر العماري",8],["ابراهيم عادل المقدي",8],["عمر فؤاد مفتياح",8],["علي عثمان باخوار",7],["احمد كرامه باسيود",7],["فرج عبدالرحمن الكسادي",7],["محمد احمد باعباد",6],["عبدالقادر احمد بن عروة",6],["عمر محمد باوزير",6],["مدين عوض باصلعة",6],["علي فؤاد الكلالي",6],["سالم عوض علي بن عروة",6],["عبدالرحمن عمر الشيخاني",6],["محسن حسن البحسني",6],["محمد صالح باصلعة",6],["عبدالله ياسر العماري",6],["احمد عبدالله السقاف",6],["عبدالله سمير العمري",6],["عبدالله حسين شنظور",6],["احمد علي باعوضان",6],["عبدالكريم جمعان بن ناصر",6],["عبدالله عثمان باخوار",6],["هاني عبدالله عميران",6],["عبدالرحمن طارق مثنى",6],["يوسف عبدالله عيديد",5],["محمد سبيتي بأمؤمن",5],["احمد عبدالله باصالح",4],["ابراهيم علي باسعد",4],["معاذ حسن باسيود",4],["علاء احمد عيديد",4],["محمد علي باسعد",4],["سعيد سالم القرزي",4],["احمد محمد عليو",4],["عبدالله عوض بن غدران",4],["اسامه محفوظ بازياد",4],["محمد نديم المضي",4],["عمر محمد بقرف",4],["فايز احمد باوشخة",4],["احمد عوض الملغزي",4],["عبدالعزيز صالح واكد",4],["عمر علي اليزيدي",4],["عبدالله صالح عيديد",4],["سعيد سالمين البحسني",4],["محمد عبد الرحمن باهارون",4],["عبدالرحمن سالم العليي",4],["احمد محمد الشاطري",4],["عبدالله خالد باهيري",2],["محمد عبدالله الجابري",2],["سالم احمد حقص",2],["احمد عبدالله باسيود",2],["محمد عمر باعباد",2],["عبدالله عوض علي بن عروة",2],["معتز عبدالله كعيتي",2],["عمار سالم الصيعري",2],["علي سالم بارعيده",2],["عبدالسلام خالد بن منيف",2],["عوض سالم كعيتي",2],["علي محمد الذييبي",2],["محمد سعيد باعامر",2]
 ];
 
-/* تحميل البيانات المحفوظة */
+/* تحميل البيانات القديمة */
+
 let playersData=[];
+
 try{
- const saved=localStorage.getItem("sadaPlayersV3");
- playersData=saved?JSON.parse(saved):initialData.map(p=>({name:p[0],points:p[1]}));
- if(!Array.isArray(playersData)) throw new Error("Invalid data");
+    const saved=localStorage.getItem("sadaPlayersV3");
+    playersData=saved
+        ? JSON.parse(saved)
+        : initialData.map(p=>({name:p[0],points:p[1]}));
+
+    if(!Array.isArray(playersData)) throw new Error("بيانات غير صحيحة");
+
+    playersData=playersData.filter(p=>
+        p && typeof p.name==="string" &&
+        Number.isFinite(Number(p.points))
+    ).map(p=>({name:p.name,points:Number(p.points)}));
+
 }catch(e){
- playersData=initialData.map(p=>({name:p[0],points:p[1]}));
+    playersData=initialData.map(p=>({name:p[0],points:p[1]}));
 }
+
+let currentPage=1;
+const pageSize=35;
+let searchMode=false;
+
+/* الألوان */
+
+const defaultColors={
+    points:"#087b29",
+    names:"#071f58",
+    rank:"#e67e00",
+    row1:"#ffffff",
+    row2:"#eaf1fc",
+    head:"#07366e"
+};
+
+let colors={...defaultColors};
+
+try{
+    const savedColors=JSON.parse(localStorage.getItem("sadaColorsV1")||"{}");
+    colors={...defaultColors,...savedColors};
+}catch(e){}
+
+function applyColors(){
+    const root=document.documentElement;
+
+    root.style.setProperty("--points",colors.points);
+    root.style.setProperty("--names",colors.names);
+    root.style.setProperty("--rank",colors.rank);
+    root.style.setProperty("--row1",colors.row1);
+    root.style.setProperty("--row2",colors.row2);
+    root.style.setProperty("--head",colors.head);
+
+    const ids={
+        pointsColor:"points",
+        namesColor:"names",
+        rankColor:"rank",
+        row1Color:"row1",
+        row2Color:"row2",
+        headColor:"head"
+    };
+
+    Object.entries(ids).forEach(([id,key])=>{
+        document.getElementById(id).value=colors[key];
+    });
+}
+
+Object.keys({
+    pointsColor:"points",
+    namesColor:"names",
+    rankColor:"rank",
+    row1Color:"row1",
+    row2Color:"row2",
+    headColor:"head"
+}).forEach(id=>{
+    document.getElementById(id).addEventListener("input",()=>{
+        const key={
+            pointsColor:"points",
+            namesColor:"names",
+            rankColor:"rank",
+            row1Color:"row1",
+            row2Color:"row2",
+            headColor:"head"
+        }[id];
+
+        colors[key]=document.getElementById(id).value;
+        applyColors();
+        localStorage.setItem("sadaColorsV1",JSON.stringify(colors));
+    });
+});
+
+applyColors();
+
+/* الحفظ */
+
 function saveData(){
- localStorage.setItem("sadaPlayersV3",JSON.stringify(playersData));
+    try{
+        localStorage.setItem("sadaPlayersV3",JSON.stringify(playersData));
+        localStorage.setItem("sadaColorsV1",JSON.stringify(colors));
+        document.getElementById("saveStatus").textContent="✅ تم الحفظ تلقائياً";
+    }catch(e){
+        document.getElementById("saveStatus").textContent="⚠️ تعذر الحفظ، قد تكون مساحة التخزين ممتلئة";
+    }
+}
+
+function manualSave(){
+    saveData();
+    document.getElementById("backupStatus").textContent="✅ تم حفظ جميع البيانات الآن";
 }
 
 /* توحيد الأسماء */
+
 function normalizeName(name){
- return name.trim()
- .replace(/[\u064B-\u065F\u0670]/g,"")
- .replace(/[أإآ]/g,"ا")
- .replace(/ى/g,"ي")
- .replace(/ـ/g,"")
- .replace(/\s+/g," ")
- .toLowerCase();
+    return name.trim()
+        .replace(/[\u064B-\u065F\u0670]/g,"")
+        .replace(/[أإآ]/g,"ا")
+        .replace(/ى/g,"ي")
+        .replace(/ـ/g,"")
+        .replace(/\s+/g," ")
+        .toLowerCase();
 }
+
+/* الترتيب */
+
 function getSorted(){
- return [...playersData].sort((a,b)=>{
-  if(b.points!==a.points)return b.points-a.points;
-  return a.name.localeCompare(b.name,"ar");
- });
+    return [...playersData].sort((a,b)=>{
+        if(b.points!==a.points) return b.points-a.points;
+        return a.name.localeCompare(b.name,"ar");
+    });
 }
 
-/* رسم الجدول والإحصائيات */
+/* البحث */
+
+function searchPlayers(){
+    const value=normalizeName(document.getElementById("searchName").value);
+
+    if(!value){
+        searchMode=false;
+        currentPage=1;
+        renderTables();
+        return;
+    }
+
+    searchMode=true;
+    currentPage=1;
+    renderTables();
+}
+
+function clearSearch(){
+    document.getElementById("searchName").value="";
+    searchMode=false;
+    currentPage=1;
+    renderTables();
+}
+
+/* رسم الجدول */
+
 function renderTables(){
- const body=document.querySelector("#leaderboard tbody");
- body.innerHTML="";
- const sorted=getSorted();
+    const sorted=getSorted();
+    const body=document.querySelector("#leaderboard tbody");
+    body.innerHTML="";
 
- sorted.forEach((player,index)=>{
-  const row=document.createElement("tr");
-  if(index===0)row.classList.add("first");
-  if(index===1)row.classList.add("second");
-  if(index===2)row.classList.add("third");
+    const searchValue=normalizeName(document.getElementById("searchName").value);
 
-  const number=document.createElement("td");
-  number.className="number-col";
-  number.textContent=index+1;
+    const filtered=searchMode && searchValue
+        ? sorted.filter(p=>normalizeName(p.name).includes(searchValue))
+        : sorted;
 
-  const name=document.createElement("td");
-  name.className="name-col";
-  name.textContent=player.name;
+    const totalPages=Math.max(1,Math.ceil(filtered.length/pageSize));
 
-  const points=document.createElement("td");
-  points.className="points-col";
-  points.textContent=player.points;
+    if(currentPage>totalPages) currentPage=totalPages;
 
-  const rank=document.createElement("td");
-  rank.className="rank-col";
-  rank.textContent=index+1;
+    const start=(currentPage-1)*pageSize;
+    const pagePlayers=filtered.slice(start,start+pageSize);
 
-  const actions=document.createElement("td");
+    pagePlayers.forEach(player=>{
+        const globalIndex=sorted.indexOf(player);
+        const row=document.createElement("tr");
 
-  const edit=document.createElement("button");
-  edit.className="blue action-btn";
-  edit.textContent="✏ تعديل";
-  edit.onclick=()=>editPlayer(playersData.indexOf(player));
+        if(globalIndex===0) row.classList.add("first");
+        if(globalIndex===1) row.classList.add("second");
+        if(globalIndex===2) row.classList.add("third");
 
-  const del=document.createElement("button");
-  del.className="red action-btn";
-  del.textContent="حذف";
-  del.onclick=()=>deletePlayer(playersData.indexOf(player));
+        const rank=document.createElement("td");
+        rank.className="rank-col";
+        rank.textContent=globalIndex+1;
 
-  actions.append(edit,del);
-  row.append(number,name,points,rank,actions);
-  body.appendChild(row);
- });
+        const name=document.createElement("td");
+        name.className="name-col";
+        name.textContent=player.name;
 
- renderStats();
- saveData();
+        const points=document.createElement("td");
+        points.className="points-col";
+        points.textContent=player.points;
+
+        const actions=document.createElement("td");
+
+        const editBtn=document.createElement("button");
+        editBtn.className="blue action-btn";
+        editBtn.textContent="تعديل";
+        editBtn.onclick=()=>editPlayer(playersData.indexOf(player));
+
+        const delBtn=document.createElement("button");
+        delBtn.className="red action-btn";
+        delBtn.textContent="حذف";
+        delBtn.onclick=()=>deletePlayer(playersData.indexOf(player));
+
+        actions.append(editBtn,delBtn);
+        row.append(rank,name,points,actions);
+        body.appendChild(row);
+    });
+
+    document.getElementById("totalPlayers").textContent=playersData.length;
+
+    document.getElementById("searchResult").textContent=
+        searchMode
+        ? `نتائج البحث: ${filtered.length} مشارك`
+        : "";
+
+    renderPagination(totalPages);
+    renderStats();
+    saveData();
 }
+
+/* أزرار الصفحات */
+
+function renderPagination(totalPages){
+    const box=document.getElementById("pagination");
+    box.innerHTML="";
+
+    if(searchMode) return;
+
+    const prev=document.createElement("button");
+    prev.className="blue";
+    prev.textContent="السابق";
+    prev.disabled=currentPage===1;
+    prev.onclick=()=>{
+        if(currentPage>1){
+            currentPage--;
+            renderTables();
+        }
+    };
+
+    const info=document.createElement("span");
+    info.className="page-info";
+    info.textContent=`الصفحة ${currentPage} من ${totalPages}`;
+
+    const next=document.createElement("button");
+    next.className="blue";
+    next.textContent="التالي";
+    next.disabled=currentPage===totalPages;
+    next.onclick=()=>{
+        if(currentPage<totalPages){
+            currentPage++;
+            renderTables();
+        }
+    };
+
+    box.append(prev,info,next);
+
+    for(let i=1;i<=totalPages;i++){
+        const btn=document.createElement("button");
+        btn.className=i===currentPage?"orange":"dark";
+        btn.textContent=i;
+        btn.onclick=()=>{
+            currentPage=i;
+            renderTables();
+        };
+        box.appendChild(btn);
+    }
+}
+
+/* الإحصائيات */
 
 function renderStats(){
- const counts={};
- playersData.forEach(p=>{
-  counts[p.points]=(counts[p.points]||0)+1;
- });
+    const body=document.querySelector("#statsTable tbody");
+    body.innerHTML="";
 
- const body=document.querySelector("#statsTable tbody");
- body.innerHTML="";
+    const counts={};
 
- Object.keys(counts).sort((a,b)=>Number(b)-Number(a)).forEach(points=>{
-  const tr=document.createElement("tr");
-  const td1=document.createElement("td");
-  td1.textContent=points;
-  td1.className="points-col";
-  const td2=document.createElement("td");
-  td2.textContent=counts[points];
-  tr.append(td1,td2);
-  body.appendChild(tr);
- });
+    playersData.forEach(p=>{
+        counts[p.points]=(counts[p.points]||0)+1;
+    });
 
- const total=playersData.length;
- const values=playersData.map(p=>p.points);
- const sum=values.reduce((a,b)=>a+b,0);
- const highest=total?Math.max(...values):0;
- const lowest=total?Math.min(...values):0;
- const average=total?(sum/total).toFixed(1):0;
+    Object.keys(counts).sort((a,b)=>Number(b)-Number(a)).forEach(points=>{
+        const row=document.createElement("tr");
+        const td1=document.createElement("td");
+        const td2=document.createElement("td");
 
- document.getElementById("totalPlayers").textContent=total;
- document.getElementById("totalStat").textContent=total;
- document.getElementById("summaryTotal").textContent=total;
- document.getElementById("highestStat").textContent=highest;
- document.getElementById("lowestStat").textContent=lowest;
- document.getElementById("averageStat").textContent=average;
- document.getElementById("sumPoints").textContent=sum;
+        td1.textContent=points;
+        td1.className="points-col";
+        td2.textContent=counts[points];
+
+        row.append(td1,td2);
+        body.appendChild(row);
+    });
+
+    const total=playersData.length;
+    const highest=total?Math.max(...playersData.map(p=>p.points)):0;
+    const lowest=total?Math.min(...playersData.map(p=>p.points)):0;
+    const sum=playersData.reduce((s,p)=>s+p.points,0);
+    const average=total?(sum/total).toFixed(1):0;
+
+    document.getElementById("totalStat").textContent=total;
+    document.getElementById("highestStat").textContent=highest;
+    document.getElementById("lowestStat").textContent=lowest;
+    document.getElementById("averageStat").textContent=average;
 }
 
-/* الإضافة */
+/* إضافة مشارك */
+
 function addPlayer(){
- const name=document.getElementById("newName").value.trim();
- const value=document.getElementById("newPoints").value;
- const points=Number(value);
+    const nameInput=document.getElementById("newName");
+    const pointsInput=document.getElementById("newPoints");
 
- if(!name||value===""||!Number.isInteger(points)||points<0){
-  alert("أدخل الاسم والنقاط بشكل صحيح");
-  return;
- }
+    const name=nameInput.value.trim();
+    const points=Number(pointsInput.value);
 
- const existing=playersData.find(p=>normalizeName(p.name)===normalizeName(name));
- if(existing){
-  existing.points+=points;
-  alert("الاسم موجود، تمت إضافة النقاط إلى رصيده");
- }else{
-  playersData.push({name,points});
- }
+    if(!name||pointsInput.value===""||!Number.isInteger(points)||points<0){
+        alert("أدخل الاسم والنقاط بشكل صحيح");
+        return;
+    }
 
- document.getElementById("newName").value="";
- document.getElementById("newPoints").value="";
- renderTables();
+    const existing=playersData.find(p=>
+        normalizeName(p.name)===normalizeName(name)
+    );
+
+    if(existing){
+        existing.points+=points;
+        alert("الاسم موجود مسبقاً، تمت إضافة النقاط إلى رصيده");
+    }else{
+        playersData.push({name,points});
+    }
+
+    nameInput.value="";
+    pointsInput.value="";
+    currentPage=1;
+    renderTables();
 }
 
 /* الإضافة الجماعية */
+
 function bulkAdd(){
- const text=document.getElementById("bulkNames").value;
- const value=document.getElementById("bulkPoints").value;
- const points=Number(value);
+    const text=document.getElementById("bulkNames").value;
+    const pointsInput=document.getElementById("bulkPoints");
+    const points=Number(pointsInput.value);
 
- if(!text.trim()||value===""||!Number.isInteger(points)||points<0){
-  alert("تأكد من إدخال الأسماء والنقاط");
-  return;
- }
+    if(!text.trim()||pointsInput.value===""||
+       !Number.isInteger(points)||points<0){
+        alert("تأكد من إدخال الأسماء وعدد النقاط");
+        return;
+    }
 
- const names=text.split(/[\n\r،,;؛]+/).map(n=>n.trim()).filter(Boolean);
- let added=0,updated=0;
+    const names=text.split(/[\n\r،,;؛]+/)
+        .map(n=>n.trim())
+        .filter(Boolean);
 
- names.forEach(name=>{
-  const existing=playersData.find(p=>normalizeName(p.name)===normalizeName(name));
-  if(existing){
-   existing.points+=points;
-   updated++;
-  }else{
-   playersData.push({name,points});
-   added++;
-  }
- });
+    let added=0,updated=0;
 
- document.getElementById("bulkNames").value="";
- renderTables();
- alert(`تمت العملية بنجاح\nأسماء جديدة: ${added}\nأسماء تم تحديثها: ${updated}`);
+    names.forEach(name=>{
+        const existing=playersData.find(p=>
+            normalizeName(p.name)===normalizeName(name)
+        );
+
+        if(existing){
+            existing.points+=points;
+            updated++;
+        }else{
+            playersData.push({name,points});
+            added++;
+        }
+    });
+
+    document.getElementById("bulkNames").value="";
+    currentPage=1;
+    renderTables();
+
+    alert(`تمت العملية بنجاح!\nأسماء جديدة: ${added}\nأسماء تم تحديثها: ${updated}`);
 }
 
-/* التعديل */
+/* تعديل مشارك */
+
 function editPlayer(index){
- const player=playersData[index];
- const newName=prompt("تعديل اسم المشارك:",player.name);
- if(newName===null||!newName.trim())return;
+    const player=playersData[index];
 
- const newPoints=prompt("تعديل مجموع النقاط:",player.points);
- if(newPoints===null||newPoints.trim()===""||!Number.isInteger(Number(newPoints))||Number(newPoints)<0){
-  alert("النقاط غير صحيحة");
-  return;
- }
+    const newName=prompt("تعديل اسم المشارك:",player.name);
+    if(newName===null||!newName.trim()) return;
 
- const duplicate=playersData.find((p,i)=>i!==index&&normalizeName(p.name)===normalizeName(newName));
- if(duplicate){
-  if(confirm("الاسم موجود مسبقاً. هل تريد دمج النقاط معه؟")){
-   duplicate.points+=Number(newPoints);
-   playersData.splice(index,1);
-  }else return;
- }else{
-  player.name=newName.trim();
-  player.points=Number(newPoints);
- }
- renderTables();
+    const newPoints=prompt("تعديل مجموع النقاط:",player.points);
+
+    if(newPoints===null||newPoints.trim()===""||
+       !Number.isInteger(Number(newPoints))||Number(newPoints)<0){
+        alert("النقاط غير صحيحة");
+        return;
+    }
+
+    const duplicate=playersData.find((p,i)=>
+        i!==index&&normalizeName(p.name)===normalizeName(newName)
+    );
+
+    if(duplicate){
+        if(confirm("الاسم موجود مسبقاً. هل تريد دمج النقاط معه وحذف الاسم الحالي؟")){
+            duplicate.points+=Number(newPoints);
+            playersData.splice(index,1);
+        }else{
+            return;
+        }
+    }else{
+        player.name=newName.trim();
+        player.points=Number(newPoints);
+    }
+
+    renderTables();
 }
 
-/* الحذف */
+/* حذف مشارك */
+
 function deletePlayer(index){
- if(confirm("هل تريد حذف هذا المشارك؟")){
-  playersData.splice(index,1);
-  renderTables();
- }
+    if(confirm("هل أنت متأكد من حذف هذا المشارك؟")){
+        playersData.splice(index,1);
+        renderTables();
+    }
 }
 
-/* الألوان وحفظها */
-function applyColors(){
- const ids=["pointsColor","namesColor","rankColor"];
- const vars=["--points","--names","--rank"];
- const values={};
+/* النسخة الاحتياطية */
 
- ids.forEach((id,i)=>{
-  const value=document.getElementById(id).value;
-  document.documentElement.style.setProperty(vars[i],value);
-  values[id]=value;
- });
+function backupData(){
+    const backup={
+        program:"Sada Alandalib",
+        version:1,
+        date:new Date().toISOString(),
+        players:playersData,
+        colors:colors
+    };
 
- localStorage.setItem("sadaColorsV1",JSON.stringify(values));
-}
-function loadColors(){
- try{
-  const saved=JSON.parse(localStorage.getItem("sadaColorsV1")||"{}");
-  ["pointsColor","namesColor","rankColor"].forEach(id=>{
-   if(saved[id])document.getElementById(id).value=saved[id];
-  });
- }catch(e){}
- applyColors();
-}
-["pointsColor","namesColor","rankColor"].forEach(id=>{
- document.getElementById(id).addEventListener("input",applyColors);
-});
-function resetColors(){
- document.getElementById("pointsColor").value="#087b29";
- document.getElementById("namesColor").value="#071f58";
- document.getElementById("rankColor").value="#e67e00";
- applyColors();
+    const blob=new Blob(
+        [JSON.stringify(backup,null,2)],
+        {type:"application/json"}
+    );
+
+    const url=URL.createObjectURL(blob);
+    const link=document.createElement("a");
+
+    link.href=url;
+    link.download="نسخة-احتياطية-صدى-العندليب.json";
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+    document.getElementById("backupStatus").textContent=
+        "✅ تم تجهيز النسخة الاحتياطية";
 }
 
-/* نسخ الجدول */
+/* استعادة النسخة الاحتياطية */
+
+function restoreData(event){
+    const file=event.target.files[0];
+    if(!file) return;
+
+    const reader=new FileReader();
+
+    reader.onload=function(e){
+        try{
+            const data=JSON.parse(e.target.result);
+
+            if(!data||!Array.isArray(data.players)){
+                throw new Error("ملف غير صالح");
+            }
+
+            const restored=data.players.filter(p=>
+                p&&typeof p.name==="string"&&
+                Number.isFinite(Number(p.points))&&
+                Number(p.points)>=0
+            ).map(p=>({
+                name:p.name.trim(),
+                points:Number(p.points)
+            }));
+
+            if(!confirm(`سيتم استبدال البيانات الحالية بـ ${restored.length} مشارك. هل تريد المتابعة؟`)){
+                event.target.value="";
+                return;
+            }
+
+            playersData=restored;
+
+            if(data.colors&&typeof data.colors==="object"){
+                colors={...defaultColors,...data.colors};
+                localStorage.setItem("sadaColorsV1",JSON.stringify(colors));
+                applyColors();
+            }
+
+            currentPage=1;
+            searchMode=false;
+            document.getElementById("searchName").value="";
+
+            renderTables();
+            manualSave();
+
+            document.getElementById("backupStatus").textContent=
+                "✅ تمت استعادة النسخة الاحتياطية بنجاح";
+
+        }catch(err){
+            alert("تعذر قراءة النسخة الاحتياطية. تأكد من اختيار ملف البرنامج الصحيح.");
+        }
+
+        event.target.value="";
+    };
+
+    reader.readAsText(file);
+}
+
+/* نسخ الجدول كنص */
+
 function tableText(){
- let text="🏆 صدى العندليب - للدوريات العالمية\nالترتيب العام\n\n";
- getSorted().forEach((p,i)=>{
-  text+=`${i+1}- ${p.name} | ${p.points} نقطة\n`;
- });
- return text;
+    let text="🏆 صدى العندليب - للدوريات العالمية\n";
+    text+="الترتيب العام للمشاركين\n\n";
+
+    getSorted().forEach((p,i)=>{
+        text+=`${i+1}- ${p.name} | ${p.points} نقطة\n`;
+    });
+
+    return text;
 }
+
 async function copyTable(){
- try{
-  await navigator.clipboard.writeText(tableText());
-  alert("تم نسخ الجدول");
- }catch(e){
-  const area=document.createElement("textarea");
-  area.value=tableText();
-  document.body.appendChild(area);
-  area.select();
-  document.execCommand("copy");
-  area.remove();
-  alert("تم نسخ الجدول");
- }
+    try{
+        await navigator.clipboard.writeText(tableText());
+        alert("تم نسخ الجدول بنجاح");
+    }catch(e){
+        const area=document.createElement("textarea");
+        area.value=tableText();
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand("copy");
+        area.remove();
+        alert("تم نسخ الجدول");
+    }
 }
 
-/* إنشاء 3 صور */
-async function createThreeImages(){
- if(typeof html2canvas==="undefined")throw new Error("مكتبة التصوير غير متوفرة");
+/* إنشاء صورة مستقلة لكل صفحة */
 
- const sorted=getSorted();
- if(!sorted.length)return [];
+async function makePageImage(pageNumber){
+    const sorted=getSorted();
+    const totalPages=Math.max(1,Math.ceil(sorted.length/pageSize));
 
- const size=Math.ceil(sorted.length/3);
- const images=[];
- const root=getComputedStyle(document.documentElement);
- const pointsColor=root.getPropertyValue("--points").trim();
- const namesColor=root.getPropertyValue("--names").trim();
- const rankColor=root.getPropertyValue("--rank").trim();
+    const start=(pageNumber-1)*pageSize;
+    const pagePlayers=sorted.slice(start,start+pageSize);
 
- for(let part=0;part<3;part++){
-  const start=part*size;
-  const section=sorted.slice(start,start+size);
-  if(!section.length)continue;
+    const area=document.getElementById("captureArea");
 
-  const wrap=document.createElement("div");
-  wrap.style.cssText="width:1000px;padding:22px;background:white;direction:rtl;font-family:Tahoma,Arial,sans-serif;position:fixed;top:0;left:-12000px;";
+    let rows="";
 
-  const header=document.createElement("div");
-  header.style.cssText="text-align:center;color:white;background:linear-gradient(120deg,#001747,#0064d7,#001747);padding:22px;border-bottom:6px solid #ffc928;border-radius:12px;";
-  header.innerHTML=`
-   <div style="font-size:48px">⚽ 🏆 ⚽</div>
-   <h1 style="font-size:42px;margin:8px">صدى العندليب</h1>
-   <h2 style="font-size:25px;color:#ffe12b;margin:8px">تحديات التوقعات والإحصائيات التلقائية</h2>
-   <div style="font-size:22px">للدوريات العالمية</div>
-   <h2 style="font-size:25px;margin:15px 0 0">الترتيب العام - الجزء ${part+1} من 3</h2>
-  `;
-  wrap.appendChild(header);
+    pagePlayers.forEach((p,i)=>{
+        const globalIndex=start+i;
 
-  const table=document.createElement("table");
-  table.style.cssText="width:100%;border-collapse:collapse;table-layout:fixed;margin-top:15px";
-  const thead=document.createElement("thead");
-  const hr=document.createElement("tr");
+        let medal="";
+        if(globalIndex===0) medal=" 🥇";
+        if(globalIndex===1) medal=" 🥈";
+        if(globalIndex===2) medal=" 🥉";
 
-  ["#","الاسم","النقاط","الترتيب"].forEach((label,i)=>{
-   const th=document.createElement("th");
-   th.textContent=label;
-   th.style.cssText="background:#07366e;color:white;padding:15px;font-size:23px;border:1px solid #aac7ee;";
-   hr.appendChild(th);
-  });
-  thead.appendChild(hr);
-  table.appendChild(thead);
+        rows+=`
+        <tr style="background:${globalIndex%2===0?colors.row1:colors.row2}">
+            <td style="color:${colors.rank};font-weight:bold">${globalIndex+1}${medal}</td>
+            <td style="color:${colors.names};font-weight:bold">${escapeHTML(p.name)}</td>
+            <td style="color:${colors.points};font-weight:bold">${p.points}</td>
+        </tr>`;
+    });
 
-  const tbody=document.createElement("tbody");
+    area.innerHTML=`
+    <div class="capture-header">
+        <h1>🏆 صدى العندليب 🏆</h1>
+        <h2>تحديات التوقعات والإحصائيات التلقائية</h2>
+        <p>⚽ للدوريات العالمية ⚽</p>
+    </div>
 
-  section.forEach((p,i)=>{
-   const rank=start+i+1;
-   const tr=document.createElement("tr");
-   let bg=rank%2===0?"#edf4ff":"#fff";
-   if(rank===1)bg="#fff0a9";
-   if(rank===2)bg="#e6ebf2";
-   if(rank===3)bg="#ffdfbd";
-   tr.style.background=bg;
+    <h2 style="text-align:center;color:#073879">
+        الترتيب العام للمشاركين
+    </h2>
 
-   const vals=[rank,p.name,p.points,rank];
-   vals.forEach((val,j)=>{
-    const td=document.createElement("td");
-    td.textContent=val;
-    td.style.cssText="padding:14px 8px;text-align:center;border:1px solid #c8d8ee;font-weight:bold;font-size:24px;";
-    if(j===1)td.style.color=namesColor;
-    if(j===2)td.style.color=pointsColor;
-    if(j===3)td.style.color=rankColor;
-    if(j===0)td.style.color="#062e76";
-    tr.appendChild(td);
-   });
-   tbody.appendChild(tr);
-  });
+    <h3 style="text-align:center;color:#0755bd">
+        الصفحة ${pageNumber} من ${totalPages}
+    </h3>
 
-  table.appendChild(tbody);
-  wrap.appendChild(table);
+    <table class="capture-table" style="width:100%;border-collapse:collapse">
+        <thead>
+            <tr>
+                <th>الترتيب</th>
+                <th>اسم المشارك</th>
+                <th>النقاط</th>
+            </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+    </table>
 
-  const footer=document.createElement("div");
-  footer.style.cssText="background:#052c67;color:white;text-align:center;padding:18px;margin-top:15px;font-size:22px;border-radius:10px";
-  footer.innerHTML="🏆 صدى العندليب .. حيث يلتقي الشغف بالإبداع 🏆<br>للدوريات العالمية";
-  wrap.appendChild(footer);
+    <div class="capture-footer">
+        🏆 صدى العندليب .. حيث يلتقي الشغف بالإبداع 🏆
+        <br>للدوريات العالمية
+    </div>`;
 
-  document.body.appendChild(wrap);
-  try{
-   const canvas=await html2canvas(wrap,{scale:2,backgroundColor:"#fff",useCORS:true,logging:false});
-   const blob=await new Promise((resolve,reject)=>{
-    canvas.toBlob(b=>b?resolve(b):reject(new Error("تعذر إنشاء الصورة")),"image/png");
-   });
-   images.push({blob,name:`صدى-العندليب-الجزء-${part+1}.png`});
-  }finally{
-   wrap.remove();
-  }
- }
- return images;
+    const canvas=await html2canvas(area,{
+        scale:2,
+        backgroundColor:"#ffffff",
+        useCORS:true,
+        width:1000,
+        windowWidth:1000
+    });
+
+    return new Promise(resolve=>{
+        canvas.toBlob(blob=>resolve(blob),"image/png");
+    });
 }
 
-/* تحميل الصور */
-async function downloadImage(){
- const btn=document.querySelector('button[onclick="downloadImage()"]');
- try{
-  btn.disabled=true;
-  btn.textContent="⏳ جارٍ تجهيز الصور";
-  const images=await createThreeImages();
-  for(let i=0;i<images.length;i++){
-   const url=URL.createObjectURL(images[i].blob);
-   const a=document.createElement("a");
-   a.href=url;
-   a.download=images[i].name;
-   document.body.appendChild(a);
-   a.click();
-   a.remove();
-   setTimeout(()=>URL.revokeObjectURL(url),10000);
-   await new Promise(r=>setTimeout(r,700));
-  }
-  alert("تم تجهيز الصور الثلاث");
- }catch(e){
-  console.error(e);
-  alert("تعذر إنشاء الصور. حاول مرة أخرى");
- }finally{
-  btn.disabled=false;
-  btn.textContent="🖼️ صور PNG الثلاث";
- }
+function escapeHTML(text){
+    return String(text).replace(/[&<>"']/g,function(c){
+        return {
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#039;"
+        }[c];
+    });
+}
+
+/* تحميل جميع الصور */
+
+async function downloadImages(){
+    const totalPages=Math.max(1,Math.ceil(getSorted().length/pageSize));
+
+    try{
+        for(let i=1;i<=totalPages;i++){
+            const blob=await makePageImage(i);
+            const url=URL.createObjectURL(blob);
+
+            const link=document.createElement("a");
+            link.href=url;
+            link.download=`صدى-العندليب-الصفحة-${i}.png`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            setTimeout(()=>URL.revokeObjectURL(url),3000);
+
+            await new Promise(resolve=>setTimeout(resolve,700));
+        }
+
+        alert(`تم تجهيز ${totalPages} صورة. إذا منع المتصفح التحميل المتعدد، اسمح بتنزيل الملفات المتعددة.`);
+    }catch(e){
+        alert("تعذر إنشاء الصور. تأكد من اتصال الإنترنت وتحميل مكتبة الصور.");
+    }
 }
 
 /* مشاركة الصور */
+
 async function shareWhatsApp(){
- const btn=document.querySelector('button[onclick="shareWhatsApp()"]');
- try{
-  btn.disabled=true;
-  btn.textContent="⏳ جارٍ التجهيز";
-  const images=await createThreeImages();
-  const files=images.map(x=>new File([x.blob],x.name,{type:"image/png"}));
+    const totalPages=Math.max(1,Math.ceil(getSorted().length/pageSize));
 
-  if(navigator.share&&navigator.canShare&&navigator.canShare({files})){
-   await navigator.share({
-    title:"صدى العندليب",
-    text:"الترتيب العام لتحديات التوقعات - للدوريات العالمية",
-    files
-   });
-  }else{
-   alert("جهازك لا يدعم مشاركة الصور الثلاث معاً. سيتم تحميلها لتشاركها يدوياً.");
-   for(let i=0;i<images.length;i++){
-    const url=URL.createObjectURL(images[i].blob);
-    const a=document.createElement("a");
-    a.href=url;
-    a.download=images[i].name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),10000);
-    await new Promise(r=>setTimeout(r,700));
-   }
-  }
- }catch(e){
-  if(e.name!=="AbortError"){
-   console.error(e);
-   alert("تعذرت المشاركة. استخدم زر تحميل الصور الثلاث.");
-  }
- }finally{
-  btn.disabled=false;
-  btn.textContent="🟢 واتساب";
- }
-}
+    try{
+        const files=[];
 
-/* ملف PDF من الصور الثلاث */
-async function downloadPDF(){
- try{
-  const images=await createThreeImages();
-  if(!images.length)return;
+        for(let i=1;i<=totalPages;i++){
+            const blob=await makePageImage(i);
 
-  if(!window.jspdf){
-   alert("يتعذر إنشاء PDF حالياً. استخدم تحميل الصور الثلاث.");
-   return;
-  }
-  const {jsPDF}=window.jspdf;
-  const pdf=new jsPDF("p","mm","a4");
+            files.push(new File(
+                [blob],
+                `صدى-العندليب-الصفحة-${i}.png`,
+                {type:"image/png"}
+            ));
+        }
 
-  for(let i=0;i<images.length;i++){
-   if(i>0)pdf.addPage();
-   const data=await new Promise(resolve=>{
-    const reader=new FileReader();
-    reader.onload=()=>resolve(reader.result);
-    reader.readAsDataURL(images[i].blob);
-   });
-   const pageWidth=190;
-   const pageHeight=pdf.internal.pageSize.getHeight();
-   const props=pdf.getImageProperties(data);
-   const height=pageWidth*props.height/props.width;
-   pdf.addImage(data,"PNG",10,10,pageWidth,Math.min(height,pageHeight-20));
-  }
-  pdf.save("صدى-العندليب.pdf");
- }catch(e){
-  console.error(e);
-  alert("تعذر إنشاء ملف PDF");
- }
+        if(navigator.canShare&&navigator.canShare({files})){
+            await navigator.share({
+                title:"صدى العندليب",
+                text:"🏆 الترتيب العام لتحديات التوقعات - للدوريات العالمية",
+                files
+            });
+        }else{
+            alert("المتصفح لا يدعم مشاركة عدة صور مباشرة. سيتم تحميل الصور لتتمكن من إرسالها عبر واتساب.");
+            await downloadImages();
+        }
+
+    }catch(e){
+        if(e.name!=="AbortError"){
+            alert("تعذرت المشاركة. جرب تحميل الصور أولاً.");
+        }
+    }
 }
 
 /* التشغيل */
-loadColors();
+
 renderTables();
-</script><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script></body>
+
+</script></body>
 </html>
